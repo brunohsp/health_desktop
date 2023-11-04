@@ -7,7 +7,7 @@ public class Patient {
     private String photo; // URL or a file path for the photo
     private Date dateOfBirth;
     private String gender;
-    private String address;
+    private String address; // TODO: implements address class
     private String phoneNumber;
     private String paymentMethod;
 

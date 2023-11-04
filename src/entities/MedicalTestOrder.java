@@ -3,43 +3,43 @@ package entities;
 import java.util.Date;
 
 public class MedicalTestOrder {
-    private String testCode;
-    private String patientName;
-    private String doctorCrm;
+    private MedicalTest test;
+    private Patient patient;
+    private Doctor doctor;
     private Date testDate;
     private double valuePaid;
 
-    public MedicalTestOrder(String testCode, String patientName, String doctorCrm, Date testDate, double testValuePaid) {
-        this.testCode = testCode;
-        this.patientName = patientName;
-        this.doctorCrm = doctorCrm;
+    public MedicalTestOrder(MedicalTest test, Patient patient, Doctor doctor, Date testDate, double testValuePaid) {
+        this.test = test;
+        this.patient = patient;
+        this.doctor = doctor;
         this.testDate = testDate;
         this.valuePaid = testValuePaid;
     }
 
     // Getters and setters for the attributes
-    public String getTestCode() {
-        return testCode;
+    public MedicalTest getTest() {
+        return test;
     }
 
-    public void setTestCode(String testCode) {
-        this.testCode = testCode;
+    public void setTest(MedicalTest test) {
+        this.test = test;
     }
 
-    public String getPatientName() {
-        return patientName;
+    public Patient getPatient() {
+        return patient;
     }
 
-    public void setPatientName(String patientName) {
-        this.patientName = patientName;
+    public void setPatient(Patient patient) {
+        this.patient = patient;
     }
 
-    public String getDoctorCrm() {
-        return doctorCrm;
+    public Doctor getDoctor() {
+        return doctor;
     }
 
-    public void setDoctorCrm(String doctorCrm) {
-        this.doctorCrm = doctorCrm;
+    public void setDoctor(Doctor doctor) {
+        this.doctor = doctor;
     }
 
     public Date getTestDate() {
@@ -61,12 +61,11 @@ public class MedicalTestOrder {
     @Override
     public String toString() {
         return "MedicalTestOrder{" +
-                "testCode='" + testCode + '\'' +
-                ", patientName='" + patientName + '\'' +
-                ", doctorCrm='" + doctorCrm + '\'' +
+                "test='" + test + '\'' +
+                ", patient='" + patient + '\'' +
+                ", doctor='" + doctor + '\'' +
                 ", testDate=" + testDate +
                 ", testValuePaid=" + valuePaid +
                 '}';
     }
 }
-
