@@ -18,13 +18,24 @@ import javax.swing.JTextField;
 import javax.swing.JFormattedTextField;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.border.LineBorder;
+import java.awt.Color;
+import java.awt.BorderLayout;
+import javax.swing.LayoutStyle.ComponentPlacement;
+import java.awt.GridLayout;
+import javax.swing.JRadioButton;
+import javax.swing.SwingConstants;
 
 public class DoctorForm extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private JTextField txtName;
-	private JTextField txtAddress;
+	private JTextField textField;
+	private JTextField textField_1;
+	private JTextField textField_2;
+	private JTextField textField_3;
+	private JTextField textField_4;
 
 	/**
 	 * Launch the application.
@@ -49,7 +60,7 @@ public class DoctorForm extends JFrame {
 		setTitle("Formulário - Doutor");
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 469, 377);
+		setBounds(100, 100, 800, 598);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
@@ -59,13 +70,13 @@ public class DoctorForm extends JFrame {
 		GroupLayout gl_contentPane = new GroupLayout(contentPane);
 		gl_contentPane.setHorizontalGroup(
 			gl_contentPane.createParallelGroup(Alignment.LEADING)
-				.addComponent(panel, GroupLayout.PREFERRED_SIZE, 445, Short.MAX_VALUE)
+				.addComponent(panel, GroupLayout.PREFERRED_SIZE, 780, Short.MAX_VALUE)
 		);
 		gl_contentPane.setVerticalGroup(
 			gl_contentPane.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_contentPane.createSequentialGroup()
-					.addComponent(panel, GroupLayout.PREFERRED_SIZE, 334, GroupLayout.PREFERRED_SIZE)
-					.addContainerGap(76, Short.MAX_VALUE))
+					.addComponent(panel, GroupLayout.PREFERRED_SIZE, 553, GroupLayout.PREFERRED_SIZE)
+					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
 		);
 		
 		JPanel name = new JPanel();
@@ -182,6 +193,174 @@ public class DoctorForm extends JFrame {
 		gbc_txtCrm.gridy = 0;
 		crm.add(txtCrm, gbc_txtCrm);
 		
+		JPanel CPF = new JPanel();
+		GridBagLayout gbl_CPF = new GridBagLayout();
+		gbl_CPF.columnWidths = new int[]{98, 20, 643, 0};
+		gbl_CPF.rowHeights = new int[]{38, 0};
+		gbl_CPF.columnWeights = new double[]{0.0, 0.0, 1.0, Double.MIN_VALUE};
+		gbl_CPF.rowWeights = new double[]{0.0, Double.MIN_VALUE};
+		CPF.setLayout(gbl_CPF);
+		
+		JLabel lblCpf = new JLabel("CPF:");
+		lblCpf.setFont(new Font("Dialog", Font.PLAIN, 24));
+		GridBagConstraints gbc_lblCpf = new GridBagConstraints();
+		gbc_lblCpf.anchor = GridBagConstraints.WEST;
+		gbc_lblCpf.insets = new Insets(0, 0, 0, 5);
+		gbc_lblCpf.gridx = 0;
+		gbc_lblCpf.gridy = 0;
+		CPF.add(lblCpf, gbc_lblCpf);
+		
+		Component horizontalStrut_1_1_1_1_1 = Box.createHorizontalStrut(20);
+		GridBagConstraints gbc_horizontalStrut_1_1_1_1_1 = new GridBagConstraints();
+		gbc_horizontalStrut_1_1_1_1_1.fill = GridBagConstraints.HORIZONTAL;
+		gbc_horizontalStrut_1_1_1_1_1.insets = new Insets(0, 0, 0, 5);
+		gbc_horizontalStrut_1_1_1_1_1.gridx = 1;
+		gbc_horizontalStrut_1_1_1_1_1.gridy = 0;
+		CPF.add(horizontalStrut_1_1_1_1_1, gbc_horizontalStrut_1_1_1_1_1);
+		
+		JFormattedTextField txtPhone_1 = new JFormattedTextField((Object) null);
+		txtPhone_1.setFont(new Font("Dialog", Font.PLAIN, 24));
+		txtPhone_1.setColumns(14);
+		GridBagConstraints gbc_txtPhone_1 = new GridBagConstraints();
+		gbc_txtPhone_1.fill = GridBagConstraints.HORIZONTAL;
+		gbc_txtPhone_1.anchor = GridBagConstraints.NORTH;
+		gbc_txtPhone_1.gridx = 2;
+		gbc_txtPhone_1.gridy = 0;
+		CPF.add(txtPhone_1, gbc_txtPhone_1);
+		
+		JPanel gender = new JPanel();
+		gender.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
+		gender.setLayout(new BorderLayout(0, 0));
+		
+		JPanel genderOptions = new JPanel();
+		gender.add(genderOptions, BorderLayout.CENTER);
+		genderOptions.setLayout(new GridLayout(0, 1, 0, 0));
+		
+		JRadioButton rdbtnMale = new JRadioButton("Masculino");
+		rdbtnMale.setHorizontalAlignment(SwingConstants.LEFT);
+		rdbtnMale.setFont(new Font("Dialog", Font.PLAIN, 24));
+		genderOptions.add(rdbtnMale);
+		
+		JRadioButton rdbtnFemale = new JRadioButton("Feminino");
+		rdbtnFemale.setHorizontalAlignment(SwingConstants.LEFT);
+		rdbtnFemale.setFont(new Font("Dialog", Font.PLAIN, 24));
+		genderOptions.add(rdbtnFemale);
+		
+		JRadioButton rdbtnOther = new JRadioButton("Outro");
+		rdbtnOther.setHorizontalAlignment(SwingConstants.LEFT);
+		rdbtnOther.setFont(new Font("Dialog", Font.PLAIN, 24));
+		genderOptions.add(rdbtnOther);
+		
+		JLabel lblGender = new JLabel("Gênero:");
+		gender.add(lblGender, BorderLayout.NORTH);
+		lblGender.setHorizontalAlignment(SwingConstants.CENTER);
+		lblGender.setFont(new Font("Dialog", Font.PLAIN, 24));
+		
+		JPanel neighborhood = new JPanel();
+		GridBagLayout gbl_neighborhood = new GridBagLayout();
+		gbl_neighborhood.columnWidths = new int[]{110, 20, 426, 0};
+		gbl_neighborhood.rowHeights = new int[]{38, 0};
+		gbl_neighborhood.columnWeights = new double[]{0.0, 0.0, 1.0, Double.MIN_VALUE};
+		gbl_neighborhood.rowWeights = new double[]{0.0, Double.MIN_VALUE};
+		neighborhood.setLayout(gbl_neighborhood);
+		
+		JLabel lblNeighborhood = new JLabel("Bairro:");
+		lblNeighborhood.setFont(new Font("Dialog", Font.PLAIN, 24));
+		GridBagConstraints gbc_lblNeighborhood = new GridBagConstraints();
+		gbc_lblNeighborhood.anchor = GridBagConstraints.WEST;
+		gbc_lblNeighborhood.insets = new Insets(0, 0, 0, 5);
+		gbc_lblNeighborhood.gridx = 0;
+		gbc_lblNeighborhood.gridy = 0;
+		neighborhood.add(lblNeighborhood, gbc_lblNeighborhood);
+		
+		Component horizontalStrut_1_4 = Box.createHorizontalStrut(20);
+		GridBagConstraints gbc_horizontalStrut_1_4 = new GridBagConstraints();
+		gbc_horizontalStrut_1_4.fill = GridBagConstraints.HORIZONTAL;
+		gbc_horizontalStrut_1_4.insets = new Insets(0, 0, 0, 5);
+		gbc_horizontalStrut_1_4.gridx = 1;
+		gbc_horizontalStrut_1_4.gridy = 0;
+		neighborhood.add(horizontalStrut_1_4, gbc_horizontalStrut_1_4);
+		
+		textField = new JTextField();
+		textField.setFont(new Font("Dialog", Font.PLAIN, 24));
+		textField.setColumns(20);
+		GridBagConstraints gbc_textField = new GridBagConstraints();
+		gbc_textField.fill = GridBagConstraints.HORIZONTAL;
+		gbc_textField.anchor = GridBagConstraints.NORTH;
+		gbc_textField.gridx = 2;
+		gbc_textField.gridy = 0;
+		neighborhood.add(textField, gbc_textField);
+		
+		JPanel city = new JPanel();
+		GridBagLayout gbl_city = new GridBagLayout();
+		gbl_city.columnWidths = new int[]{110, 20, 426, 0};
+		gbl_city.rowHeights = new int[]{38, 0};
+		gbl_city.columnWeights = new double[]{0.0, 0.0, 1.0, Double.MIN_VALUE};
+		gbl_city.rowWeights = new double[]{0.0, Double.MIN_VALUE};
+		city.setLayout(gbl_city);
+		
+		JLabel lblCity = new JLabel("Cidade:");
+		lblCity.setFont(new Font("Dialog", Font.PLAIN, 24));
+		GridBagConstraints gbc_lblCity = new GridBagConstraints();
+		gbc_lblCity.anchor = GridBagConstraints.WEST;
+		gbc_lblCity.insets = new Insets(0, 0, 0, 5);
+		gbc_lblCity.gridx = 0;
+		gbc_lblCity.gridy = 0;
+		city.add(lblCity, gbc_lblCity);
+		
+		Component horizontalStrut_1_4_1 = Box.createHorizontalStrut(20);
+		GridBagConstraints gbc_horizontalStrut_1_4_1 = new GridBagConstraints();
+		gbc_horizontalStrut_1_4_1.fill = GridBagConstraints.HORIZONTAL;
+		gbc_horizontalStrut_1_4_1.insets = new Insets(0, 0, 0, 5);
+		gbc_horizontalStrut_1_4_1.gridx = 1;
+		gbc_horizontalStrut_1_4_1.gridy = 0;
+		city.add(horizontalStrut_1_4_1, gbc_horizontalStrut_1_4_1);
+		
+		textField_1 = new JTextField();
+		textField_1.setFont(new Font("Dialog", Font.PLAIN, 24));
+		textField_1.setColumns(20);
+		GridBagConstraints gbc_textField_1 = new GridBagConstraints();
+		gbc_textField_1.fill = GridBagConstraints.HORIZONTAL;
+		gbc_textField_1.anchor = GridBagConstraints.NORTH;
+		gbc_textField_1.gridx = 2;
+		gbc_textField_1.gridy = 0;
+		city.add(textField_1, gbc_textField_1);
+		
+		JPanel CEP = new JPanel();
+		GridBagLayout gbl_CEP = new GridBagLayout();
+		gbl_CEP.columnWidths = new int[]{110, 20, 426, 0};
+		gbl_CEP.rowHeights = new int[]{38, 0};
+		gbl_CEP.columnWeights = new double[]{0.0, 0.0, 1.0, Double.MIN_VALUE};
+		gbl_CEP.rowWeights = new double[]{0.0, Double.MIN_VALUE};
+		CEP.setLayout(gbl_CEP);
+		
+		JLabel lblCep = new JLabel("CEP:");
+		lblCep.setFont(new Font("Dialog", Font.PLAIN, 24));
+		GridBagConstraints gbc_lblCep = new GridBagConstraints();
+		gbc_lblCep.anchor = GridBagConstraints.WEST;
+		gbc_lblCep.insets = new Insets(0, 0, 0, 5);
+		gbc_lblCep.gridx = 0;
+		gbc_lblCep.gridy = 0;
+		CEP.add(lblCep, gbc_lblCep);
+		
+		Component horizontalStrut_1_3 = Box.createHorizontalStrut(20);
+		GridBagConstraints gbc_horizontalStrut_1_3 = new GridBagConstraints();
+		gbc_horizontalStrut_1_3.fill = GridBagConstraints.HORIZONTAL;
+		gbc_horizontalStrut_1_3.insets = new Insets(0, 0, 0, 5);
+		gbc_horizontalStrut_1_3.gridx = 1;
+		gbc_horizontalStrut_1_3.gridy = 0;
+		CEP.add(horizontalStrut_1_3, gbc_horizontalStrut_1_3);
+		
+		textField_3 = new JTextField();
+		textField_3.setFont(new Font("Dialog", Font.PLAIN, 24));
+		textField_3.setColumns(20);
+		GridBagConstraints gbc_textField_3 = new GridBagConstraints();
+		gbc_textField_3.fill = GridBagConstraints.HORIZONTAL;
+		gbc_textField_3.anchor = GridBagConstraints.NORTH;
+		gbc_textField_3.gridx = 2;
+		gbc_textField_3.gridy = 0;
+		CEP.add(textField_3, gbc_textField_3);
+		
 		JPanel address = new JPanel();
 		GridBagLayout gbl_address = new GridBagLayout();
 		gbl_address.columnWidths = new int[]{110, 20, 426, 0};
@@ -191,7 +370,7 @@ public class DoctorForm extends JFrame {
 		address.setLayout(gbl_address);
 		
 		JLabel lblAddress = new JLabel("Endereço:");
-		lblAddress.setFont(new Font("Segoe UI Variable", Font.PLAIN, 24));
+		lblAddress.setFont(new Font("Dialog", Font.PLAIN, 24));
 		GridBagConstraints gbc_lblAddress = new GridBagConstraints();
 		gbc_lblAddress.anchor = GridBagConstraints.WEST;
 		gbc_lblAddress.insets = new Insets(0, 0, 0, 5);
@@ -207,23 +386,58 @@ public class DoctorForm extends JFrame {
 		gbc_horizontalStrut_1.gridy = 0;
 		address.add(horizontalStrut_1, gbc_horizontalStrut_1);
 		
-		txtAddress = new JTextField();
-		txtAddress.setFont(new Font("Segoe UI Variable", Font.PLAIN, 24));
-		txtAddress.setColumns(20);
-		GridBagConstraints gbc_txtAddress = new GridBagConstraints();
-		gbc_txtAddress.fill = GridBagConstraints.HORIZONTAL;
-		gbc_txtAddress.anchor = GridBagConstraints.NORTH;
-		gbc_txtAddress.gridx = 2;
-		gbc_txtAddress.gridy = 0;
-		address.add(txtAddress, gbc_txtAddress);
+		textField_4 = new JTextField();
+		textField_4.setFont(new Font("Dialog", Font.PLAIN, 24));
+		textField_4.setColumns(20);
+		GridBagConstraints gbc_textField_4 = new GridBagConstraints();
+		gbc_textField_4.fill = GridBagConstraints.HORIZONTAL;
+		gbc_textField_4.anchor = GridBagConstraints.NORTH;
+		gbc_textField_4.gridx = 2;
+		gbc_textField_4.gridy = 0;
+		address.add(textField_4, gbc_textField_4);
 		
-		JPanel paymentMethod = new JPanel();
-		GridBagLayout gbl_paymentMethod = new GridBagLayout();
-		gbl_paymentMethod.columnWidths = new int[]{110, 20, 426, 0};
-		gbl_paymentMethod.rowHeights = new int[]{38, 0};
-		gbl_paymentMethod.columnWeights = new double[]{0.0, 0.0, 1.0, Double.MIN_VALUE};
-		gbl_paymentMethod.rowWeights = new double[]{0.0, Double.MIN_VALUE};
-		paymentMethod.setLayout(gbl_paymentMethod);
+		JPanel uf = new JPanel();
+		GridBagLayout gbl_uf = new GridBagLayout();
+		gbl_uf.columnWidths = new int[]{110, 20, 426, 0};
+		gbl_uf.rowHeights = new int[]{38, 0};
+		gbl_uf.columnWeights = new double[]{0.0, 0.0, 1.0, Double.MIN_VALUE};
+		gbl_uf.rowWeights = new double[]{0.0, Double.MIN_VALUE};
+		uf.setLayout(gbl_uf);
+		
+		JLabel lblUf = new JLabel("UF:");
+		lblUf.setFont(new Font("Dialog", Font.PLAIN, 24));
+		GridBagConstraints gbc_lblUf = new GridBagConstraints();
+		gbc_lblUf.anchor = GridBagConstraints.WEST;
+		gbc_lblUf.insets = new Insets(0, 0, 0, 5);
+		gbc_lblUf.gridx = 0;
+		gbc_lblUf.gridy = 0;
+		uf.add(lblUf, gbc_lblUf);
+		
+		Component horizontalStrut_1_4_2 = Box.createHorizontalStrut(20);
+		GridBagConstraints gbc_horizontalStrut_1_4_2 = new GridBagConstraints();
+		gbc_horizontalStrut_1_4_2.fill = GridBagConstraints.HORIZONTAL;
+		gbc_horizontalStrut_1_4_2.insets = new Insets(0, 0, 0, 5);
+		gbc_horizontalStrut_1_4_2.gridx = 1;
+		gbc_horizontalStrut_1_4_2.gridy = 0;
+		uf.add(horizontalStrut_1_4_2, gbc_horizontalStrut_1_4_2);
+		
+		textField_2 = new JTextField();
+		textField_2.setFont(new Font("Dialog", Font.PLAIN, 24));
+		textField_2.setColumns(20);
+		GridBagConstraints gbc_textField_2 = new GridBagConstraints();
+		gbc_textField_2.fill = GridBagConstraints.HORIZONTAL;
+		gbc_textField_2.anchor = GridBagConstraints.NORTH;
+		gbc_textField_2.gridx = 2;
+		gbc_textField_2.gridy = 0;
+		uf.add(textField_2, gbc_textField_2);
+		
+		JPanel specialty = new JPanel();
+		GridBagLayout gbl_specialty = new GridBagLayout();
+		gbl_specialty.columnWidths = new int[]{110, 20, 426, 0};
+		gbl_specialty.rowHeights = new int[]{38, 0};
+		gbl_specialty.columnWeights = new double[]{0.0, 0.0, 1.0, Double.MIN_VALUE};
+		gbl_specialty.rowWeights = new double[]{0.0, Double.MIN_VALUE};
+		specialty.setLayout(gbl_specialty);
 		
 		JLabel lblSpecialty = new JLabel("Especialidade:");
 		lblSpecialty.setFont(new Font("Segoe UI Variable", Font.PLAIN, 24));
@@ -232,7 +446,7 @@ public class DoctorForm extends JFrame {
 		gbc_lblSpecialty.insets = new Insets(0, 0, 0, 5);
 		gbc_lblSpecialty.gridx = 0;
 		gbc_lblSpecialty.gridy = 0;
-		paymentMethod.add(lblSpecialty, gbc_lblSpecialty);
+		specialty.add(lblSpecialty, gbc_lblSpecialty);
 		
 		Component horizontalStrut_1_2 = Box.createHorizontalStrut(20);
 		GridBagConstraints gbc_horizontalStrut_1_2 = new GridBagConstraints();
@@ -240,7 +454,7 @@ public class DoctorForm extends JFrame {
 		gbc_horizontalStrut_1_2.insets = new Insets(0, 0, 0, 5);
 		gbc_horizontalStrut_1_2.gridx = 1;
 		gbc_horizontalStrut_1_2.gridy = 0;
-		paymentMethod.add(horizontalStrut_1_2, gbc_horizontalStrut_1_2);
+		specialty.add(horizontalStrut_1_2, gbc_horizontalStrut_1_2);
 		
 		JComboBox cbbPaymentMethod = new JComboBox();
 		cbbPaymentMethod.setFont(new Font("Segoe UI Variable", Font.PLAIN, 24));
@@ -248,51 +462,113 @@ public class DoctorForm extends JFrame {
 		gbc_cbbPaymentMethod.fill = GridBagConstraints.HORIZONTAL;
 		gbc_cbbPaymentMethod.gridx = 2;
 		gbc_cbbPaymentMethod.gridy = 0;
-		paymentMethod.add(cbbPaymentMethod, gbc_cbbPaymentMethod);
+		specialty.add(cbbPaymentMethod, gbc_cbbPaymentMethod);
+		
+		JPanel dateOfBirth = new JPanel();
+		GridBagLayout gbl_dateOfBirth = new GridBagLayout();
+		gbl_dateOfBirth.columnWidths = new int[]{132, 20, 258, 0};
+		gbl_dateOfBirth.rowHeights = new int[]{38, 0};
+		gbl_dateOfBirth.columnWeights = new double[]{0.0, 0.0, 1.0, Double.MIN_VALUE};
+		gbl_dateOfBirth.rowWeights = new double[]{0.0, Double.MIN_VALUE};
+		dateOfBirth.setLayout(gbl_dateOfBirth);
+		
+		JLabel lblDateOfBirth_1 = new JLabel("Nascimento:");
+		lblDateOfBirth_1.setFont(new Font("Dialog", Font.PLAIN, 24));
+		GridBagConstraints gbc_lblDateOfBirth_1 = new GridBagConstraints();
+		gbc_lblDateOfBirth_1.anchor = GridBagConstraints.WEST;
+		gbc_lblDateOfBirth_1.insets = new Insets(0, 0, 0, 5);
+		gbc_lblDateOfBirth_1.gridx = 0;
+		gbc_lblDateOfBirth_1.gridy = 0;
+		dateOfBirth.add(lblDateOfBirth_1, gbc_lblDateOfBirth_1);
+		
+		Component horizontalStrut_1_1 = Box.createHorizontalStrut(20);
+		GridBagConstraints gbc_horizontalStrut_1_1 = new GridBagConstraints();
+		gbc_horizontalStrut_1_1.fill = GridBagConstraints.HORIZONTAL;
+		gbc_horizontalStrut_1_1.insets = new Insets(0, 0, 0, 5);
+		gbc_horizontalStrut_1_1.gridx = 1;
+		gbc_horizontalStrut_1_1.gridy = 0;
+		dateOfBirth.add(horizontalStrut_1_1, gbc_horizontalStrut_1_1);
+		
+		JFormattedTextField txtDateOfBirth = new JFormattedTextField();
+		txtDateOfBirth.setText("  /  /    ");
+		txtDateOfBirth.setFont(new Font("Dialog", Font.PLAIN, 24));
+		txtDateOfBirth.setColumns(12);
+		GridBagConstraints gbc_txtDateOfBirth = new GridBagConstraints();
+		gbc_txtDateOfBirth.fill = GridBagConstraints.HORIZONTAL;
+		gbc_txtDateOfBirth.anchor = GridBagConstraints.NORTH;
+		gbc_txtDateOfBirth.gridx = 2;
+		gbc_txtDateOfBirth.gridy = 0;
+		dateOfBirth.add(txtDateOfBirth, gbc_txtDateOfBirth);
 		GroupLayout gl_panel = new GroupLayout(panel);
 		gl_panel.setHorizontalGroup(
 			gl_panel.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_panel.createSequentialGroup()
 					.addContainerGap()
-					.addGroup(gl_panel.createParallelGroup(Alignment.TRAILING)
+					.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
 						.addGroup(gl_panel.createSequentialGroup()
+							.addComponent(name, GroupLayout.DEFAULT_SIZE, 1020, Short.MAX_VALUE)
+							.addGap(566))
+						.addGroup(Alignment.TRAILING, gl_panel.createSequentialGroup()
 							.addGroup(gl_panel.createParallelGroup(Alignment.TRAILING)
-								.addComponent(name, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 425, Short.MAX_VALUE)
-								.addComponent(phone, 0, 0, Short.MAX_VALUE))
-							.addContainerGap())
-						.addGroup(gl_panel.createSequentialGroup()
-							.addGroup(gl_panel.createParallelGroup(Alignment.TRAILING, false)
-								.addComponent(address, Alignment.LEADING, 0, 0, Short.MAX_VALUE)
-								.addComponent(crm, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 425, Short.MAX_VALUE))
-							.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-						.addGroup(gl_panel.createSequentialGroup()
-							.addComponent(paymentMethod, 0, 0, Short.MAX_VALUE)
-							.addContainerGap())))
+								.addComponent(specialty, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 1020, Short.MAX_VALUE)
+								.addGroup(Alignment.LEADING, gl_panel.createSequentialGroup()
+									.addComponent(gender, GroupLayout.PREFERRED_SIZE, 160, GroupLayout.PREFERRED_SIZE)
+									.addGap(6)
+									.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
+										.addComponent(CEP, GroupLayout.PREFERRED_SIZE, 595, GroupLayout.PREFERRED_SIZE)
+										.addComponent(address, GroupLayout.PREFERRED_SIZE, 595, GroupLayout.PREFERRED_SIZE)
+										.addComponent(city, GroupLayout.PREFERRED_SIZE, 595, GroupLayout.PREFERRED_SIZE)
+										.addComponent(neighborhood, GroupLayout.PREFERRED_SIZE, 595, GroupLayout.PREFERRED_SIZE)
+										.addComponent(uf, GroupLayout.PREFERRED_SIZE, 595, GroupLayout.PREFERRED_SIZE))))
+							.addGap(566))))
 				.addGroup(gl_panel.createSequentialGroup()
-					.addGap(53)
+					.addGap(215)
 					.addComponent(btnCancel, GroupLayout.PREFERRED_SIZE, 160, GroupLayout.PREFERRED_SIZE)
 					.addGap(18)
 					.addComponent(btnRegister, GroupLayout.PREFERRED_SIZE, 160, GroupLayout.PREFERRED_SIZE)
-					.addContainerGap(54, Short.MAX_VALUE))
+					.addContainerGap(1045, Short.MAX_VALUE))
+				.addGroup(Alignment.TRAILING, gl_panel.createSequentialGroup()
+					.addContainerGap()
+					.addGroup(gl_panel.createParallelGroup(Alignment.TRAILING)
+						.addComponent(CPF, Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 760, Short.MAX_VALUE)
+						.addComponent(crm, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 760, Short.MAX_VALUE)
+						.addComponent(dateOfBirth, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+						.addComponent(phone, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 760, Short.MAX_VALUE))
+					.addGap(567))
 		);
 		gl_panel.setVerticalGroup(
 			gl_panel.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_panel.createSequentialGroup()
 					.addGap(5)
 					.addComponent(name, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-					.addGap(18)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(dateOfBirth, GroupLayout.PREFERRED_SIZE, 38, GroupLayout.PREFERRED_SIZE)
+					.addGap(4)
 					.addComponent(phone, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-					.addGap(18)
+					.addPreferredGap(ComponentPlacement.UNRELATED)
 					.addComponent(crm, GroupLayout.PREFERRED_SIZE, 38, GroupLayout.PREFERRED_SIZE)
-					.addGap(18)
-					.addComponent(address, GroupLayout.PREFERRED_SIZE, 38, GroupLayout.PREFERRED_SIZE)
-					.addGap(18)
-					.addComponent(paymentMethod, GroupLayout.PREFERRED_SIZE, 38, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(CPF, GroupLayout.PREFERRED_SIZE, 38, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
+						.addComponent(gender, GroupLayout.PREFERRED_SIZE, 212, GroupLayout.PREFERRED_SIZE)
+						.addGroup(gl_panel.createSequentialGroup()
+							.addComponent(CEP, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+							.addGap(4)
+							.addComponent(address, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+							.addGap(6)
+							.addComponent(city, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+							.addGap(6)
+							.addComponent(neighborhood, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+							.addGap(6)
+							.addComponent(uf, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(specialty, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 					.addGap(18)
 					.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
 						.addComponent(btnCancel, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE)
 						.addComponent(btnRegister, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE))
-					.addGap(54))
+					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
 		);
 		panel.setLayout(gl_panel);
 		contentPane.setLayout(gl_contentPane);

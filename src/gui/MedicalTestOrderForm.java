@@ -26,6 +26,7 @@ public class MedicalTestOrderForm extends JFrame {
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private JTextField txtValue;
+	private JTextField textField;
 
 	/**
 	 * Launch the application.
@@ -49,7 +50,7 @@ public class MedicalTestOrderForm extends JFrame {
 	public MedicalTestOrderForm() {
 		setTitle("Formulário - Agendamento de Exames");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 455, 335);
+		setBounds(100, 100, 484, 412);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
@@ -119,20 +120,20 @@ public class MedicalTestOrderForm extends JFrame {
 		
 		JPanel dateOfBirth = new JPanel();
 		GridBagLayout gbl_dateOfBirth = new GridBagLayout();
-		gbl_dateOfBirth.columnWidths = new int[]{132, 20, 258, 0};
+		gbl_dateOfBirth.columnWidths = new int[]{71, 20, 258, 0};
 		gbl_dateOfBirth.rowHeights = new int[]{38, 0};
 		gbl_dateOfBirth.columnWeights = new double[]{0.0, 0.0, 1.0, Double.MIN_VALUE};
 		gbl_dateOfBirth.rowWeights = new double[]{0.0, Double.MIN_VALUE};
 		dateOfBirth.setLayout(gbl_dateOfBirth);
 		
-		JLabel lblDateOfBirth_1 = new JLabel("Nascimento:");
-		lblDateOfBirth_1.setFont(new Font("Segoe UI Variable", Font.PLAIN, 24));
-		GridBagConstraints gbc_lblDateOfBirth_1 = new GridBagConstraints();
-		gbc_lblDateOfBirth_1.anchor = GridBagConstraints.WEST;
-		gbc_lblDateOfBirth_1.insets = new Insets(0, 0, 0, 5);
-		gbc_lblDateOfBirth_1.gridx = 0;
-		gbc_lblDateOfBirth_1.gridy = 0;
-		dateOfBirth.add(lblDateOfBirth_1, gbc_lblDateOfBirth_1);
+		JLabel lblDate = new JLabel("Dia:");
+		lblDate.setFont(new Font("Segoe UI Variable", Font.PLAIN, 24));
+		GridBagConstraints gbc_lblDate = new GridBagConstraints();
+		gbc_lblDate.anchor = GridBagConstraints.WEST;
+		gbc_lblDate.insets = new Insets(0, 0, 0, 5);
+		gbc_lblDate.gridx = 0;
+		gbc_lblDate.gridy = 0;
+		dateOfBirth.add(lblDate, gbc_lblDate);
 		
 		Component horizontalStrut_1_1 = Box.createHorizontalStrut(20);
 		GridBagConstraints gbc_horizontalStrut_1_1 = new GridBagConstraints();
@@ -142,17 +143,17 @@ public class MedicalTestOrderForm extends JFrame {
 		gbc_horizontalStrut_1_1.gridy = 0;
 		dateOfBirth.add(horizontalStrut_1_1, gbc_horizontalStrut_1_1);
 		
-		JFormattedTextField txtDateOfBirth = new JFormattedTextField();
-		txtDateOfBirth.setHorizontalAlignment(SwingConstants.LEFT);
-		txtDateOfBirth.setText("  /  /    ");
-		txtDateOfBirth.setFont(new Font("Segoe UI Variable", Font.PLAIN, 24));
-		txtDateOfBirth.setColumns(12);
-		GridBagConstraints gbc_txtDateOfBirth = new GridBagConstraints();
-		gbc_txtDateOfBirth.fill = GridBagConstraints.HORIZONTAL;
-		gbc_txtDateOfBirth.anchor = GridBagConstraints.NORTH;
-		gbc_txtDateOfBirth.gridx = 2;
-		gbc_txtDateOfBirth.gridy = 0;
-		dateOfBirth.add(txtDateOfBirth, gbc_txtDateOfBirth);
+		JFormattedTextField txtDate = new JFormattedTextField();
+		txtDate.setHorizontalAlignment(SwingConstants.LEFT);
+		txtDate.setText("  /  /    ");
+		txtDate.setFont(new Font("Segoe UI Variable", Font.PLAIN, 24));
+		txtDate.setColumns(12);
+		GridBagConstraints gbc_txtDate = new GridBagConstraints();
+		gbc_txtDate.fill = GridBagConstraints.HORIZONTAL;
+		gbc_txtDate.anchor = GridBagConstraints.NORTH;
+		gbc_txtDate.gridx = 2;
+		gbc_txtDate.gridy = 0;
+		dateOfBirth.add(txtDate, gbc_txtDate);
 		
 		JPanel value = new JPanel();
 		GridBagLayout gbl_value = new GridBagLayout();
@@ -194,24 +195,66 @@ public class MedicalTestOrderForm extends JFrame {
 		
 		JButton btnRegister = new JButton("Cadastrar");
 		btnRegister.setFont(new Font("Segoe UI Variable", Font.PLAIN, 24));
+		
+		JPanel value_1 = new JPanel();
+		GridBagLayout gbl_value_1 = new GridBagLayout();
+		gbl_value_1.columnWidths = new int[]{71, 20, 321, 0};
+		gbl_value_1.rowHeights = new int[]{38, 0};
+		gbl_value_1.columnWeights = new double[]{0.0, 0.0, 1.0, Double.MIN_VALUE};
+		gbl_value_1.rowWeights = new double[]{0.0, Double.MIN_VALUE};
+		value_1.setLayout(gbl_value_1);
+		
+		JLabel lblHour = new JLabel("Horário:");
+		lblHour.setFont(new Font("Dialog", Font.PLAIN, 24));
+		GridBagConstraints gbc_lblHour = new GridBagConstraints();
+		gbc_lblHour.anchor = GridBagConstraints.WEST;
+		gbc_lblHour.insets = new Insets(0, 0, 0, 5);
+		gbc_lblHour.gridx = 0;
+		gbc_lblHour.gridy = 0;
+		value_1.add(lblHour, gbc_lblHour);
+		
+		Component horizontalStrut_1_1_1_1 = Box.createHorizontalStrut(20);
+		GridBagConstraints gbc_horizontalStrut_1_1_1_1 = new GridBagConstraints();
+		gbc_horizontalStrut_1_1_1_1.fill = GridBagConstraints.HORIZONTAL;
+		gbc_horizontalStrut_1_1_1_1.insets = new Insets(0, 0, 0, 5);
+		gbc_horizontalStrut_1_1_1_1.gridx = 1;
+		gbc_horizontalStrut_1_1_1_1.gridy = 0;
+		value_1.add(horizontalStrut_1_1_1_1, gbc_horizontalStrut_1_1_1_1);
+		
+		textField = new JTextField();
+		textField.setFont(new Font("Dialog", Font.PLAIN, 24));
+		textField.setColumns(15);
+		GridBagConstraints gbc_textField = new GridBagConstraints();
+		gbc_textField.fill = GridBagConstraints.HORIZONTAL;
+		gbc_textField.anchor = GridBagConstraints.NORTH;
+		gbc_textField.gridx = 2;
+		gbc_textField.gridy = 0;
+		value_1.add(textField, gbc_textField);
 		GroupLayout gl_contentPane = new GroupLayout(contentPane);
 		gl_contentPane.setHorizontalGroup(
-			gl_contentPane.createParallelGroup(Alignment.TRAILING)
+			gl_contentPane.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_contentPane.createSequentialGroup()
+					.addGap(48)
+					.addComponent(btnCancel, GroupLayout.PREFERRED_SIZE, 160, GroupLayout.PREFERRED_SIZE)
+					.addGap(18)
+					.addComponent(btnRegister, GroupLayout.PREFERRED_SIZE, 160, GroupLayout.PREFERRED_SIZE)
+					.addContainerGap(78, Short.MAX_VALUE))
+				.addGroup(gl_contentPane.createSequentialGroup()
+					.addContainerGap()
+					.addComponent(value_1, GroupLayout.PREFERRED_SIZE, 444, Short.MAX_VALUE)
+					.addContainerGap())
 				.addGroup(gl_contentPane.createSequentialGroup()
 					.addContainerGap()
 					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
 						.addComponent(lblPacient, GroupLayout.PREFERRED_SIZE, 331, GroupLayout.PREFERRED_SIZE)
-						.addComponent(doctor, 0, 0, Short.MAX_VALUE)
-						.addComponent(value, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-						.addComponent(dateOfBirth, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-						.addComponent(code, 0, 0, Short.MAX_VALUE))
-					.addGap(1))
-				.addGroup(Alignment.LEADING, gl_contentPane.createSequentialGroup()
-					.addGap(46)
-					.addComponent(btnCancel, GroupLayout.PREFERRED_SIZE, 160, GroupLayout.PREFERRED_SIZE)
-					.addGap(18)
-					.addComponent(btnRegister, GroupLayout.PREFERRED_SIZE, 160, GroupLayout.PREFERRED_SIZE)
-					.addContainerGap(47, Short.MAX_VALUE))
+						.addComponent(doctor, GroupLayout.PREFERRED_SIZE, 444, Short.MAX_VALUE)
+						.addComponent(dateOfBirth, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 444, Short.MAX_VALUE)
+						.addComponent(code, GroupLayout.DEFAULT_SIZE, 444, Short.MAX_VALUE))
+					.addContainerGap())
+				.addGroup(gl_contentPane.createSequentialGroup()
+					.addContainerGap()
+					.addComponent(value, GroupLayout.DEFAULT_SIZE, 444, Short.MAX_VALUE)
+					.addContainerGap())
 		);
 		gl_contentPane.setVerticalGroup(
 			gl_contentPane.createParallelGroup(Alignment.LEADING)
@@ -224,13 +267,15 @@ public class MedicalTestOrderForm extends JFrame {
 					.addComponent(doctor, GroupLayout.PREFERRED_SIZE, 38, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(ComponentPlacement.UNRELATED)
 					.addComponent(dateOfBirth, GroupLayout.PREFERRED_SIZE, 38, GroupLayout.PREFERRED_SIZE)
-					.addPreferredGap(ComponentPlacement.UNRELATED)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(value_1, GroupLayout.PREFERRED_SIZE, 38, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(ComponentPlacement.RELATED, 10, Short.MAX_VALUE)
 					.addComponent(value, GroupLayout.PREFERRED_SIZE, 38, GroupLayout.PREFERRED_SIZE)
-					.addGap(18)
+					.addPreferredGap(ComponentPlacement.UNRELATED)
 					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
 						.addComponent(btnCancel, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE)
 						.addComponent(btnRegister, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE))
-					.addContainerGap(25, Short.MAX_VALUE))
+					.addGap(34))
 		);
 		
 		JComboBox cbbMedicalTest = new JComboBox();

@@ -3,47 +3,63 @@ package entities;
 import java.util.Date;
 
 public class Appointment {
+	private int id;
+	private Date appointmentDate;
+	private String time;
     private Patient patient;
     private Doctor doctor;
-    private Date appointmentDate;
+	
+    public Appointment(int id, Date appointmentDate, String time, Patient patient, Doctor doctor) {
+		super();
+		this.id = id;
+		this.appointmentDate = appointmentDate;
+		this.time = time;
+		this.patient = patient;
+		this.doctor = doctor;
+	}
 
-    public Appointment(Patient patient, Doctor doctor, Date appointmentDate) {
-        this.patient = patient;
-        this.doctor = doctor;
-        this.appointmentDate = appointmentDate;
-    }
+	public int getId() {
+		return id;
+	}
 
-    public Patient getPatient() {
-        return patient;
-    }
+	public void setId(int id) {
+		this.id = id;
+	}
 
-    public void setPatient(Patient patient) {
-        this.patient = patient;
-    }
+	public Date getAppointmentDate() {
+		return appointmentDate;
+	}
 
-    public Doctor getDoctor() {
-        return doctor;
-    }
+	public void setAppointmentDate(Date appointmentDate) {
+		this.appointmentDate = appointmentDate;
+	}
 
-    public void setDoctor(Doctor doctor) {
-        this.doctor = doctor;
-    }
+	public String getTime() {
+		return time;
+	}
 
-    public Date getAppointmentDate() {
-        return appointmentDate;
-    }
+	public void setTime(String time) {
+		this.time = time;
+	}
 
-    public void setAppointmentDate(Date appointmentDate) {
-        this.appointmentDate = appointmentDate;
-    }
+	public Patient getPatient() {
+		return patient;
+	}
 
-    @Override
-    public String toString() {
-        return "Appointment{" +
-                "patient=" + patient +
-                ", doctor=" + doctor +
-                ", appointmentTime=" + appointmentDate +
-                '}';
-    }
+	public void setPatient(Patient patient) {
+		this.patient = patient;
+	}
+
+	public Doctor getDoctor() {
+		return doctor;
+	}
+
+	public void setDoctor(Doctor doctor) {
+		this.doctor = doctor;
+	}
+    
+    
+
+    
 }
 

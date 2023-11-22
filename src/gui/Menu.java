@@ -2,8 +2,6 @@ package gui;
 
 import javax.swing.*;
 
-import entities.User;
-
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -19,7 +17,6 @@ public class Menu extends JFrame {
 	private JPanel contentPanel;
     private CardLayout cardLayout;
     
-    private User user;
     private JTable doctorTable;
     private JTextField txtSpecialty;
     private JTextField txtName;
@@ -41,7 +38,6 @@ public class Menu extends JFrame {
     private JTextField txtPhoneNumber;
 
     public Menu() {
-    	user = new User("", "", "", true, true); // TODO: remove when receiving User after the login
         setTitle("Menu");
         setSize(1280, 720);
 
@@ -82,20 +78,6 @@ public class Menu extends JFrame {
         contentPanel = new JPanel();
         cardLayout = new CardLayout();
         contentPanel.setLayout(cardLayout);
-
-        if (user.isAdmin() == true) {
-        	JMenu usersMenu = new JMenu("Usuários");
-        	usersMenu.setFont(new Font("Segoe UI Variable", Font.PLAIN, 18));
-        	JMenuItem UsersItem = new JMenuItem("Lista");
-        	usersMenu.add(UsersItem);
-        	menuBar.add(usersMenu);
-        	
-        	JPanel usersPanel = new JPanel();
-            JLabel usersLabel = new JLabel("Conteúdo de users");
-            usersPanel.add(usersLabel);
-            
-            contentPanel.add(usersPanel, "Users");
-        }
 
         JPanel doctorsPanel = new JPanel();
 
@@ -261,6 +243,14 @@ public class Menu extends JFrame {
         contentPanel.add(patientsPanel, "Patients");
         
         patientsTable = new JTable();
+        patientsTable.setModel(new DefaultTableModel(
+        	new Object[][] {},
+        	new String[] {
+        		"Nome", "CPF", "G\u00EAnero", "Telefone", "Data de Nascimento", "M\u00E9todo de Pagamento"
+        	}
+        ));
+        patientsTable.getColumnModel().getColumn(1).setPreferredWidth(193);
+        patientsTable.getColumnModel().getColumn(4).setPreferredWidth(155);
         patientsTable.setFont(new Font("Segoe UI Variable", Font.PLAIN, 14));
         
         JPanel patientsName = new JPanel();
@@ -435,6 +425,12 @@ public class Menu extends JFrame {
         contentPanel.add(medicalTestsPanel, "Patients");
         
         mtTable = new JTable();
+        mtTable.setModel(new DefaultTableModel(
+        	new Object[][] {},
+        	new String[] {
+        		"C\u00F3digo", "Nome", "Valor", "Instru\u00E7\u00F5es"
+        	}
+        ));
         mtTable.setFont(new Font("Segoe UI Variable", Font.PLAIN, 14));
         
         JPanel mtName = new JPanel();
@@ -570,6 +566,12 @@ public class Menu extends JFrame {
         contentPanel.add(medicalTestOrdersPanel, "Patients");
         
         mtoTable = new JTable();
+        mtoTable.setModel(new DefaultTableModel(
+        	new Object[][] {},
+        	new String[] {
+        		"Paciente", "M\u00E9dico", "Exame", "Data", "Valor Pago"
+        	}
+        ));
         mtoTable.setFont(new Font("Segoe UI Variable", Font.PLAIN, 14));
         
         JPanel mtoPatientName = new JPanel();

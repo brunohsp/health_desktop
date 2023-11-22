@@ -3,69 +3,81 @@ package entities;
 import java.util.Date;
 
 public class MedicalTestOrder {
+	private int id;
+	private Date testDate;
+	private String time;
+	private double valuePaid;
     private MedicalTest test;
     private Patient patient;
     private Doctor doctor;
-    private Date testDate;
-    private double valuePaid;
+	
+    public MedicalTestOrder(int id, Date testDate, String time, double valuePaid, MedicalTest test, Patient patient,
+			Doctor doctor) {
+		super();
+		this.id = id;
+		this.testDate = testDate;
+		this.time = time;
+		this.valuePaid = valuePaid;
+		this.test = test;
+		this.patient = patient;
+		this.doctor = doctor;
+	}
 
-    public MedicalTestOrder(MedicalTest test, Patient patient, Doctor doctor, Date testDate, double testValuePaid) {
-        this.test = test;
-        this.patient = patient;
-        this.doctor = doctor;
-        this.testDate = testDate;
-        this.valuePaid = testValuePaid;
-    }
+	public int getId() {
+		return id;
+	}
 
-    // Getters and setters for the attributes
-    public MedicalTest getTest() {
-        return test;
-    }
+	public void setId(int id) {
+		this.id = id;
+	}
 
-    public void setTest(MedicalTest test) {
-        this.test = test;
-    }
+	public Date getTestDate() {
+		return testDate;
+	}
 
-    public Patient getPatient() {
-        return patient;
-    }
+	public void setTestDate(Date testDate) {
+		this.testDate = testDate;
+	}
 
-    public void setPatient(Patient patient) {
-        this.patient = patient;
-    }
+	public String getTime() {
+		return time;
+	}
 
-    public Doctor getDoctor() {
-        return doctor;
-    }
+	public void setTime(String time) {
+		this.time = time;
+	}
 
-    public void setDoctor(Doctor doctor) {
-        this.doctor = doctor;
-    }
+	public double getValuePaid() {
+		return valuePaid;
+	}
 
-    public Date getTestDate() {
-        return testDate;
-    }
+	public void setValuePaid(double valuePaid) {
+		this.valuePaid = valuePaid;
+	}
 
-    public void setTestDate(Date testDate) {
-        this.testDate = testDate;
-    }
+	public MedicalTest getTest() {
+		return test;
+	}
 
-    public double getTestValuePaid() {
-        return valuePaid;
-    }
+	public void setTest(MedicalTest test) {
+		this.test = test;
+	}
 
-    public void setTestValuePaid(double testValuePaid) {
-        this.valuePaid = testValuePaid;
-    }
+	public Patient getPatient() {
+		return patient;
+	}
 
-    @Override
-    public String toString() {
-        return "MedicalTestOrder{" +
-                "test='" + test + '\'' +
-                ", patient='" + patient + '\'' +
-                ", doctor='" + doctor + '\'' +
-                ", testDate=" + testDate +
-                ", testValuePaid=" + valuePaid +
-                '}';
-    }
+	public void setPatient(Patient patient) {
+		this.patient = patient;
+	}
+
+	public Doctor getDoctor() {
+		return doctor;
+	}
+
+	public void setDoctor(Doctor doctor) {
+		this.doctor = doctor;
+	}
+
+    
 }
