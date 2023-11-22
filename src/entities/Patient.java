@@ -11,6 +11,8 @@ public class Patient {
     private String phoneNumber;
     private String paymentMethod;
 
+
+    
     public Patient(String name, String photo, Date dateOfBirth, String gender, String address, String phoneNumber, String paymentMethod) {
         this.name = name;
         this.photo = photo;
