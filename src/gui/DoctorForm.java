@@ -37,26 +37,11 @@ public class DoctorForm extends JFrame {
 	private JTextField textField_3;
 	private JTextField textField_4;
 
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					DoctorForm frame = new DoctorForm();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
+	public DoctorForm() {
+		initComponents();
 	}
 
-	/**
-	 * Create the frame.
-	 */
-	public DoctorForm() {
+	private void initComponents() {
 		setTitle("Formulário - Doutor");
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -573,5 +558,19 @@ public class DoctorForm extends JFrame {
 		panel.setLayout(gl_panel);
 		contentPane.setLayout(gl_contentPane);
 	}
+	
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					DoctorForm frame = new DoctorForm();
+					frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+
 
 }

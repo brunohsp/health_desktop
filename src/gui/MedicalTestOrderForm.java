@@ -28,26 +28,11 @@ public class MedicalTestOrderForm extends JFrame {
 	private JTextField txtValue;
 	private JTextField textField;
 
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					MedicalTestOrderForm frame = new MedicalTestOrderForm();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
-	/**
-	 * Create the frame.
-	 */
 	public MedicalTestOrderForm() {
+		initComponents();
+	}
+	
+	private void initComponents(){
 		setTitle("Formulário - Agendamento de Exames");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 484, 412);
@@ -286,6 +271,19 @@ public class MedicalTestOrderForm extends JFrame {
 		gbc_cbbMedicalTest.gridy = 0;
 		code.add(cbbMedicalTest, gbc_cbbMedicalTest);
 		contentPane.setLayout(gl_contentPane);
+	}
+	
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					MedicalTestOrderForm frame = new MedicalTestOrderForm();
+					frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
 	}
 
 }

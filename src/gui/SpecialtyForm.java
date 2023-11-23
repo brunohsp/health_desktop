@@ -8,14 +8,15 @@ import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
 public class SpecialtyForm extends JFrame {
-    /**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
     private JTextField txtCode;
     private JTextField txtName;
 
     public SpecialtyForm() {
+    	initComponents();
+    }
+
+    private void initComponents() {
     	setResizable(false);
     	setFont(new Font("Segoe UI Variable", Font.PLAIN, 24));
         setTitle("Formulário - Especialidade");
@@ -28,7 +29,6 @@ public class SpecialtyForm extends JFrame {
 
             JButton btnRegister = new JButton("Cadastrar");
             btnRegister.setFont(new Font("Segoe UI Variable", Font.PLAIN, 24));
-            btnRegister.addActionListener(e -> submitForm());
 
             getContentPane().add(panel);
             
@@ -139,16 +139,7 @@ public class SpecialtyForm extends JFrame {
             e.printStackTrace();
         }
     }
-
-    private void submitForm() {
-        String code = txtCode.getText();
-        String name = txtName.getText();
-
-        // Perform further actions with the submitted data, e.g., save it to a database.
-
-        JOptionPane.showMessageDialog(this, "Specialty Code: " + code + "\nSpecialty Name: " + name + "\nForm submitted successfully.");
-    }
-
+    
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
             SpecialtyForm form = new SpecialtyForm();

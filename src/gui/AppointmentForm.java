@@ -29,26 +29,11 @@ public class AppointmentForm extends JFrame {
 	private JPanel contentPane;
 	private JTextField textField;
 
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					AppointmentForm frame = new AppointmentForm();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
-	/**
-	 * Create the frame.
-	 */
 	public AppointmentForm() {
+		initComponents();
+	}
+	
+	private void initComponents() {
 		setFont(new Font("Segoe UI Variable", Font.PLAIN, 24));
 		setTitle("Formulário - Consulta");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -233,4 +218,16 @@ public class AppointmentForm extends JFrame {
 		contentPane.setLayout(gl_contentPane);
 	}
 
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					AppointmentForm frame = new AppointmentForm();
+					frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
 }

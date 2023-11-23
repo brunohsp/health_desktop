@@ -38,7 +38,12 @@ public class Menu extends JFrame {
     private JTextField txtPhoneNumber;
 
     public Menu() {
-        setTitle("Menu");
+    	initComponents();
+    }
+        
+
+    private void initComponents() {
+    	setTitle("Menu");
         setSize(1280, 720);
 
         JMenuBar menuBar = new JMenuBar();
@@ -384,24 +389,21 @@ public class Menu extends JFrame {
         patientsPhone.add(txtPhoneNumber, gbc_txtPhoneNumber);
         GroupLayout gl_patientsPanel = new GroupLayout(patientsPanel);
         gl_patientsPanel.setHorizontalGroup(
-        	gl_patientsPanel.createParallelGroup(Alignment.TRAILING)
-        		.addGroup(Alignment.LEADING, gl_patientsPanel.createSequentialGroup()
-        			.addContainerGap()
-        			.addComponent(patientsPhone, GroupLayout.PREFERRED_SIZE, 1246, GroupLayout.PREFERRED_SIZE)
-        			.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        	gl_patientsPanel.createParallelGroup(Alignment.LEADING)
         		.addGroup(gl_patientsPanel.createSequentialGroup()
-        			.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        			.addContainerGap()
         			.addGroup(gl_patientsPanel.createParallelGroup(Alignment.LEADING)
         				.addComponent(patientsTable, GroupLayout.PREFERRED_SIZE, 1246, GroupLayout.PREFERRED_SIZE)
-        				.addComponent(patientsName, GroupLayout.PREFERRED_SIZE, 1246, GroupLayout.PREFERRED_SIZE)
-        				.addComponent(patientsGender, GroupLayout.PREFERRED_SIZE, 1246, GroupLayout.PREFERRED_SIZE)
-        				.addComponent(patientsPayMethod, GroupLayout.PREFERRED_SIZE, 1246, GroupLayout.PREFERRED_SIZE))
+        				.addComponent(patientsPhone, GroupLayout.DEFAULT_SIZE, 1246, Short.MAX_VALUE)
+        				.addComponent(patientsName, GroupLayout.DEFAULT_SIZE, 1246, Short.MAX_VALUE)
+        				.addComponent(patientsGender, GroupLayout.DEFAULT_SIZE, 1246, Short.MAX_VALUE)
+        				.addComponent(patientsPayMethod, GroupLayout.DEFAULT_SIZE, 1246, Short.MAX_VALUE))
         			.addContainerGap())
         );
         gl_patientsPanel.setVerticalGroup(
         	gl_patientsPanel.createParallelGroup(Alignment.TRAILING)
-        		.addGroup(gl_patientsPanel.createSequentialGroup()
-        			.addContainerGap(20, Short.MAX_VALUE)
+        		.addGroup(Alignment.LEADING, gl_patientsPanel.createSequentialGroup()
+        			.addContainerGap()
         			.addComponent(patientsName, GroupLayout.PREFERRED_SIZE, 38, GroupLayout.PREFERRED_SIZE)
         			.addGap(10)
         			.addComponent(patientsGender, GroupLayout.PREFERRED_SIZE, 38, GroupLayout.PREFERRED_SIZE)
@@ -409,8 +411,8 @@ public class Menu extends JFrame {
         			.addComponent(patientsPayMethod, GroupLayout.PREFERRED_SIZE, 38, GroupLayout.PREFERRED_SIZE)
         			.addPreferredGap(ComponentPlacement.UNRELATED)
         			.addComponent(patientsPhone, GroupLayout.PREFERRED_SIZE, 38, GroupLayout.PREFERRED_SIZE)
-        			.addGap(18)
-        			.addComponent(patientsTable, GroupLayout.PREFERRED_SIZE, 432, GroupLayout.PREFERRED_SIZE))
+        			.addPreferredGap(ComponentPlacement.UNRELATED)
+        			.addComponent(patientsTable, GroupLayout.DEFAULT_SIZE, 453, Short.MAX_VALUE))
         );
         
         JComboBox cbbPaymentMethod = new JComboBox();
@@ -422,7 +424,7 @@ public class Menu extends JFrame {
         gbc_cbbPaymentMethod.gridy = 0;
         patientsPayMethod.add(cbbPaymentMethod, gbc_cbbPaymentMethod);
         patientsPanel.setLayout(gl_patientsPanel);
-        contentPanel.add(medicalTestsPanel, "Patients");
+        contentPanel.add(medicalTestsPanel, "MedicalTests");
         
         mtTable = new JTable();
         mtTable.setModel(new DefaultTableModel(
@@ -563,7 +565,7 @@ public class Menu extends JFrame {
         			.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         medicalTestsPanel.setLayout(gl_medicalTestsPanel);
-        contentPanel.add(medicalTestOrdersPanel, "Patients");
+        contentPanel.add(medicalTestOrdersPanel, "MedicalTestOrders");
         
         mtoTable = new JTable();
         mtoTable.setModel(new DefaultTableModel(
@@ -704,7 +706,7 @@ public class Menu extends JFrame {
         			.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         medicalTestOrdersPanel.setLayout(gl_medicalTestOrdersPanel);
-        contentPanel.add(specialtiesPanel, "Patients");        
+        contentPanel.add(specialtiesPanel, "Specialties");        
         
         specialtiesTable = new JTable();
         specialtiesTable.setFont(new Font("Segoe UI Variable", Font.PLAIN, 14));
@@ -816,13 +818,34 @@ public class Menu extends JFrame {
                 cardLayout.show(contentPanel, "Patients");
             }
         });
+        
+        MedicalTestOrdersItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                cardLayout.show(contentPanel, "MedicalTestOrders");
+            }
+        });
+        
+        MedicalTestsItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                cardLayout.show(contentPanel, "MedicalTests");
+            }
+        });
+        
+        SpecialtiesItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                cardLayout.show(contentPanel, "Specialties");
+            }
+        });
 
         getContentPane().add(contentPanel, BorderLayout.CENTER);
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
     }
-
+    
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
             Menu menu = new Menu();

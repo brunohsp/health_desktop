@@ -41,26 +41,11 @@ public class PatientForm extends JFrame {
 	private JTextField txtCity;
 	private JTextField txtUf;
 
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					PatientForm frame = new PatientForm();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
-	/**
-	 * Create the frame.
-	 */
 	public PatientForm() {
+		initComponents();
+	}
+	
+	private void initComponents() {
 		setTitle("Formulário - Paciente");
 		setResizable(false);
 		setFont(new Font("Segoe UI Variable", Font.PLAIN, 24));
@@ -555,5 +540,18 @@ public class PatientForm extends JFrame {
 		rdbtnOther.setHorizontalAlignment(SwingConstants.LEFT);
 		rdbtnOther.setFont(new Font("Segoe UI Variable", Font.PLAIN, 24));
 		panel.setLayout(gl_panel);
+	}
+	
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					PatientForm frame = new PatientForm();
+					frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
 	}
 }

@@ -27,26 +27,11 @@ public class MedicalTestForm extends JFrame {
 	private JTextField txtName;
 	private JTextField txtValue;
 
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					MedicalTestForm frame = new MedicalTestForm();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
-	/**
-	 * Create the frame.
-	 */
 	public MedicalTestForm() {
+		initComponents();
+	}
+	
+	private void initComponents() {
 		setTitle("Formulário - Exame");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 594);
@@ -240,5 +225,18 @@ public class MedicalTestForm extends JFrame {
 		gbc_textArea.gridy = 0;
 		instructions.add(textArea, gbc_textArea);
 		contentPane.setLayout(gl_contentPane);
+	}
+	
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					MedicalTestForm frame = new MedicalTestForm();
+					frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
 	}
 }
