@@ -21,6 +21,8 @@ import javax.swing.JComboBox;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.SwingConstants;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.awt.event.ActionEvent;
 
 public class AppointmentForm extends JFrame {
@@ -29,14 +31,27 @@ public class AppointmentForm extends JFrame {
 	private JPanel contentPane;
 	private JTextField textField;
 
-	public AppointmentForm() {
+	public AppointmentForm(Menu menu) {
+		addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosed(WindowEvent e) {
+				closeWindow();
+			}
+			
+		});
+		
 		initComponents();
+	}
+	
+	private void closeWindow() {
+		System.out.println("afuiodjoifjasoidfjaoi");
+		this.dispose();
 	}
 	
 	private void initComponents() {
 		setFont(new Font("Segoe UI Variable", Font.PLAIN, 24));
 		setTitle("Formulário - Consulta");
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 628, 306);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -131,6 +146,7 @@ public class AppointmentForm extends JFrame {
 		JButton btnCancel = new JButton("Cancelar");
 		btnCancel.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				closeWindow();
 			}
 		});
 		btnCancel.setFont(new Font("Segoe UI Variable", Font.PLAIN, 24));
@@ -218,16 +234,4 @@ public class AppointmentForm extends JFrame {
 		contentPane.setLayout(gl_contentPane);
 	}
 
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					AppointmentForm frame = new AppointmentForm();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
 }

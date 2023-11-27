@@ -2,6 +2,8 @@ package gui;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.text.ParseException;
 import javax.swing.text.MaskFormatter;
 import javax.swing.GroupLayout.Alignment;
@@ -12,15 +14,26 @@ public class SpecialtyForm extends JFrame {
     private JTextField txtCode;
     private JTextField txtName;
 
-    public SpecialtyForm() {
-    	initComponents();
-    }
+    public SpecialtyForm(Menu menu) {
+		addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosed(WindowEvent e) {
+				closeWindow();
+			}
+		});
+		
+		initComponents();
+	}
+	
+	private void closeWindow() {
+		this.dispose();
+	}
 
     private void initComponents() {
     	setResizable(false);
     	setFont(new Font("Segoe UI Variable", Font.PLAIN, 24));
         setTitle("Formulário - Especialidade");
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setSize(400, 220);
 
         JPanel panel = new JPanel();
@@ -140,10 +153,4 @@ public class SpecialtyForm extends JFrame {
         }
     }
     
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            SpecialtyForm form = new SpecialtyForm();
-            form.setVisible(true);
-        });
-    }
 }

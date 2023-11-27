@@ -11,6 +11,8 @@ import java.awt.GridBagLayout;
 import javax.swing.JLabel;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.awt.Font;
 import java.awt.Component;
 import javax.swing.Box;
@@ -27,13 +29,24 @@ public class MedicalTestForm extends JFrame {
 	private JTextField txtName;
 	private JTextField txtValue;
 
-	public MedicalTestForm() {
+	public MedicalTestForm(Menu menu) {
+		addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosed(WindowEvent e) {
+				closeWindow();
+			}
+		});
+		
 		initComponents();
+	}
+	
+	private void closeWindow() {
+		this.dispose();
 	}
 	
 	private void initComponents() {
 		setTitle("Formulário - Exame");
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 450, 594);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -225,18 +238,5 @@ public class MedicalTestForm extends JFrame {
 		gbc_textArea.gridy = 0;
 		instructions.add(textArea, gbc_textArea);
 		contentPane.setLayout(gl_contentPane);
-	}
-	
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					MedicalTestForm frame = new MedicalTestForm();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
 	}
 }

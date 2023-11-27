@@ -11,6 +11,8 @@ import java.awt.GridBagLayout;
 import javax.swing.JLabel;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.awt.Font;
 import java.awt.Component;
 import javax.swing.Box;
@@ -28,13 +30,24 @@ public class MedicalTestOrderForm extends JFrame {
 	private JTextField txtValue;
 	private JTextField textField;
 
-	public MedicalTestOrderForm() {
+	public MedicalTestOrderForm(Menu menu) {
+		addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosed(WindowEvent e) {
+				closeWindow();
+			}
+		});
+		
 		initComponents();
+	}
+	
+	private void closeWindow() {
+		this.dispose();
 	}
 	
 	private void initComponents(){
 		setTitle("Formulário - Agendamento de Exames");
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 484, 412);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -271,19 +284,6 @@ public class MedicalTestOrderForm extends JFrame {
 		gbc_cbbMedicalTest.gridy = 0;
 		code.add(cbbMedicalTest, gbc_cbbMedicalTest);
 		contentPane.setLayout(gl_contentPane);
-	}
-	
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					MedicalTestOrderForm frame = new MedicalTestOrderForm();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
 	}
 
 }

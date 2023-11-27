@@ -11,6 +11,8 @@ import java.awt.GridBagLayout;
 import javax.swing.JLabel;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.awt.Font;
 import java.awt.Component;
 import javax.swing.Box;
@@ -37,14 +39,25 @@ public class DoctorForm extends JFrame {
 	private JTextField textField_3;
 	private JTextField textField_4;
 
-	public DoctorForm() {
+	public DoctorForm(Menu menu) {
+		addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosed(WindowEvent e) {
+				closeWindow();
+			}
+		});
+		
 		initComponents();
+	}
+	
+	private void closeWindow() {
+		this.dispose();
 	}
 
 	private void initComponents() {
 		setTitle("Formulário - Doutor");
 		setResizable(false);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 800, 598);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -558,19 +571,4 @@ public class DoctorForm extends JFrame {
 		panel.setLayout(gl_panel);
 		contentPane.setLayout(gl_contentPane);
 	}
-	
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					DoctorForm frame = new DoctorForm();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
-
 }

@@ -36,12 +36,43 @@ public class Menu extends JFrame {
     private JTextField txtSpecialtiesName;
     private JTextField txtSpecialtiesCode;
     private JTextField txtPhoneNumber;
+    private JTextField txtAppointmentDoctor;
+    private JTable appointmentTable;
 
     public Menu() {
     	initComponents();
     }
-        
-
+     
+    private void openDoctorInsert() {
+    	DoctorForm df = new DoctorForm(this);
+    	df.setVisible(true);
+    }
+    
+    private void openPatientInsert() {
+    	PatientForm pf = new PatientForm(this);
+    	pf.setVisible(true);
+    }
+    
+    private void openAppointmentInsert() {
+    	AppointmentForm af = new AppointmentForm(this);
+    	af.setVisible(true);
+    }
+    
+    private void openMedicalTestInsert() {
+    	MedicalTestForm mtf = new MedicalTestForm(this);
+    	mtf.setVisible(true);
+    }
+    
+    private void openMedicalTestOrderInsert() {
+    	MedicalTestOrderForm mtof = new MedicalTestOrderForm(this);
+    	mtof.setVisible(true);
+    }
+    
+    private void openSpecialtyInsert() {
+    	SpecialtyForm sf = new SpecialtyForm(this);
+    	sf.setVisible(true);
+    }
+    
     private void initComponents() {
     	setTitle("Menu");
         setSize(1280, 720);
@@ -52,33 +83,96 @@ public class Menu extends JFrame {
 
         JMenu doctorsMenu = new JMenu("Médicos");
         doctorsMenu.setFont(new Font("Segoe UI Variable", Font.PLAIN, 18));
-        JMenuItem doctorsItem = new JMenuItem("Lista");
-        doctorsMenu.add(doctorsItem);
+        JMenuItem doctorsList = new JMenuItem("Lista");
+        doctorsMenu.add(doctorsList);
         menuBar.add(doctorsMenu);
 
         JMenu patientsMenu = new JMenu("Pacientes");
         patientsMenu.setFont(new Font("Segoe UI Variable", Font.PLAIN, 18));
-        JMenuItem patientsItem = new JMenuItem("Lista");
-        patientsMenu.add(patientsItem);
+        JMenuItem patientsList = new JMenuItem("Lista");
+        patientsMenu.add(patientsList);
         menuBar.add(patientsMenu);
         
+        JMenuItem patientsInsert = new JMenuItem("Inserir");
+        patientsMenu.add(patientsInsert);
+        patientsInsert.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        		openPatientInsert();
+        	}
+        });
+        
+        JMenu appointmentsMenu = new JMenu("Consultas");
+        appointmentsMenu.setFont(new Font("Dialog", Font.PLAIN, 18));
+        doctorsMenu.setFont(new Font("Segoe UI Variable", Font.PLAIN, 18));
+        
+        JMenuItem doctorsInsert = new JMenuItem("Inserir");
+        doctorsInsert.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        		openDoctorInsert();
+        	}
+        });
+        doctorsMenu.add(doctorsInsert);
+        menuBar.add(appointmentsMenu);
+        JMenuItem appointmentsList = new JMenuItem("Lista");
+        appointmentsMenu.add(appointmentsList);
+        
+        JMenuItem appointmentsInsert = new JMenuItem("Inserir");
+        appointmentsMenu.add(appointmentsInsert);
+        
+        appointmentsInsert.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        		openAppointmentInsert();
+        	}
+        });
+        
+        appointmentsList.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                cardLayout.show(contentPanel, "Appointments");
+            }
+        });
+
         JMenu medicalTestsMenu = new JMenu("Exames");
         medicalTestsMenu.setFont(new Font("Segoe UI Variable", Font.PLAIN, 18));
-        JMenuItem MedicalTestsItem = new JMenuItem("Lista");
-        medicalTestsMenu.add(MedicalTestsItem);
+        JMenuItem medicalTestsList = new JMenuItem("Lista");
+        medicalTestsMenu.add(medicalTestsList);
         menuBar.add(medicalTestsMenu);
+        
+        JMenuItem medicalTestsInsert = new JMenuItem("Inserir");
+        medicalTestsMenu.add(medicalTestsInsert);
+        medicalTestsInsert.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        		openMedicalTestInsert();
+        	}
+        });
         
         JMenu medicalTestOrdersMenu = new JMenu("Pedidos de Exames");
         medicalTestOrdersMenu.setFont(new Font("Segoe UI Variable", Font.PLAIN, 18));
-        JMenuItem MedicalTestOrdersItem = new JMenuItem("Lista");
-        medicalTestOrdersMenu.add(MedicalTestOrdersItem);
+        JMenuItem medicalTestOrdersList = new JMenuItem("Lista");
+        medicalTestOrdersMenu.add(medicalTestOrdersList);
         menuBar.add(medicalTestOrdersMenu);
+        
+        JMenuItem medicalTestOrdersInsert = new JMenuItem("Inserir");
+        medicalTestOrdersMenu.add(medicalTestOrdersInsert);
+        medicalTestOrdersInsert.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        		openMedicalTestOrderInsert();
+        	}
+        });
         
         JMenu specialtiesMenu = new JMenu("Especialidades");
         specialtiesMenu.setFont(new Font("Segoe UI Variable", Font.PLAIN, 18));
-        JMenuItem SpecialtiesItem = new JMenuItem("Lista");
-        specialtiesMenu.add(SpecialtiesItem);
+        JMenuItem specialtiesLIst = new JMenuItem("Lista");
+        specialtiesMenu.add(specialtiesLIst);
         menuBar.add(specialtiesMenu);
+        
+        JMenuItem specialtiesInsert = new JMenuItem("Inserir");
+        specialtiesMenu.add(specialtiesInsert);
+        specialtiesInsert.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        		openSpecialtyInsert();
+        	}
+        });
         
         contentPanel = new JPanel();
         cardLayout = new CardLayout();
@@ -93,7 +187,144 @@ public class Menu extends JFrame {
         JPanel medicalTestOrdersPanel = new JPanel();
         
         JPanel specialtiesPanel = new JPanel();
+        
+        JPanel appointmentPanel = new JPanel();
 
+        contentPanel.add(appointmentPanel, "Appointments");
+        
+        JPanel appointmentDoctor = new JPanel();
+        GridBagLayout gbl_appointmentDoctor = new GridBagLayout();
+        gbl_appointmentDoctor.columnWidths = new int[]{71, 20, 321, 0};
+        gbl_appointmentDoctor.rowHeights = new int[]{38, 0};
+        gbl_appointmentDoctor.columnWeights = new double[]{0.0, 0.0, 1.0, Double.MIN_VALUE};
+        gbl_appointmentDoctor.rowWeights = new double[]{0.0, Double.MIN_VALUE};
+        appointmentDoctor.setLayout(gbl_appointmentDoctor);
+        
+        JLabel lblMdico = new JLabel("Médico:");
+        lblMdico.setFont(new Font("Dialog", Font.PLAIN, 24));
+        GridBagConstraints gbc_lblMdico = new GridBagConstraints();
+        gbc_lblMdico.anchor = GridBagConstraints.WEST;
+        gbc_lblMdico.insets = new Insets(0, 0, 0, 5);
+        gbc_lblMdico.gridx = 0;
+        gbc_lblMdico.gridy = 0;
+        appointmentDoctor.add(lblMdico, gbc_lblMdico);
+        
+        Component horizontalStrut_1_5 = Box.createHorizontalStrut(20);
+        GridBagConstraints gbc_horizontalStrut_1_5 = new GridBagConstraints();
+        gbc_horizontalStrut_1_5.fill = GridBagConstraints.HORIZONTAL;
+        gbc_horizontalStrut_1_5.insets = new Insets(0, 0, 0, 5);
+        gbc_horizontalStrut_1_5.gridx = 1;
+        gbc_horizontalStrut_1_5.gridy = 0;
+        appointmentDoctor.add(horizontalStrut_1_5, gbc_horizontalStrut_1_5);
+        
+        txtAppointmentDoctor = new JTextField();
+        txtAppointmentDoctor.setFont(new Font("Dialog", Font.PLAIN, 24));
+        txtAppointmentDoctor.setColumns(15);
+        GridBagConstraints gbc_txtAppointmentDoctor = new GridBagConstraints();
+        gbc_txtAppointmentDoctor.fill = GridBagConstraints.HORIZONTAL;
+        gbc_txtAppointmentDoctor.anchor = GridBagConstraints.NORTH;
+        gbc_txtAppointmentDoctor.gridx = 2;
+        gbc_txtAppointmentDoctor.gridy = 0;
+        appointmentDoctor.add(txtAppointmentDoctor, gbc_txtAppointmentDoctor);
+        
+        appointmentTable = new JTable();
+        
+        JPanel appointmentPhone = new JPanel();
+        GridBagLayout gbl_appointmentPhone = new GridBagLayout();
+        gbl_appointmentPhone.columnWidths = new int[]{98, 20, 300, 0};
+        gbl_appointmentPhone.rowHeights = new int[]{38, 0};
+        gbl_appointmentPhone.columnWeights = new double[]{0.0, 0.0, 1.0, Double.MIN_VALUE};
+        gbl_appointmentPhone.rowWeights = new double[]{0.0, Double.MIN_VALUE};
+        appointmentPhone.setLayout(gbl_appointmentPhone);
+        
+        JLabel lblDia = new JLabel("Dia:");
+        lblDia.setFont(new Font("Dialog", Font.PLAIN, 24));
+        GridBagConstraints gbc_lblDia = new GridBagConstraints();
+        gbc_lblDia.anchor = GridBagConstraints.WEST;
+        gbc_lblDia.insets = new Insets(0, 0, 0, 5);
+        gbc_lblDia.gridx = 0;
+        gbc_lblDia.gridy = 0;
+        appointmentPhone.add(lblDia, gbc_lblDia);
+        
+        Component horizontalStrut_1_1_1 = Box.createHorizontalStrut(20);
+        GridBagConstraints gbc_horizontalStrut_1_1_1 = new GridBagConstraints();
+        gbc_horizontalStrut_1_1_1.fill = GridBagConstraints.HORIZONTAL;
+        gbc_horizontalStrut_1_1_1.insets = new Insets(0, 0, 0, 5);
+        gbc_horizontalStrut_1_1_1.gridx = 1;
+        gbc_horizontalStrut_1_1_1.gridy = 0;
+        appointmentPhone.add(horizontalStrut_1_1_1, gbc_horizontalStrut_1_1_1);
+        
+        JFormattedTextField txtAppointmentDate = new JFormattedTextField((Object) null);
+        txtAppointmentDate.setFont(new Font("Dialog", Font.PLAIN, 24));
+        txtAppointmentDate.setColumns(14);
+        GridBagConstraints gbc_txtAppointmentDate = new GridBagConstraints();
+        gbc_txtAppointmentDate.fill = GridBagConstraints.HORIZONTAL;
+        gbc_txtAppointmentDate.anchor = GridBagConstraints.NORTH;
+        gbc_txtAppointmentDate.gridx = 2;
+        gbc_txtAppointmentDate.gridy = 0;
+        appointmentPhone.add(txtAppointmentDate, gbc_txtAppointmentDate);
+        
+        JPanel appointmentPacient = new JPanel();
+        GridBagLayout gbl_appointmentPacient = new GridBagLayout();
+        gbl_appointmentPacient.columnWidths = new int[]{98, 20, 300, 0};
+        gbl_appointmentPacient.rowHeights = new int[]{38, 0};
+        gbl_appointmentPacient.columnWeights = new double[]{0.0, 0.0, 1.0, Double.MIN_VALUE};
+        gbl_appointmentPacient.rowWeights = new double[]{0.0, Double.MIN_VALUE};
+        appointmentPacient.setLayout(gbl_appointmentPacient);
+        
+        JLabel lblPaciente = new JLabel("Paciente:");
+        lblPaciente.setFont(new Font("Dialog", Font.PLAIN, 24));
+        GridBagConstraints gbc_lblPaciente = new GridBagConstraints();
+        gbc_lblPaciente.anchor = GridBagConstraints.WEST;
+        gbc_lblPaciente.insets = new Insets(0, 0, 0, 5);
+        gbc_lblPaciente.gridx = 0;
+        gbc_lblPaciente.gridy = 0;
+        appointmentPacient.add(lblPaciente, gbc_lblPaciente);
+        
+        Component horizontalStrut_1_1_1_1 = Box.createHorizontalStrut(20);
+        GridBagConstraints gbc_horizontalStrut_1_1_1_1 = new GridBagConstraints();
+        gbc_horizontalStrut_1_1_1_1.fill = GridBagConstraints.HORIZONTAL;
+        gbc_horizontalStrut_1_1_1_1.insets = new Insets(0, 0, 0, 5);
+        gbc_horizontalStrut_1_1_1_1.gridx = 1;
+        gbc_horizontalStrut_1_1_1_1.gridy = 0;
+        appointmentPacient.add(horizontalStrut_1_1_1_1, gbc_horizontalStrut_1_1_1_1);
+        
+        JFormattedTextField txtAppointmentPacient = new JFormattedTextField((Object) null);
+        txtAppointmentPacient.setFont(new Font("Dialog", Font.PLAIN, 24));
+        txtAppointmentPacient.setColumns(14);
+        GridBagConstraints gbc_txtAppointmentPacient = new GridBagConstraints();
+        gbc_txtAppointmentPacient.fill = GridBagConstraints.HORIZONTAL;
+        gbc_txtAppointmentPacient.anchor = GridBagConstraints.NORTH;
+        gbc_txtAppointmentPacient.gridx = 2;
+        gbc_txtAppointmentPacient.gridy = 0;
+        appointmentPacient.add(txtAppointmentPacient, gbc_txtAppointmentPacient);
+        GroupLayout gl_appointmentPanel = new GroupLayout(appointmentPanel);
+        gl_appointmentPanel.setHorizontalGroup(
+        	gl_appointmentPanel.createParallelGroup(Alignment.LEADING)
+        		.addGroup(Alignment.TRAILING, gl_appointmentPanel.createSequentialGroup()
+        			.addContainerGap()
+        			.addGroup(gl_appointmentPanel.createParallelGroup(Alignment.TRAILING)
+        				.addComponent(appointmentTable, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 1246, Short.MAX_VALUE)
+        				.addComponent(appointmentDoctor, GroupLayout.DEFAULT_SIZE, 1246, Short.MAX_VALUE)
+        				.addComponent(appointmentPhone, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 1246, Short.MAX_VALUE)
+        				.addComponent(appointmentPacient, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 1246, Short.MAX_VALUE))
+        			.addContainerGap())
+        );
+        gl_appointmentPanel.setVerticalGroup(
+        	gl_appointmentPanel.createParallelGroup(Alignment.LEADING)
+        		.addGroup(gl_appointmentPanel.createSequentialGroup()
+        			.addContainerGap()
+        			.addComponent(appointmentDoctor, GroupLayout.PREFERRED_SIZE, 38, GroupLayout.PREFERRED_SIZE)
+        			.addPreferredGap(ComponentPlacement.RELATED)
+        			.addComponent(appointmentPacient, GroupLayout.PREFERRED_SIZE, 38, GroupLayout.PREFERRED_SIZE)
+        			.addGap(5)
+        			.addComponent(appointmentPhone, GroupLayout.PREFERRED_SIZE, 38, GroupLayout.PREFERRED_SIZE)
+        			.addPreferredGap(ComponentPlacement.UNRELATED)
+        			.addComponent(appointmentTable, GroupLayout.DEFAULT_SIZE, 500, Short.MAX_VALUE)
+        			.addContainerGap())
+        );
+        appointmentPanel.setLayout(gl_appointmentPanel);
+        
         contentPanel.add(doctorsPanel, "Doctors");
         
         doctorTable = new JTable();
@@ -245,6 +476,7 @@ public class Menu extends JFrame {
         			.addContainerGap())
         );
         doctorsPanel.setLayout(gl_doctorsPanel);
+        
         contentPanel.add(patientsPanel, "Patients");
         
         patientsTable = new JTable();
@@ -805,41 +1037,41 @@ public class Menu extends JFrame {
         specialtiesPanel.setLayout(gl_specialtiesPanel);
 
         // events
-        doctorsItem.addActionListener(new ActionListener() {
+        doctorsList.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 cardLayout.show(contentPanel, "Doctors");
             }
         });
 
-        patientsItem.addActionListener(new ActionListener() {
+        patientsList.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 cardLayout.show(contentPanel, "Patients");
             }
         });
         
-        MedicalTestOrdersItem.addActionListener(new ActionListener() {
+        medicalTestOrdersList.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 cardLayout.show(contentPanel, "MedicalTestOrders");
             }
         });
         
-        MedicalTestsItem.addActionListener(new ActionListener() {
+        medicalTestsList.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 cardLayout.show(contentPanel, "MedicalTests");
             }
         });
         
-        SpecialtiesItem.addActionListener(new ActionListener() {
+        specialtiesLIst.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 cardLayout.show(contentPanel, "Specialties");
             }
         });
-
+        
         getContentPane().add(contentPanel, BorderLayout.CENTER);
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

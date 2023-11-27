@@ -27,6 +27,8 @@ import javax.swing.border.LineBorder;
 import java.awt.Color;
 import javax.swing.JComboBox;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.awt.event.ActionEvent;
 import javax.swing.DefaultComboBoxModel;
 
@@ -41,15 +43,26 @@ public class PatientForm extends JFrame {
 	private JTextField txtCity;
 	private JTextField txtUf;
 
-	public PatientForm() {
+	public PatientForm(Menu menu) {
+		addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosed(WindowEvent e) {
+				closeWindow();
+			}
+		});
+		
 		initComponents();
+	}
+	
+	private void closeWindow() {
+		this.dispose();
 	}
 	
 	private void initComponents() {
 		setTitle("Formulário - Paciente");
 		setResizable(false);
 		setFont(new Font("Segoe UI Variable", Font.PLAIN, 24));
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 800, 600);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -542,16 +555,4 @@ public class PatientForm extends JFrame {
 		panel.setLayout(gl_panel);
 	}
 	
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					PatientForm frame = new PatientForm();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
 }
