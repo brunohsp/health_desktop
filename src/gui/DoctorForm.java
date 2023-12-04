@@ -9,10 +9,18 @@ import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import java.awt.GridBagLayout;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.IOException;
+import java.sql.SQLException;
+import java.text.NumberFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.List;
 import java.awt.Font;
 import java.awt.Component;
 import javax.swing.Box;
@@ -21,58 +29,151 @@ import javax.swing.JFormattedTextField;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.border.LineBorder;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.text.MaskFormatter;
+
+import entities.Address;
+import entities.Doctor;
+import entities.Specialty;
+import services.DoctorService;
+import services.SpecialtyService;
+
 import java.awt.Color;
 import java.awt.BorderLayout;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import java.awt.GridLayout;
 import javax.swing.JRadioButton;
 import javax.swing.SwingConstants;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class DoctorForm extends JFrame {
 
 	private static final long serialVersionUID = 1L;
-	private JPanel contentPane;
+	private JPanel contentPanel;
 	private JTextField txtName;
-	private JTextField textField;
-	private JTextField textField_1;
-	private JTextField textField_2;
-	private JTextField textField_3;
-	private JTextField textField_4;
+	private JTextField txtNeighborhood;
+	private JTextField txtCity;
+	private JTextField txtUf;
+	private JTextField txtLocation;
+	private JFormattedTextField txtCep;
+	private JFormattedTextField txtCrm;
+	private JFormattedTextField txtPhone;
+	private JFormattedTextField txtCpf;
+	private JFormattedTextField txtDateOfBirth;
+	private JRadioButton rdbtnMale; 
+	private JRadioButton rdbtnFemale;
+	private JRadioButton rdbtnOther;
+	private JComboBox<Specialty> cbbSpecialty;
+	private MaskFormatter cpfMask;
+	private MaskFormatter dateMask;
+	private MaskFormatter phoneMask;
+	private Menu menu;
+	private DoctorService doctorService;
+	private SpecialtyService specialtyService;
 
 	public DoctorForm(Menu menu) {
+		this.menu = menu;
 		addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosed(WindowEvent e) {
 				closeWindow();
 			}
+			
 		});
 		
+		setMasks();
 		initComponents();
+		getSpecialties();
+	}
+	
+	
+	private void getSpecialties() {
+		try {
+			this.specialtyService = new SpecialtyService();
+	    	List<Specialty> specialties = this.specialtyService.listSpecialties("", "");
+	    	
+	    	for(Specialty specialty: specialties) {
+	    		cbbSpecialty.addItem(specialty);
+	    	}
+		} catch (SQLException | IOException e) {
+
+			JOptionPane.showMessageDialog(null, "Erro ao carregar dados", "Busca", JOptionPane.ERROR_MESSAGE);
+		}
+	}
+	
+	private void setMasks() {
+
+		try {
+
+			this.cpfMask = new MaskFormatter("###.###.###-##");
+			this.dateMask = new MaskFormatter("##/##/####");
+			this.phoneMask = new MaskFormatter("(##)#####-####");
+
+		} catch (ParseException e) {
+
+			System.out.println("ERRO: " + e.getMessage());
+		}
 	}
 	
 	private void closeWindow() {
+		menu.refreshTables();
 		this.dispose();
 	}
+	
+	private void insertDoctor() {
+		try {
+			if(txtCep.getText().equals("") || txtLocation.getText().equals("") || txtNeighborhood.getText().equals("") || txtCity.getText().equals("") || txtName.getText().equals("") ||
+					txtUf.getText().equals("") || txtDateOfBirth.getText().equals("") || txtCpf.getText().equals("") || txtPhone.getText().equals("") || txtCrm.getText().equals("")) {
+				JOptionPane.showMessageDialog(null, "Há campos vazios no formulário.", "Cadastro", JOptionPane.ERROR_MESSAGE);
+				return;
+			}
+			
+			doctorService = new DoctorService();
+			
+			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+			Address address = new Address(-1, Integer.parseInt(txtCep.getText()), txtLocation.getText(), txtNeighborhood.getText(), txtCity.getText(), txtUf.getText());
+			Doctor doctor = new Doctor(-1, txtName.getText(), txtDateOfBirth.getText(), getRadioButtonsSelection(), txtCpf.getText(), txtPhone.getText(), address, -1, Integer.parseInt(txtCrm.getText()), (Specialty) cbbSpecialty.getSelectedItem());
 
+			this.doctorService.insert(doctor);
+			
+			closeWindow();
+
+		} catch (SQLException | IOException | NumberFormatException e) {
+
+			JOptionPane.showMessageDialog(null, "Erro ao cadastrar um novo Médico." + e, "Cadastro", JOptionPane.ERROR_MESSAGE);
+		}
+	}
+	
+	private String getRadioButtonsSelection() {
+		if (this.rdbtnMale.isSelected()) {
+			return this.rdbtnMale.getText();
+		} else if (this.rdbtnFemale.isSelected()) {
+			return this.rdbtnFemale.getText();
+		} else {
+			return this.rdbtnOther.getText();
+		}
+	}
+	
 	private void initComponents() {
 		setTitle("Formulário - Doutor");
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 800, 598);
-		contentPane = new JPanel();
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		contentPanel = new JPanel();
+		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 
-		setContentPane(contentPane);
+		setContentPane(contentPanel);
 		
 		JPanel panel = new JPanel();
-		GroupLayout gl_contentPane = new GroupLayout(contentPane);
-		gl_contentPane.setHorizontalGroup(
-			gl_contentPane.createParallelGroup(Alignment.LEADING)
+		GroupLayout gl_contentPanel = new GroupLayout(contentPanel);
+		gl_contentPanel.setHorizontalGroup(
+			gl_contentPanel.createParallelGroup(Alignment.LEADING)
 				.addComponent(panel, GroupLayout.PREFERRED_SIZE, 780, Short.MAX_VALUE)
 		);
-		gl_contentPane.setVerticalGroup(
-			gl_contentPane.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_contentPane.createSequentialGroup()
+		gl_contentPanel.setVerticalGroup(
+			gl_contentPanel.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_contentPanel.createSequentialGroup()
 					.addComponent(panel, GroupLayout.PREFERRED_SIZE, 553, GroupLayout.PREFERRED_SIZE)
 					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
 		);
@@ -137,7 +238,7 @@ public class DoctorForm extends JFrame {
 		gbc_horizontalStrut_1_1_1.gridy = 0;
 		phone.add(horizontalStrut_1_1_1, gbc_horizontalStrut_1_1_1);
 		
-		JFormattedTextField txtPhone = new JFormattedTextField((Object) null);
+		txtPhone =  new JFormattedTextField (phoneMask);
 		txtPhone.setText("(  )      -    ");
 		txtPhone.setFont(new Font("Segoe UI Variable", Font.PLAIN, 24));
 		txtPhone.setColumns(14);
@@ -149,9 +250,19 @@ public class DoctorForm extends JFrame {
 		phone.add(txtPhone, gbc_txtPhone);
 		
 		JButton btnRegister = new JButton("Cadastrar");
+		btnRegister.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				insertDoctor();
+			}
+		});
 		btnRegister.setFont(new Font("Segoe UI Variable", Font.PLAIN, 24));
 		
 		JButton btnCancel = new JButton("Cancelar");
+		btnCancel.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				closeWindow();
+			}
+		});
 		btnCancel.setFont(new Font("Segoe UI Variable", Font.PLAIN, 24));
 		
 		JPanel crm = new JPanel();
@@ -180,8 +291,7 @@ public class DoctorForm extends JFrame {
 		gbc_horizontalStrut_1_1_1_1.gridy = 0;
 		crm.add(horizontalStrut_1_1_1_1, gbc_horizontalStrut_1_1_1_1);
 		
-		JFormattedTextField txtCrm = new JFormattedTextField((Object) null);
-		txtCrm.setText("  -       ");
+		txtCrm = new JFormattedTextField(NumberFormat.getNumberInstance());
 		txtCrm.setFont(new Font("Segoe UI Variable", Font.PLAIN, 24));
 		txtCrm.setColumns(14);
 		GridBagConstraints gbc_txtCrm = new GridBagConstraints();
@@ -216,15 +326,15 @@ public class DoctorForm extends JFrame {
 		gbc_horizontalStrut_1_1_1_1_1.gridy = 0;
 		CPF.add(horizontalStrut_1_1_1_1_1, gbc_horizontalStrut_1_1_1_1_1);
 		
-		JFormattedTextField txtPhone_1 = new JFormattedTextField((Object) null);
-		txtPhone_1.setFont(new Font("Dialog", Font.PLAIN, 24));
-		txtPhone_1.setColumns(14);
-		GridBagConstraints gbc_txtPhone_1 = new GridBagConstraints();
-		gbc_txtPhone_1.fill = GridBagConstraints.HORIZONTAL;
-		gbc_txtPhone_1.anchor = GridBagConstraints.NORTH;
-		gbc_txtPhone_1.gridx = 2;
-		gbc_txtPhone_1.gridy = 0;
-		CPF.add(txtPhone_1, gbc_txtPhone_1);
+		txtCpf = new JFormattedTextField(cpfMask);
+		txtCpf.setFont(new Font("Dialog", Font.PLAIN, 24));
+		txtCpf.setColumns(14);
+		GridBagConstraints gbc_txtCpf = new GridBagConstraints();
+		gbc_txtCpf.fill = GridBagConstraints.HORIZONTAL;
+		gbc_txtCpf.anchor = GridBagConstraints.NORTH;
+		gbc_txtCpf.gridx = 2;
+		gbc_txtCpf.gridy = 0;
+		CPF.add(txtCpf, gbc_txtCpf);
 		
 		JPanel gender = new JPanel();
 		gender.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
@@ -234,17 +344,17 @@ public class DoctorForm extends JFrame {
 		gender.add(genderOptions, BorderLayout.CENTER);
 		genderOptions.setLayout(new GridLayout(0, 1, 0, 0));
 		
-		JRadioButton rdbtnMale = new JRadioButton("Masculino");
+		rdbtnMale = new JRadioButton("Masculino");
 		rdbtnMale.setHorizontalAlignment(SwingConstants.LEFT);
 		rdbtnMale.setFont(new Font("Dialog", Font.PLAIN, 24));
 		genderOptions.add(rdbtnMale);
 		
-		JRadioButton rdbtnFemale = new JRadioButton("Feminino");
+		rdbtnFemale = new JRadioButton("Feminino");
 		rdbtnFemale.setHorizontalAlignment(SwingConstants.LEFT);
 		rdbtnFemale.setFont(new Font("Dialog", Font.PLAIN, 24));
 		genderOptions.add(rdbtnFemale);
 		
-		JRadioButton rdbtnOther = new JRadioButton("Outro");
+		rdbtnOther = new JRadioButton("Outro");
 		rdbtnOther.setHorizontalAlignment(SwingConstants.LEFT);
 		rdbtnOther.setFont(new Font("Dialog", Font.PLAIN, 24));
 		genderOptions.add(rdbtnOther);
@@ -279,15 +389,15 @@ public class DoctorForm extends JFrame {
 		gbc_horizontalStrut_1_4.gridy = 0;
 		neighborhood.add(horizontalStrut_1_4, gbc_horizontalStrut_1_4);
 		
-		textField = new JTextField();
-		textField.setFont(new Font("Dialog", Font.PLAIN, 24));
-		textField.setColumns(20);
-		GridBagConstraints gbc_textField = new GridBagConstraints();
-		gbc_textField.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textField.anchor = GridBagConstraints.NORTH;
-		gbc_textField.gridx = 2;
-		gbc_textField.gridy = 0;
-		neighborhood.add(textField, gbc_textField);
+		txtNeighborhood = new JTextField();
+		txtNeighborhood.setFont(new Font("Dialog", Font.PLAIN, 24));
+		txtNeighborhood.setColumns(20);
+		GridBagConstraints gbc_txtNeighborhood = new GridBagConstraints();
+		gbc_txtNeighborhood.fill = GridBagConstraints.HORIZONTAL;
+		gbc_txtNeighborhood.anchor = GridBagConstraints.NORTH;
+		gbc_txtNeighborhood.gridx = 2;
+		gbc_txtNeighborhood.gridy = 0;
+		neighborhood.add(txtNeighborhood, gbc_txtNeighborhood);
 		
 		JPanel city = new JPanel();
 		GridBagLayout gbl_city = new GridBagLayout();
@@ -314,15 +424,15 @@ public class DoctorForm extends JFrame {
 		gbc_horizontalStrut_1_4_1.gridy = 0;
 		city.add(horizontalStrut_1_4_1, gbc_horizontalStrut_1_4_1);
 		
-		textField_1 = new JTextField();
-		textField_1.setFont(new Font("Dialog", Font.PLAIN, 24));
-		textField_1.setColumns(20);
-		GridBagConstraints gbc_textField_1 = new GridBagConstraints();
-		gbc_textField_1.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textField_1.anchor = GridBagConstraints.NORTH;
-		gbc_textField_1.gridx = 2;
-		gbc_textField_1.gridy = 0;
-		city.add(textField_1, gbc_textField_1);
+		txtCity = new JTextField();
+		txtCity.setFont(new Font("Dialog", Font.PLAIN, 24));
+		txtCity.setColumns(20);
+		GridBagConstraints gbc_txtCity = new GridBagConstraints();
+		gbc_txtCity.fill = GridBagConstraints.HORIZONTAL;
+		gbc_txtCity.anchor = GridBagConstraints.NORTH;
+		gbc_txtCity.gridx = 2;
+		gbc_txtCity.gridy = 0;
+		city.add(txtCity, gbc_txtCity);
 		
 		JPanel CEP = new JPanel();
 		GridBagLayout gbl_CEP = new GridBagLayout();
@@ -349,15 +459,15 @@ public class DoctorForm extends JFrame {
 		gbc_horizontalStrut_1_3.gridy = 0;
 		CEP.add(horizontalStrut_1_3, gbc_horizontalStrut_1_3);
 		
-		textField_3 = new JTextField();
-		textField_3.setFont(new Font("Dialog", Font.PLAIN, 24));
-		textField_3.setColumns(20);
-		GridBagConstraints gbc_textField_3 = new GridBagConstraints();
-		gbc_textField_3.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textField_3.anchor = GridBagConstraints.NORTH;
-		gbc_textField_3.gridx = 2;
-		gbc_textField_3.gridy = 0;
-		CEP.add(textField_3, gbc_textField_3);
+		txtCep = new JFormattedTextField(NumberFormat.getNumberInstance());
+		txtCep.setFont(new Font("Dialog", Font.PLAIN, 24));
+		txtCep.setColumns(20);
+		GridBagConstraints gbc_txtCep = new GridBagConstraints();
+		gbc_txtCep.fill = GridBagConstraints.HORIZONTAL;
+		gbc_txtCep.anchor = GridBagConstraints.NORTH;
+		gbc_txtCep.gridx = 2;
+		gbc_txtCep.gridy = 0;
+		CEP.add(txtCep, gbc_txtCep);
 		
 		JPanel address = new JPanel();
 		GridBagLayout gbl_address = new GridBagLayout();
@@ -384,15 +494,15 @@ public class DoctorForm extends JFrame {
 		gbc_horizontalStrut_1.gridy = 0;
 		address.add(horizontalStrut_1, gbc_horizontalStrut_1);
 		
-		textField_4 = new JTextField();
-		textField_4.setFont(new Font("Dialog", Font.PLAIN, 24));
-		textField_4.setColumns(20);
-		GridBagConstraints gbc_textField_4 = new GridBagConstraints();
-		gbc_textField_4.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textField_4.anchor = GridBagConstraints.NORTH;
-		gbc_textField_4.gridx = 2;
-		gbc_textField_4.gridy = 0;
-		address.add(textField_4, gbc_textField_4);
+		txtLocation = new JTextField();
+		txtLocation.setFont(new Font("Dialog", Font.PLAIN, 24));
+		txtLocation.setColumns(20);
+		GridBagConstraints gbc_txtLocation = new GridBagConstraints();
+		gbc_txtLocation.fill = GridBagConstraints.HORIZONTAL;
+		gbc_txtLocation.anchor = GridBagConstraints.NORTH;
+		gbc_txtLocation.gridx = 2;
+		gbc_txtLocation.gridy = 0;
+		address.add(txtLocation, gbc_txtLocation);
 		
 		JPanel uf = new JPanel();
 		GridBagLayout gbl_uf = new GridBagLayout();
@@ -419,15 +529,15 @@ public class DoctorForm extends JFrame {
 		gbc_horizontalStrut_1_4_2.gridy = 0;
 		uf.add(horizontalStrut_1_4_2, gbc_horizontalStrut_1_4_2);
 		
-		textField_2 = new JTextField();
-		textField_2.setFont(new Font("Dialog", Font.PLAIN, 24));
-		textField_2.setColumns(20);
-		GridBagConstraints gbc_textField_2 = new GridBagConstraints();
-		gbc_textField_2.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textField_2.anchor = GridBagConstraints.NORTH;
-		gbc_textField_2.gridx = 2;
-		gbc_textField_2.gridy = 0;
-		uf.add(textField_2, gbc_textField_2);
+		txtUf = new JTextField();
+		txtUf.setFont(new Font("Dialog", Font.PLAIN, 24));
+		txtUf.setColumns(20);
+		GridBagConstraints gbc_txtUf = new GridBagConstraints();
+		gbc_txtUf.fill = GridBagConstraints.HORIZONTAL;
+		gbc_txtUf.anchor = GridBagConstraints.NORTH;
+		gbc_txtUf.gridx = 2;
+		gbc_txtUf.gridy = 0;
+		uf.add(txtUf, gbc_txtUf);
 		
 		JPanel specialty = new JPanel();
 		GridBagLayout gbl_specialty = new GridBagLayout();
@@ -454,13 +564,13 @@ public class DoctorForm extends JFrame {
 		gbc_horizontalStrut_1_2.gridy = 0;
 		specialty.add(horizontalStrut_1_2, gbc_horizontalStrut_1_2);
 		
-		JComboBox cbbPaymentMethod = new JComboBox();
-		cbbPaymentMethod.setFont(new Font("Segoe UI Variable", Font.PLAIN, 24));
-		GridBagConstraints gbc_cbbPaymentMethod = new GridBagConstraints();
-		gbc_cbbPaymentMethod.fill = GridBagConstraints.HORIZONTAL;
-		gbc_cbbPaymentMethod.gridx = 2;
-		gbc_cbbPaymentMethod.gridy = 0;
-		specialty.add(cbbPaymentMethod, gbc_cbbPaymentMethod);
+		cbbSpecialty = new JComboBox<Specialty>();
+		cbbSpecialty.setFont(new Font("Segoe UI Variable", Font.PLAIN, 24));
+		GridBagConstraints gbc_cbbSpecialty = new GridBagConstraints();
+		gbc_cbbSpecialty.fill = GridBagConstraints.HORIZONTAL;
+		gbc_cbbSpecialty.gridx = 2;
+		gbc_cbbSpecialty.gridy = 0;
+		specialty.add(cbbSpecialty, gbc_cbbSpecialty);
 		
 		JPanel dateOfBirth = new JPanel();
 		GridBagLayout gbl_dateOfBirth = new GridBagLayout();
@@ -487,7 +597,7 @@ public class DoctorForm extends JFrame {
 		gbc_horizontalStrut_1_1.gridy = 0;
 		dateOfBirth.add(horizontalStrut_1_1, gbc_horizontalStrut_1_1);
 		
-		JFormattedTextField txtDateOfBirth = new JFormattedTextField();
+		txtDateOfBirth = new JFormattedTextField(dateMask);
 		txtDateOfBirth.setText("  /  /    ");
 		txtDateOfBirth.setFont(new Font("Dialog", Font.PLAIN, 24));
 		txtDateOfBirth.setColumns(12);
@@ -569,6 +679,6 @@ public class DoctorForm extends JFrame {
 					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
 		);
 		panel.setLayout(gl_panel);
-		contentPane.setLayout(gl_contentPane);
+		contentPanel.setLayout(gl_contentPanel);
 	}
 }

@@ -7,7 +7,7 @@ public class Doctor extends Person{
     private int crmNumber;
     private Specialty specialty;
 
-	public Doctor(int id, String name, Date dateOfBirth, String gender, String cpf, String phoneNumber, Address address,
+	public Doctor(int id, String name, String dateOfBirth, String gender, String cpf, String phoneNumber, Address address,
 			int id2, int crmNumber, Specialty specialty) {
 		super(id, name, dateOfBirth, gender, cpf, phoneNumber, address);
 		id = id2;
@@ -37,6 +37,11 @@ public class Doctor extends Person{
 
 	public void setSpecialty(Specialty specialty) {
 		this.specialty = specialty;
+	}
+
+	@Override
+	public String toString() {
+		return "Dr." + getName() + "-" + id + " - CRM/" + crmNumber + " - " + specialty;
 	}
 	
 	

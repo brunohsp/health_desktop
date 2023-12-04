@@ -4,29 +4,68 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.IOException;
+import java.sql.SQLException;
+import java.text.NumberFormat;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
+
 import javax.swing.text.MaskFormatter;
+
+import entities.Address;
+import entities.Patient;
+import entities.Specialty;
+import services.PatientService;
+import services.SpecialtyService;
+
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class SpecialtyForm extends JFrame {
 	private static final long serialVersionUID = 1L;
     private JTextField txtCode;
     private JTextField txtName;
+    private Menu menu;
+    private SpecialtyService specialtyService;
 
     public SpecialtyForm(Menu menu) {
+    	this.menu = menu;
 		addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosed(WindowEvent e) {
 				closeWindow();
 			}
+			
 		});
 		
 		initComponents();
 	}
 	
 	private void closeWindow() {
+		menu.refreshTables();
 		this.dispose();
+	}
+	
+	private void insertSpecialty() {
+		try {
+			if(txtCode.getText().equals("") || txtName.getText().equals("")) {
+				JOptionPane.showMessageDialog(null, "Há campos vazios no formulário.", "Cadastro", JOptionPane.ERROR_MESSAGE);
+				return;
+			}
+			
+			specialtyService = new SpecialtyService();
+			
+			Specialty specialty = new Specialty(Integer.parseInt(txtCode.getText()), txtName.getName());
+			this.specialtyService.insert(specialty);
+			
+			closeWindow();
+
+		} catch (SQLException | IOException | NumberFormatException e) {
+
+			JOptionPane.showMessageDialog(null, "Erro ao cadastrar um nova Especialidade." + e, "Cadastro", JOptionPane.ERROR_MESSAGE);
+		}
 	}
 
     private void initComponents() {
@@ -41,6 +80,11 @@ public class SpecialtyForm extends JFrame {
             MaskFormatter codeFormatter = new MaskFormatter("##.##.###-#");
 
             JButton btnRegister = new JButton("Cadastrar");
+            btnRegister.addActionListener(new ActionListener() {
+            	public void actionPerformed(ActionEvent e) {
+            		insertSpecialty();
+            	}
+            });
             btnRegister.setFont(new Font("Segoe UI Variable", Font.PLAIN, 24));
 
             getContentPane().add(panel);
@@ -70,7 +114,7 @@ public class SpecialtyForm extends JFrame {
             gbc_horizontalStrut.gridy = 0;
             code.add(horizontalStrut, gbc_horizontalStrut);
             
-            txtCode = new JTextField();
+            txtCode = new JFormattedTextField(NumberFormat.getNumberInstance());
             txtCode.setFont(new Font("Segoe UI Variable", Font.PLAIN, 24));
             txtCode.setColumns(15);
             GridBagConstraints gbc_txtCode = new GridBagConstraints();
@@ -116,6 +160,11 @@ public class SpecialtyForm extends JFrame {
             name.add(txtName, gbc_txtName);
             
             JButton btnCancel = new JButton("Cancelar");
+            btnCancel.addActionListener(new ActionListener() {
+            	public void actionPerformed(ActionEvent e) {
+            		closeWindow();
+            	}
+            });
             btnCancel.setFont(new Font("Segoe UI Variable", Font.PLAIN, 24));
             GroupLayout gl_panel = new GroupLayout(panel);
             gl_panel.setHorizontalGroup(

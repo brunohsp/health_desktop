@@ -5,14 +5,27 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import entities.Address;
+import entities.Doctor;
+import entities.MedicalTest;
+import entities.Specialty;
+import services.DoctorService;
+import services.MedicalTestService;
+
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import java.awt.GridBagLayout;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.IOException;
+import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.awt.Font;
 import java.awt.Component;
 import javax.swing.Box;
@@ -20,6 +33,8 @@ import javax.swing.JTextField;
 import javax.swing.JButton;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.JTextArea;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class MedicalTestForm extends JFrame {
 
@@ -28,20 +43,47 @@ public class MedicalTestForm extends JFrame {
 	private JTextField txtCode;
 	private JTextField txtName;
 	private JTextField txtValue;
+	private JTextArea txtInstructions;
+	private Menu menu;
+	private MedicalTestService medicalTestService;
 
 	public MedicalTestForm(Menu menu) {
+		this.menu = menu;
 		addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosed(WindowEvent e) {
 				closeWindow();
 			}
+			
 		});
 		
 		initComponents();
 	}
 	
 	private void closeWindow() {
+		menu.refreshTables();
 		this.dispose();
+	}
+	
+	private void insertMedicalTest() {
+		try {
+			if(txtCode.getText().equals("") || txtName.getText().equals("") || txtValue.getText().equals("") || txtInstructions.getText().equals("")) {
+				JOptionPane.showMessageDialog(null, "Há campos vazios no formulário.", "Cadastro", JOptionPane.ERROR_MESSAGE);
+				return;
+			}
+			
+			medicalTestService = new MedicalTestService();
+			
+			MedicalTest mt = new MedicalTest(txtCode.getText(), txtName.getText(), Integer.parseInt(txtValue.getText()), txtInstructions.getText());
+			
+			this.medicalTestService.insert(mt);
+			
+			closeWindow();
+
+		} catch (SQLException | IOException | NumberFormatException e) {
+
+			JOptionPane.showMessageDialog(null, "Erro ao cadastrar um novo Exame." + e, "Cadastro", JOptionPane.ERROR_MESSAGE);
+		}
 	}
 	
 	private void initComponents() {
@@ -124,9 +166,19 @@ public class MedicalTestForm extends JFrame {
 		name.add(txtName, gbc_txtName);
 		
 		JButton btnCancel = new JButton("Cancelar");
+		btnCancel.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				closeWindow();
+			}
+		});
 		btnCancel.setFont(new Font("Segoe UI Variable", Font.PLAIN, 24));
 		
 		JButton btnRegister = new JButton("Cadastrar");
+		btnRegister.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				insertMedicalTest();
+			}
+		});
 		btnRegister.setFont(new Font("Segoe UI Variable", Font.PLAIN, 24));
 		
 		JPanel value = new JPanel();
@@ -231,12 +283,12 @@ public class MedicalTestForm extends JFrame {
 					.addContainerGap())
 		);
 		
-		JTextArea textArea = new JTextArea();
-		GridBagConstraints gbc_textArea = new GridBagConstraints();
-		gbc_textArea.fill = GridBagConstraints.BOTH;
-		gbc_textArea.gridx = 2;
-		gbc_textArea.gridy = 0;
-		instructions.add(textArea, gbc_textArea);
+		txtInstructions = new JTextArea();
+		GridBagConstraints gbc_txtInstructions = new GridBagConstraints();
+		gbc_txtInstructions.fill = GridBagConstraints.BOTH;
+		gbc_txtInstructions.gridx = 2;
+		gbc_txtInstructions.gridy = 0;
+		instructions.add(txtInstructions, gbc_txtInstructions);
 		contentPane.setLayout(gl_contentPane);
 	}
 }

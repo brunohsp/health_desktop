@@ -1,14 +1,20 @@
 package gui;
 
 import java.awt.EventQueue;
+import java.awt.FlowLayout;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.Font;
 import javax.swing.JTextField;
 import java.awt.Component;
+import java.awt.Desktop;
+
+import javax.imageio.ImageIO;
 import javax.swing.Box;
 import javax.swing.JFormattedTextField;
 import javax.swing.JSeparator;
@@ -17,45 +23,157 @@ import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
+import javax.swing.ImageIcon;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.JRadioButton;
 import javax.swing.JButton;
 import javax.swing.SwingConstants;
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
+import java.awt.Image;
+
 import javax.swing.border.LineBorder;
+import javax.swing.text.MaskFormatter;
+
+import entities.Address;
+import entities.Doctor;
+import entities.Patient;
+import entities.Specialty;
+import services.DoctorService;
+import services.PatientService;
+
 import java.awt.Color;
 import javax.swing.JComboBox;
+import javax.swing.JFileChooser;
+
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.sql.SQLException;
+import java.text.NumberFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.awt.event.ActionEvent;
 import javax.swing.DefaultComboBoxModel;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class PatientForm extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
+	private JPanel pictureBox;
 	private JTextField txtName;
 	private JTextField txtAddress;
-	private JTextField textField;
 	private JTextField txtNeighborhood;
 	private JTextField txtCity;
 	private JTextField txtUf;
+	private JFormattedTextField txtCep;
+	private JFormattedTextField txtPhone;
+	private JFormattedTextField txtCpf;
+	private JFormattedTextField txtDateOfBirth;
+	private JRadioButton rdbtnMale; 
+	private JRadioButton rdbtnFemale;
+	private JRadioButton rdbtnOther;
+	private JComboBox<String> cbbPaymentMethod;
+	private MaskFormatter cpfMask;
+	private MaskFormatter dateMask;
+	private MaskFormatter phoneMask;
+	private Menu menu;
+	private PatientService patientService;
+	private String photoPath;
 
 	public PatientForm(Menu menu) {
+		this.menu = menu;
 		addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosed(WindowEvent e) {
 				closeWindow();
 			}
+			
 		});
+		this.photoPath = "";
 		
+		setMasks();
 		initComponents();
 	}
 	
+	private void setMasks() {
+
+		try {
+
+			this.cpfMask = new MaskFormatter("###.###.###-##");
+			this.dateMask = new MaskFormatter("##/##/####");
+			this.phoneMask = new MaskFormatter("(##)#####-####");
+
+		} catch (ParseException e) {
+
+			System.out.println("ERRO: " + e.getMessage());
+		}
+	}
+	
 	private void closeWindow() {
+		menu.refreshTables();
 		this.dispose();
+	}
+	
+	private void insertPatient() {
+		try {
+			if(txtCep.getText().equals("") || txtAddress.getText().equals("") || txtNeighborhood.getText().equals("") || txtCity.getText().equals("") || photoPath.equals("") ||
+					txtUf.getText().equals("") || txtDateOfBirth.getText().equals("") || txtCpf.getText().equals("") || txtPhone.getText().equals("") || txtName.getText().equals("")) {
+				JOptionPane.showMessageDialog(null, "Há campos vazios no formulário.", "Cadastro", JOptionPane.ERROR_MESSAGE);
+				return;
+			}
+			
+			patientService = new PatientService();
+			
+			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+			Address address = new Address(-1, Integer.parseInt(txtCep.getText()), txtAddress.getText(), txtNeighborhood.getText(), txtCity.getText(), txtUf.getText());
+			Patient patient = new Patient(-1, txtName.getText(), txtDateOfBirth.getText(), getRadioButtonsSelection(), txtCpf.getText(), txtPhone.getText(), address, -1, photoPath, (String) cbbPaymentMethod.getSelectedItem());
+
+			this.patientService.insert(patient);
+			
+			closeWindow();
+
+		} catch (SQLException | IOException | NumberFormatException e) {
+
+			JOptionPane.showMessageDialog(null, "Erro ao cadastrar um novo Paciente." + e, "Cadastro", JOptionPane.ERROR_MESSAGE);
+		}
+	}
+	
+	private String getRadioButtonsSelection() {
+		if (this.rdbtnMale.isSelected()) {
+			return this.rdbtnMale.getText();
+		} else if (this.rdbtnFemale.isSelected()) {
+			return this.rdbtnFemale.getText();
+		} else {
+			return this.rdbtnOther.getText();
+		}
+	}
+	
+	private void loadImage() {
+		JFileChooser selector = new JFileChooser("");
+		int validator = selector.showOpenDialog(null);
+		
+		if(validator == JFileChooser.APPROVE_OPTION) { 
+			this.photoPath = selector.getSelectedFile().getAbsolutePath();
+			
+			try {
+				BufferedImage myPicture = ImageIO.read(new File(this.photoPath));
+				JLabel picLabel = new JLabel(new ImageIcon(myPicture));
+				pictureBox.setLayout(new FlowLayout());
+				pictureBox.add(picLabel);
+				pictureBox.revalidate();
+				pictureBox.repaint();
+			} catch(IOException e) {
+				JOptionPane.showMessageDialog(null, "Erro ao carregar foto do Paciente." + e, "Cadastro", JOptionPane.ERROR_MESSAGE);
+			}
+			
+			
+		}
 	}
 	
 	private void initComponents() {
@@ -74,7 +192,13 @@ public class PatientForm extends JFrame {
 		header.setBounds(10, 0, 768, 228);
 		contentPane.add(header);
 		
-		JPanel pictureBox = new JPanel();
+		pictureBox = new JPanel();
+		pictureBox.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				loadImage();
+			}
+		});
 		pictureBox.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
 		
 		JPanel name = new JPanel();
@@ -137,7 +261,7 @@ public class PatientForm extends JFrame {
 		gbc_horizontalStrut_1_1.gridy = 0;
 		dateOfBirth.add(horizontalStrut_1_1, gbc_horizontalStrut_1_1);
 		
-		JFormattedTextField txtDateOfBirth = new JFormattedTextField();
+		txtDateOfBirth = new JFormattedTextField(dateMask);
 		txtDateOfBirth.setText("  /  /    ");
 		txtDateOfBirth.setFont(new Font("Segoe UI Variable", Font.PLAIN, 24));
 		txtDateOfBirth.setColumns(12);
@@ -173,7 +297,7 @@ public class PatientForm extends JFrame {
 		gbc_horizontalStrut_1_1_1.gridy = 0;
 		phone.add(horizontalStrut_1_1_1, gbc_horizontalStrut_1_1_1);
 		
-		JFormattedTextField txtPhone = new JFormattedTextField("(##) #####-####");
+		txtPhone = new JFormattedTextField(phoneMask);
 		txtPhone.setText("(  )      -    ");
 		txtPhone.setFont(new Font("Segoe UI Variable", Font.PLAIN, 24));
 		txtPhone.setColumns(14);
@@ -209,15 +333,15 @@ public class PatientForm extends JFrame {
 		gbc_horizontalStrut_1_1_1_1.gridy = 0;
 		CPF.add(horizontalStrut_1_1_1_1, gbc_horizontalStrut_1_1_1_1);
 		
-		JFormattedTextField txtPhone_1 = new JFormattedTextField((Object) null);
-		txtPhone_1.setFont(new Font("Dialog", Font.PLAIN, 24));
-		txtPhone_1.setColumns(14);
-		GridBagConstraints gbc_txtPhone_1 = new GridBagConstraints();
-		gbc_txtPhone_1.fill = GridBagConstraints.HORIZONTAL;
-		gbc_txtPhone_1.anchor = GridBagConstraints.NORTH;
-		gbc_txtPhone_1.gridx = 2;
-		gbc_txtPhone_1.gridy = 0;
-		CPF.add(txtPhone_1, gbc_txtPhone_1);
+		txtCpf = new JFormattedTextField(cpfMask);
+		txtCpf.setFont(new Font("Dialog", Font.PLAIN, 24));
+		txtCpf.setColumns(14);
+		GridBagConstraints gbc_txtCpf = new GridBagConstraints();
+		gbc_txtCpf.fill = GridBagConstraints.HORIZONTAL;
+		gbc_txtCpf.anchor = GridBagConstraints.NORTH;
+		gbc_txtCpf.gridx = 2;
+		gbc_txtCpf.gridy = 0;
+		CPF.add(txtCpf, gbc_txtCpf);
 		GroupLayout gl_header = new GroupLayout(header);
 		gl_header.setHorizontalGroup(
 			gl_header.createParallelGroup(Alignment.LEADING)
@@ -328,11 +452,17 @@ public class PatientForm extends JFrame {
 		paymentMethod.add(horizontalStrut_1_2, gbc_horizontalStrut_1_2);
 		
 		JButton btnRegister = new JButton("Cadastrar");
+		btnRegister.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				insertPatient();
+			}
+		});
 		btnRegister.setFont(new Font("Segoe UI Variable", Font.PLAIN, 24));
 		
 		JButton btnCancel = new JButton("Cancelar");
 		btnCancel.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				closeWindow();
 			}
 		});
 		btnCancel.setFont(new Font("Segoe UI Variable", Font.PLAIN, 24));
@@ -362,15 +492,15 @@ public class PatientForm extends JFrame {
 		gbc_horizontalStrut_1_3.gridy = 0;
 		CEP.add(horizontalStrut_1_3, gbc_horizontalStrut_1_3);
 		
-		textField = new JTextField();
-		textField.setFont(new Font("Dialog", Font.PLAIN, 24));
-		textField.setColumns(20);
-		GridBagConstraints gbc_textField = new GridBagConstraints();
-		gbc_textField.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textField.anchor = GridBagConstraints.NORTH;
-		gbc_textField.gridx = 2;
-		gbc_textField.gridy = 0;
-		CEP.add(textField, gbc_textField);
+		txtCep = new JFormattedTextField(NumberFormat.getNumberInstance());
+		txtCep.setFont(new Font("Dialog", Font.PLAIN, 24));
+		txtCep.setColumns(20);
+		GridBagConstraints gbc_txtCep = new GridBagConstraints();
+		gbc_txtCep.fill = GridBagConstraints.HORIZONTAL;
+		gbc_txtCep.anchor = GridBagConstraints.NORTH;
+		gbc_txtCep.gridx = 2;
+		gbc_txtCep.gridy = 0;
+		CEP.add(txtCep, gbc_txtCep);
 		
 		JPanel neighborhood = new JPanel();
 		GridBagLayout gbl_neighborhood = new GridBagLayout();
@@ -442,13 +572,13 @@ public class PatientForm extends JFrame {
 		gbc_txtCity.gridy = 0;
 		city.add(txtCity, gbc_txtCity);
 		
-		JPanel neighborhood_1 = new JPanel();
-		GridBagLayout gbl_neighborhood_1 = new GridBagLayout();
-		gbl_neighborhood_1.columnWidths = new int[]{110, 20, 426, 0};
-		gbl_neighborhood_1.rowHeights = new int[]{38, 0};
-		gbl_neighborhood_1.columnWeights = new double[]{0.0, 0.0, 1.0, Double.MIN_VALUE};
-		gbl_neighborhood_1.rowWeights = new double[]{0.0, Double.MIN_VALUE};
-		neighborhood_1.setLayout(gbl_neighborhood_1);
+		JPanel uf = new JPanel();
+		GridBagLayout gbl_uf = new GridBagLayout();
+		gbl_uf.columnWidths = new int[]{110, 20, 426, 0};
+		gbl_uf.rowHeights = new int[]{38, 0};
+		gbl_uf.columnWeights = new double[]{0.0, 0.0, 1.0, Double.MIN_VALUE};
+		gbl_uf.rowWeights = new double[]{0.0, Double.MIN_VALUE};
+		uf.setLayout(gbl_uf);
 		
 		JLabel lblUf = new JLabel("UF:");
 		lblUf.setFont(new Font("Dialog", Font.PLAIN, 24));
@@ -457,7 +587,7 @@ public class PatientForm extends JFrame {
 		gbc_lblUf.insets = new Insets(0, 0, 0, 5);
 		gbc_lblUf.gridx = 0;
 		gbc_lblUf.gridy = 0;
-		neighborhood_1.add(lblUf, gbc_lblUf);
+		uf.add(lblUf, gbc_lblUf);
 		
 		Component horizontalStrut_1_4_2 = Box.createHorizontalStrut(20);
 		GridBagConstraints gbc_horizontalStrut_1_4_2 = new GridBagConstraints();
@@ -465,7 +595,7 @@ public class PatientForm extends JFrame {
 		gbc_horizontalStrut_1_4_2.insets = new Insets(0, 0, 0, 5);
 		gbc_horizontalStrut_1_4_2.gridx = 1;
 		gbc_horizontalStrut_1_4_2.gridy = 0;
-		neighborhood_1.add(horizontalStrut_1_4_2, gbc_horizontalStrut_1_4_2);
+		uf.add(horizontalStrut_1_4_2, gbc_horizontalStrut_1_4_2);
 		
 		txtUf = new JTextField();
 		txtUf.setFont(new Font("Dialog", Font.PLAIN, 24));
@@ -475,7 +605,7 @@ public class PatientForm extends JFrame {
 		gbc_txtUf.anchor = GridBagConstraints.NORTH;
 		gbc_txtUf.gridx = 2;
 		gbc_txtUf.gridy = 0;
-		neighborhood_1.add(txtUf, gbc_txtUf);
+		uf.add(txtUf, gbc_txtUf);
 		GroupLayout gl_panel = new GroupLayout(panel);
 		gl_panel.setHorizontalGroup(
 			gl_panel.createParallelGroup(Alignment.TRAILING)
@@ -495,7 +625,7 @@ public class PatientForm extends JFrame {
 								.addComponent(city, GroupLayout.DEFAULT_SIZE, 575, Short.MAX_VALUE)
 								.addComponent(CEP, GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
 								.addComponent(address, GroupLayout.DEFAULT_SIZE, 575, Short.MAX_VALUE)
-								.addComponent(neighborhood_1, GroupLayout.DEFAULT_SIZE, 583, Short.MAX_VALUE))
+								.addComponent(uf, GroupLayout.DEFAULT_SIZE, 583, Short.MAX_VALUE))
 							.addPreferredGap(ComponentPlacement.RELATED))
 						.addComponent(paymentMethod, GroupLayout.DEFAULT_SIZE, 737, Short.MAX_VALUE))
 					.addContainerGap())
@@ -514,7 +644,7 @@ public class PatientForm extends JFrame {
 							.addPreferredGap(ComponentPlacement.RELATED)
 							.addComponent(neighborhood, GroupLayout.PREFERRED_SIZE, 38, GroupLayout.PREFERRED_SIZE)
 							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(neighborhood_1, GroupLayout.PREFERRED_SIZE, 38, GroupLayout.PREFERRED_SIZE))
+							.addComponent(uf, GroupLayout.PREFERRED_SIZE, 38, GroupLayout.PREFERRED_SIZE))
 						.addComponent(gender, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
 					.addPreferredGap(ComponentPlacement.UNRELATED)
 					.addComponent(paymentMethod, GroupLayout.PREFERRED_SIZE, 38, GroupLayout.PREFERRED_SIZE)
@@ -525,8 +655,8 @@ public class PatientForm extends JFrame {
 					.addContainerGap())
 		);
 		
-		JComboBox cbbPaymentMethod = new JComboBox();
-		cbbPaymentMethod.setModel(new DefaultComboBoxModel(new String[] {"Dinheiro", "Crédito", "Débito", "Boleto", "Pix"}));
+		cbbPaymentMethod = new JComboBox<String>();
+		cbbPaymentMethod.setModel(new DefaultComboBoxModel<String>(new String[] {"Dinheiro", "Crédito", "Débito", "Boleto", "Pix"}));
 		cbbPaymentMethod.setFont(new Font("Segoe UI Variable", Font.PLAIN, 24));
 		GridBagConstraints gbc_cbbPaymentMethod = new GridBagConstraints();
 		gbc_cbbPaymentMethod.fill = GridBagConstraints.HORIZONTAL;
@@ -538,17 +668,17 @@ public class PatientForm extends JFrame {
 		gender.add(genderOptions, BorderLayout.CENTER);
 		genderOptions.setLayout(new GridLayout(0, 1, 0, 0));
 		
-		JRadioButton rdbtnMale = new JRadioButton("Masculino");
+		rdbtnMale = new JRadioButton("Masculino");
 		genderOptions.add(rdbtnMale);
 		rdbtnMale.setHorizontalAlignment(SwingConstants.LEFT);
 		rdbtnMale.setFont(new Font("Segoe UI Variable", Font.PLAIN, 24));
 		
-		JRadioButton rdbtnFemale = new JRadioButton("Feminino");
+		rdbtnFemale = new JRadioButton("Feminino");
 		genderOptions.add(rdbtnFemale);
 		rdbtnFemale.setHorizontalAlignment(SwingConstants.LEFT);
 		rdbtnFemale.setFont(new Font("Segoe UI Variable", Font.PLAIN, 24));
 		
-		JRadioButton rdbtnOther = new JRadioButton("Outro");
+		rdbtnOther = new JRadioButton("Outro");
 		genderOptions.add(rdbtnOther);
 		rdbtnOther.setHorizontalAlignment(SwingConstants.LEFT);
 		rdbtnOther.setFont(new Font("Segoe UI Variable", Font.PLAIN, 24));

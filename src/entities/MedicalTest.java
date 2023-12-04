@@ -48,12 +48,7 @@ public class MedicalTest {
 
     @Override
     public String toString() {
-        return "MedicalTest{" +
-                "testCode='" + code + '\'' +
-                ", testName='" + name + '\'' +
-                ", testValue=" + value +
-                ", testInstructions='" + instructions + '\'' +
-                '}';
+        return name;
     }
 }
 

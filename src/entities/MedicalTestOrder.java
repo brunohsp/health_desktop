@@ -4,15 +4,14 @@ import java.util.Date;
 
 public class MedicalTestOrder {
 	private int id;
-	private Date testDate;
+	private String testDate;
 	private String time;
 	private double valuePaid;
     private MedicalTest test;
     private Patient patient;
     private Doctor doctor;
 	
-    public MedicalTestOrder(int id, Date testDate, String time, double valuePaid, MedicalTest test, Patient patient,
-			Doctor doctor) {
+    public MedicalTestOrder(int id, String testDate, String time, double valuePaid, MedicalTest test, Patient patient, Doctor doctor) {
 		super();
 		this.id = id;
 		this.testDate = testDate;
@@ -31,11 +30,11 @@ public class MedicalTestOrder {
 		this.id = id;
 	}
 
-	public Date getTestDate() {
+	public String getTestDate() {
 		return testDate;
 	}
 
-	public void setTestDate(Date testDate) {
+	public void setTestDate(String testDate) {
 		this.testDate = testDate;
 	}
 

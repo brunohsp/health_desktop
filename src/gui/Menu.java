@@ -5,14 +5,35 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.table.DefaultTableModel;
+
+import entities.Address;
+import entities.Appointment;
+import entities.Doctor;
+import entities.MedicalTest;
+import entities.MedicalTestOrder;
+import entities.Patient;
+import entities.PatientReport;
+import entities.Specialty;
+import services.AppointmentService;
+import services.DoctorService;
+import services.MedicalTestOrderService;
+import services.MedicalTestService;
+import services.PatientReportService;
+import services.PatientService;
+import services.SpecialtyService;
+
+import java.util.List;
+
 import javax.swing.LayoutStyle.ComponentPlacement;
 
 public class Menu extends JFrame {
-    /**
-	 * 
-	 */
+	
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPanel;
     private CardLayout cardLayout;
@@ -38,11 +59,203 @@ public class Menu extends JFrame {
     private JTextField txtPhoneNumber;
     private JTextField txtAppointmentDoctor;
     private JTable appointmentTable;
+    private JComboBox<Doctor> cbbDoctor;
+    private JComboBox<Patient> cbbPatient ;
+    private JComboBox<MedicalTest> cbbMedicalTest;
+    private AppointmentService appointmentService;
+    private DoctorService doctorService;
+    private MedicalTestOrderService medicalTestOrderService;
+    private MedicalTestService medicalTestService;
+    private PatientService patientService;
+    private SpecialtyService specialtyService;
+    private PatientReportService patientReportService;
+    private JTable doctorReportTable;
+    private JTable patientReportTable;
+    private JTable medicalTestReportTable;
+    private JButton btnSaveDoctorReport;
+    private JButton btnSavePatientReport;
+    private JButton btnSaveMedicalTestReport;
 
     public Menu() {
     	initComponents();
+    	appointmentService = new AppointmentService();
+    	doctorService = new DoctorService();
+    	medicalTestOrderService = new MedicalTestOrderService();
+    	medicalTestService = new MedicalTestService(); 
+    	patientService = new PatientService();
+    	specialtyService = new SpecialtyService();
+    	patientReportService = new PatientReportService();
+    	refreshTables();
     }
+    
      
+    public void refreshTables() {
+    	try {
+    		searchAppointments();
+    		searchDoctors();
+    		searchMedicalTestOrders();
+    		searchMedicalTests();
+    		searchPatients();
+    		searchSpecialties();
+    	}  catch (SQLException | IOException e) {
+
+			JOptionPane.showMessageDialog(null, "Erro ao carregar dados", "Busca", JOptionPane.ERROR_MESSAGE);
+		}
+    }
+    
+    private void searchAppointments() throws SQLException, IOException{
+    	SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+    	
+    	DefaultTableModel model = (DefaultTableModel) appointmentTable.getModel();
+    	model.fireTableDataChanged();
+    	model.setRowCount(0);
+    	
+    	model.addRow(new Object[] { "Id", "Data", "Paciente", "Doutor" });
+    	
+    	List<Appointment> appointments = this.appointmentService.listAppointments("", "", "");
+    	
+    	for(Appointment appointment : appointments) {
+    		String date = appointment.getAppointmentDate() + appointment.getTime();
+    		Patient patient = appointment.getPatient();
+    		Doctor doctor = appointment.getDoctor();
+    		
+    		model.addRow(new Object[] {
+    			appointment.getId(),
+    			date, // format.format(date)
+    			patient.getName(),
+    			doctor.getName(),
+    		});
+    	}
+    }
+    
+    private void searchDoctors() throws SQLException, IOException{
+    	
+    	SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+    	
+    	DefaultTableModel model = (DefaultTableModel) doctorTable.getModel();
+    	model.fireTableDataChanged();
+    	model.setRowCount(0);
+    	
+    	model.addRow(new Object[] { "Id", "Nome", "CRM", "Especialidade", "Endereço", "Telefone"});
+    	
+    	List<Doctor> doctors = this.doctorService.listDoctors("", null, "");
+    	
+    	for(Doctor doctor : doctors) {
+    		cbbDoctor.addItem(doctor);
+    		
+    		Specialty specialty = doctor.getSpecialty();
+    		Address address = doctor.getAddress();
+    		
+    		model.addRow(new Object[] {
+    			doctor.getId(),
+    			doctor.getName(),
+    			doctor.getCrmNumber(),
+    			specialty.getSpecialtyName(),
+    			address.getLocation(),
+    			doctor.getPhoneNumber()
+    		});
+    	}
+    }
+    
+    private void searchMedicalTestOrders() throws SQLException, IOException{
+    	    	
+    	SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+    	
+    	DefaultTableModel model = (DefaultTableModel) mtoTable.getModel();
+    	model.fireTableDataChanged();
+    	model.setRowCount(0);
+    	
+    	model.addRow(new Object[] { "Id", "Paciente", "Doutor", "Exame", "Data", "Valor Pago" });
+    	
+    	List<MedicalTestOrder> medicalTestOrders = this.medicalTestOrderService.listMedicalTestOrders("", "", "");
+    	
+    	for(MedicalTestOrder mto : medicalTestOrders) {
+    		String date = mto.getTestDate();
+    		Patient patient = mto.getPatient();
+    		Doctor doctor = mto.getDoctor();
+    		MedicalTest mt = mto.getTest();
+    		
+    		model.addRow(new Object[] {
+    			mto.getId(),
+    			patient.getName(),
+    			doctor.getName(),
+    			mt.getName(),
+    			date,
+    			mto.getValuePaid()
+    		});
+    	}
+    }
+    
+    private void searchMedicalTests() throws SQLException, IOException{
+    	//"code", "name", "value", "instructions"
+    	
+    	SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+    	
+    	DefaultTableModel model = (DefaultTableModel) mtTable.getModel();
+    	model.fireTableDataChanged();
+    	model.setRowCount(0);
+    	
+    	model.addRow(new Object[] { "Código", "Nome", "Valor", "Instruções" });
+    	
+    	List<MedicalTest> medicalTests = this.medicalTestService.listMedicalTests("", "", 0);
+    	
+    	for(MedicalTest mt : medicalTests) {
+    		cbbMedicalTest.addItem(mt);
+    		model.addRow(new Object[] {
+    			mt.getCode(),
+    			mt.getName(),
+    			mt.getValue(),
+    			mt.getInstructions()
+    		});
+    	}
+    }
+    
+    private void searchPatients() throws SQLException, IOException{
+   
+    	SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+    	
+    	DefaultTableModel model = (DefaultTableModel) patientsTable.getModel();
+    	model.fireTableDataChanged();
+    	model.setRowCount(0);
+    	
+    	model.addRow(new Object[] { "Id", "Nome", "CPF", "Gênero", "Telefone", "Data de nascimento", "Método de pagamento" });
+    	
+    	List<Patient> patients = this.patientService.listPatients("", "", "", "");
+    	
+    	for(Patient patient : patients) {
+    		cbbPatient.addItem(patient);
+    		
+    		model.addRow(new Object[] {
+    			patient.getId(),
+    			patient.getName(),
+    			patient.getCpf(),
+    			patient.getGender(),
+    			patient.getPhoneNumber(),
+    			patient.getDateOfBirth(),
+    			patient.getPaymentMethod()
+    		});
+    	}
+    }
+    
+    private void searchSpecialties() throws SQLException, IOException{
+    	SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+    	
+    	DefaultTableModel model = (DefaultTableModel) specialtiesTable.getModel();
+    	model.fireTableDataChanged();
+    	model.setRowCount(0);
+    	
+    	model.addRow(new Object[] { "Código", "Nome" });
+    	
+    	List<Specialty> specialties= this.specialtyService.listSpecialties("", "");
+    	
+    	for(Specialty specialty: specialties) {
+    		model.addRow(new Object[] {
+    			specialty.getSpecialtyCode(),
+    			specialty.getSpecialtyName(),
+    		});
+    	}
+    }
+    
     private void openDoctorInsert() {
     	DoctorForm df = new DoctorForm(this);
     	df.setVisible(true);
@@ -72,6 +285,108 @@ public class Menu extends JFrame {
     	SpecialtyForm sf = new SpecialtyForm(this);
     	sf.setVisible(true);
     }
+    
+    private void generatePatientReport() {
+    	try {
+    		SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+    	
+    		DefaultTableModel model = (DefaultTableModel) patientReportTable.getModel();
+    		model.fireTableDataChanged();
+    		model.setRowCount(0);
+    	
+    		model.addRow(new Object[] { "Tipo", "Data", "Informação" });
+    	
+    		List<PatientReport> reports= this.patientReportService.listPatientReports((Patient) cbbPatient.getSelectedItem());
+    	
+    		for(PatientReport report: reports) {
+    			model.addRow(new Object[] {
+    					report.getType(),
+    					report.getInfos(),
+    					report.getDate(),
+    			});
+    		}
+    		
+    		btnSavePatientReport.setEnabled(true);
+    		
+    	}  catch (SQLException | IOException e) {
+    		JOptionPane.showMessageDialog(null, "Erro ao carregar dados", "Busca", JOptionPane.ERROR_MESSAGE);
+    	}
+    }
+    
+    private void generateDoctorReport() {
+    	try {
+    		SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+        	
+        	DefaultTableModel model = (DefaultTableModel) doctorReportTable.getModel();
+        	model.fireTableDataChanged();
+        	model.setRowCount(0);
+        	
+        	model.addRow(new Object[] { "Paciente", "Especialidade", "Data" });
+        	
+        	List<Appointment> appointments = this.appointmentService.getDoctorReport((Doctor) cbbDoctor.getSelectedItem());
+        	
+        	for(Appointment appointment : appointments) {
+        		String date = appointment.getAppointmentDate() + appointment.getTime();
+        		Patient patient = appointment.getPatient();
+        		Doctor doctor = appointment.getDoctor();
+        		
+        		model.addRow(new Object[] {
+        			patient.getName(),
+        			doctor.getSpecialty(),
+        			date, // format.format(date)
+        		});
+        	}
+        	
+        	btnSaveDoctorReport.setEnabled(true);
+        	
+    	} catch (SQLException | IOException e) {
+    		JOptionPane.showMessageDialog(null, "Erro ao carregar dados", "Busca", JOptionPane.ERROR_MESSAGE);
+    	} 	
+    }
+    
+    private void generateMedicalTestReport() {
+    	try {
+    		SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+        	
+        	DefaultTableModel model = (DefaultTableModel) medicalTestReportTable.getModel();
+        	model.fireTableDataChanged();
+        	model.setRowCount(0);
+        	
+        	model.addRow(new Object[] { "Médico", "Paciente", "Data" });
+        	
+        	List<MedicalTestOrder> medicalTestOrders = this.medicalTestOrderService.listMedicalTestReport((MedicalTest)cbbMedicalTest.getSelectedItem());
+        	
+        	for(MedicalTestOrder mto : medicalTestOrders) {
+        		String date = mto.getTestDate();
+        		Patient patient = mto.getPatient();
+        		Doctor doctor = mto.getDoctor();
+        		
+        		model.addRow(new Object[] {
+        			doctor.getName(),
+        			patient.getName(),
+        			date,
+        		});
+        	}
+        	
+        	btnSaveMedicalTestReport.setEnabled(true);
+        	
+    	} catch (SQLException | IOException e) {
+    		JOptionPane.showMessageDialog(null, "Erro ao carregar dados", "Busca", JOptionPane.ERROR_MESSAGE);
+    	}
+    }
+    
+    private void savePatientReport() {
+    	//TODO: PEGAR INFOS DE patientReportTable e escrever o arquivo
+    }
+    
+    private void saveDoctorReport() {
+    	//TODO: PEGAR INFOS DE doctorReportTable e escrever o arquivo
+    }
+    
+    private void saveMedicalTestReport() {
+    	//TODO: PEGAR INFOS DE medicalTestReportTable e escrever o arquivo
+    }
+    
     
     private void initComponents() {
     	setTitle("Menu");
@@ -168,6 +483,34 @@ public class Menu extends JFrame {
         
         JMenuItem specialtiesInsert = new JMenuItem("Inserir");
         specialtiesMenu.add(specialtiesInsert);
+        
+        JMenu reportsMenu = new JMenu("Relatórios");
+        reportsMenu.setFont(new Font("Dialog", Font.PLAIN, 18));
+        menuBar.add(reportsMenu);
+        
+        JMenuItem reportsDoctor = new JMenuItem("Médico");
+        reportsDoctor.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        		cardLayout.show(contentPanel, "doctorReport");
+        	}
+        });
+        reportsMenu.add(reportsDoctor);
+        
+        JMenuItem reportsPacient = new JMenuItem("Paciente");
+        reportsPacient.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        		cardLayout.show(contentPanel, "patientReport");
+        	}
+        });
+        reportsMenu.add(reportsPacient);
+        
+        JMenuItem reportsMedicalTest = new JMenuItem("Exame");
+        reportsMedicalTest.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        		cardLayout.show(contentPanel, "medicalTestReport");
+        	}
+        });
+        reportsMenu.add(reportsMedicalTest);
         specialtiesInsert.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
         		openSpecialtyInsert();
@@ -228,6 +571,24 @@ public class Menu extends JFrame {
         appointmentDoctor.add(txtAppointmentDoctor, gbc_txtAppointmentDoctor);
         
         appointmentTable = new JTable();
+        appointmentTable.setModel(new DefaultTableModel(
+        	new Object[][] {
+        	},
+        	new String[] {
+        		"id", "date", "pacient", "doctor"
+        	}
+        ) {
+        	boolean[] columnEditables = new boolean[] {
+        		false, false, false, false
+        	};
+        	public boolean isCellEditable(int row, int column) {
+        		return columnEditables[column];
+        	}
+        });
+        appointmentTable.getColumnModel().getColumn(0).setResizable(false);
+        appointmentTable.getColumnModel().getColumn(1).setResizable(false);
+        appointmentTable.getColumnModel().getColumn(2).setResizable(false);
+        appointmentTable.getColumnModel().getColumn(3).setResizable(false);
         
         JPanel appointmentPhone = new JPanel();
         GridBagLayout gbl_appointmentPhone = new GridBagLayout();
@@ -331,19 +692,23 @@ public class Menu extends JFrame {
         doctorTable.setFont(new Font("Segoe UI Variable", Font.PLAIN, 14));
         doctorTable.setModel(new DefaultTableModel(
         	new Object[][] {
-        		{"Nome", "CRM", "Especialidade", "Endere\u00E7o", "Telefone", "A\u00E7\u00F5es"},
         	},
         	new String[] {
-        		"fullName", "crmNumber", "specialty", "address", "phoneNumber", "actions"
+        		"id", "fullName", "crmNumber", "specialty", "address", "phoneNumber"
         	}
         ) {
         	Class[] columnTypes = new Class[] {
-        		String.class, String.class, String.class, String.class, Object.class, Object.class
+        		Object.class, String.class, String.class, String.class, String.class, Object.class
         	};
         	public Class getColumnClass(int columnIndex) {
         		return columnTypes[columnIndex];
         	}
         });
+        doctorTable.getColumnModel().getColumn(1).setResizable(false);
+        doctorTable.getColumnModel().getColumn(2).setResizable(false);
+        doctorTable.getColumnModel().getColumn(3).setResizable(false);
+        doctorTable.getColumnModel().getColumn(4).setResizable(false);
+        doctorTable.getColumnModel().getColumn(5).setResizable(false);
         
         JPanel doctorSpecialty = new JPanel();
         GridBagLayout gbl_doctorSpecialty = new GridBagLayout();
@@ -481,13 +846,27 @@ public class Menu extends JFrame {
         
         patientsTable = new JTable();
         patientsTable.setModel(new DefaultTableModel(
-        	new Object[][] {},
+        	new Object[][] {
+        	},
         	new String[] {
-        		"Nome", "CPF", "G\u00EAnero", "Telefone", "Data de Nascimento", "M\u00E9todo de Pagamento"
+        		"id", "name", "cpf", "genre", "phone", "dateOfBirth", "paymentMethod"
         	}
-        ));
-        patientsTable.getColumnModel().getColumn(1).setPreferredWidth(193);
-        patientsTable.getColumnModel().getColumn(4).setPreferredWidth(155);
+        ) {
+        	boolean[] columnEditables = new boolean[] {
+        		true, false, false, false, false, false, false
+        	};
+        	public boolean isCellEditable(int row, int column) {
+        		return columnEditables[column];
+        	}
+        });
+        patientsTable.getColumnModel().getColumn(1).setResizable(false);
+        patientsTable.getColumnModel().getColumn(2).setResizable(false);
+        patientsTable.getColumnModel().getColumn(2).setPreferredWidth(193);
+        patientsTable.getColumnModel().getColumn(3).setResizable(false);
+        patientsTable.getColumnModel().getColumn(4).setResizable(false);
+        patientsTable.getColumnModel().getColumn(5).setResizable(false);
+        patientsTable.getColumnModel().getColumn(5).setPreferredWidth(155);
+        patientsTable.getColumnModel().getColumn(6).setResizable(false);
         patientsTable.setFont(new Font("Segoe UI Variable", Font.PLAIN, 14));
         
         JPanel patientsName = new JPanel();
@@ -660,11 +1039,23 @@ public class Menu extends JFrame {
         
         mtTable = new JTable();
         mtTable.setModel(new DefaultTableModel(
-        	new Object[][] {},
+        	new Object[][] {
+        	},
         	new String[] {
-        		"C\u00F3digo", "Nome", "Valor", "Instru\u00E7\u00F5es"
+        		"code", "name", "value", "instructions"
         	}
-        ));
+        ) {
+        	boolean[] columnEditables = new boolean[] {
+        		false, false, false, false
+        	};
+        	public boolean isCellEditable(int row, int column) {
+        		return columnEditables[column];
+        	}
+        });
+        mtTable.getColumnModel().getColumn(0).setResizable(false);
+        mtTable.getColumnModel().getColumn(1).setResizable(false);
+        mtTable.getColumnModel().getColumn(2).setResizable(false);
+        mtTable.getColumnModel().getColumn(3).setResizable(false);
         mtTable.setFont(new Font("Segoe UI Variable", Font.PLAIN, 14));
         
         JPanel mtName = new JPanel();
@@ -801,11 +1192,24 @@ public class Menu extends JFrame {
         
         mtoTable = new JTable();
         mtoTable.setModel(new DefaultTableModel(
-        	new Object[][] {},
+        	new Object[][] {
+        	},
         	new String[] {
-        		"Paciente", "M\u00E9dico", "Exame", "Data", "Valor Pago"
+        		"id", "pacient", "doctor", "medicalTest", "date", "valuePaid"
         	}
-        ));
+        ) {
+        	boolean[] columnEditables = new boolean[] {
+        		true, false, false, false, false, false
+        	};
+        	public boolean isCellEditable(int row, int column) {
+        		return columnEditables[column];
+        	}
+        });
+        mtoTable.getColumnModel().getColumn(1).setResizable(false);
+        mtoTable.getColumnModel().getColumn(2).setResizable(false);
+        mtoTable.getColumnModel().getColumn(3).setResizable(false);
+        mtoTable.getColumnModel().getColumn(4).setResizable(false);
+        mtoTable.getColumnModel().getColumn(5).setResizable(false);
         mtoTable.setFont(new Font("Segoe UI Variable", Font.PLAIN, 14));
         
         JPanel mtoPatientName = new JPanel();
@@ -941,6 +1345,22 @@ public class Menu extends JFrame {
         contentPanel.add(specialtiesPanel, "Specialties");        
         
         specialtiesTable = new JTable();
+        specialtiesTable.setModel(new DefaultTableModel(
+        	new Object[][] {
+        	},
+        	new String[] {
+        		"code", "name"
+        	}
+        ) {
+        	boolean[] columnEditables = new boolean[] {
+        		false, false
+        	};
+        	public boolean isCellEditable(int row, int column) {
+        		return columnEditables[column];
+        	}
+        });
+        specialtiesTable.getColumnModel().getColumn(0).setResizable(false);
+        specialtiesTable.getColumnModel().getColumn(1).setResizable(false);
         specialtiesTable.setFont(new Font("Segoe UI Variable", Font.PLAIN, 14));
         
         JPanel specialtiesName = new JPanel();
@@ -1073,9 +1493,273 @@ public class Menu extends JFrame {
         });
         
         getContentPane().add(contentPanel, BorderLayout.CENTER);
+        
+        JPanel Main = new JPanel();
+        contentPanel.add(Main, "Main");
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
+        
+        cardLayout.show(contentPanel, "Main");
+        
+        JPanel doctorReport = new JPanel();
+        contentPanel.add(doctorReport, "doctorReport");
+        
+        JPanel doctor = new JPanel();
+        GridBagLayout gbl_doctor = new GridBagLayout();
+        gbl_doctor.columnWidths = new int[]{110, 20, 482, 0};
+        gbl_doctor.rowHeights = new int[]{38, 0};
+        gbl_doctor.columnWeights = new double[]{0.0, 0.0, 1.0, Double.MIN_VALUE};
+        gbl_doctor.rowWeights = new double[]{0.0, Double.MIN_VALUE};
+        doctor.setLayout(gbl_doctor);
+        
+        JLabel lblSpecialty_1 = new JLabel("Doutor:");
+        lblSpecialty_1.setFont(new Font("Dialog", Font.PLAIN, 24));
+        GridBagConstraints gbc_lblSpecialty_1 = new GridBagConstraints();
+        gbc_lblSpecialty_1.anchor = GridBagConstraints.WEST;
+        gbc_lblSpecialty_1.insets = new Insets(0, 0, 0, 5);
+        gbc_lblSpecialty_1.gridx = 0;
+        gbc_lblSpecialty_1.gridy = 0;
+        doctor.add(lblSpecialty_1, gbc_lblSpecialty_1);
+        
+        Component horizontalStrut_1_2_1 = Box.createHorizontalStrut(20);
+        GridBagConstraints gbc_horizontalStrut_1_2_1 = new GridBagConstraints();
+        gbc_horizontalStrut_1_2_1.fill = GridBagConstraints.HORIZONTAL;
+        gbc_horizontalStrut_1_2_1.insets = new Insets(0, 0, 0, 5);
+        gbc_horizontalStrut_1_2_1.gridx = 1;
+        gbc_horizontalStrut_1_2_1.gridy = 0;
+        doctor.add(horizontalStrut_1_2_1, gbc_horizontalStrut_1_2_1);
+        
+        cbbDoctor = new JComboBox<Doctor>();
+        cbbDoctor.setFont(new Font("Dialog", Font.PLAIN, 24));
+        GridBagConstraints gbc_cbbDoctor = new GridBagConstraints();
+        gbc_cbbDoctor.fill = GridBagConstraints.HORIZONTAL;
+        gbc_cbbDoctor.gridx = 2;
+        gbc_cbbDoctor.gridy = 0;
+        doctor.add(cbbDoctor, gbc_cbbDoctor);
+        
+        JButton btnGenerateDoctorReport = new JButton("Gerar Relatório");
+        btnGenerateDoctorReport.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        		generateDoctorReport();
+        	}
+        });
+        btnGenerateDoctorReport.setFont(new Font("Dialog", Font.PLAIN, 24));
+        
+        doctorReportTable = new JTable();
+        doctorReportTable.setModel(new DefaultTableModel(
+        	new Object[][] {
+        	},
+        	new String[] {
+        		"patient", "specialty", "date"
+        	}
+        ));
+        
+        btnSaveDoctorReport = new JButton("Salvar Relatório");
+        btnSaveDoctorReport.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        	}
+        });
+        btnSaveDoctorReport.setFont(new Font("Dialog", Font.PLAIN, 24));
+        btnSaveDoctorReport.setEnabled(false);
+        GroupLayout gl_doctorReport = new GroupLayout(doctorReport);
+        gl_doctorReport.setHorizontalGroup(
+        	gl_doctorReport.createParallelGroup(Alignment.LEADING)
+        		.addGroup(gl_doctorReport.createSequentialGroup()
+        			.addContainerGap()
+        			.addGroup(gl_doctorReport.createParallelGroup(Alignment.LEADING)
+        				.addComponent(doctor, GroupLayout.DEFAULT_SIZE, 1246, Short.MAX_VALUE)
+        				.addComponent(doctorReportTable, GroupLayout.PREFERRED_SIZE, 1246, GroupLayout.PREFERRED_SIZE)
+        				.addGroup(gl_doctorReport.createSequentialGroup()
+        					.addComponent(btnGenerateDoctorReport, GroupLayout.PREFERRED_SIZE, 289, GroupLayout.PREFERRED_SIZE)
+        					.addPreferredGap(ComponentPlacement.UNRELATED)
+        					.addComponent(btnSaveDoctorReport, GroupLayout.PREFERRED_SIZE, 289, GroupLayout.PREFERRED_SIZE)))
+        			.addContainerGap())
+        );
+        gl_doctorReport.setVerticalGroup(
+        	gl_doctorReport.createParallelGroup(Alignment.LEADING)
+        		.addGroup(gl_doctorReport.createSequentialGroup()
+        			.addContainerGap()
+        			.addComponent(doctor, GroupLayout.PREFERRED_SIZE, 38, GroupLayout.PREFERRED_SIZE)
+        			.addGap(18)
+        			.addGroup(gl_doctorReport.createParallelGroup(Alignment.LEADING)
+        				.addComponent(btnGenerateDoctorReport, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE)
+        				.addComponent(btnSaveDoctorReport, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE))
+        			.addGap(18)
+        			.addComponent(doctorReportTable, GroupLayout.DEFAULT_SIZE, 523, Short.MAX_VALUE)
+        			.addContainerGap())
+        );
+        doctorReport.setLayout(gl_doctorReport);
+        
+        JPanel patientReport = new JPanel();
+        contentPanel.add(patientReport, "patientReport");
+        
+        JPanel patient = new JPanel();
+        GridBagLayout gbl_patient = new GridBagLayout();
+        gbl_patient.columnWidths = new int[]{71, 20, 321, 0};
+        gbl_patient.rowHeights = new int[]{38, 0};
+        gbl_patient.columnWeights = new double[]{0.0, 0.0, 1.0, Double.MIN_VALUE};
+        gbl_patient.rowWeights = new double[]{0.0, Double.MIN_VALUE};
+        patient.setLayout(gbl_patient);
+        
+        JLabel lblPaciente_1 = new JLabel("Paciente:");
+        lblPaciente_1.setFont(new Font("Dialog", Font.PLAIN, 24));
+        GridBagConstraints gbc_lblPaciente_1 = new GridBagConstraints();
+        gbc_lblPaciente_1.anchor = GridBagConstraints.WEST;
+        gbc_lblPaciente_1.insets = new Insets(0, 0, 0, 5);
+        gbc_lblPaciente_1.gridx = 0;
+        gbc_lblPaciente_1.gridy = 0;
+        patient.add(lblPaciente_1, gbc_lblPaciente_1);
+        
+        Component horizontalStrut_1_6 = Box.createHorizontalStrut(20);
+        GridBagConstraints gbc_horizontalStrut_1_6 = new GridBagConstraints();
+        gbc_horizontalStrut_1_6.fill = GridBagConstraints.HORIZONTAL;
+        gbc_horizontalStrut_1_6.insets = new Insets(0, 0, 0, 5);
+        gbc_horizontalStrut_1_6.gridx = 1;
+        gbc_horizontalStrut_1_6.gridy = 0;
+        patient.add(horizontalStrut_1_6, gbc_horizontalStrut_1_6);
+        
+        cbbPatient = new JComboBox<Patient>();
+        cbbPatient.setFont(new Font("Dialog", Font.PLAIN, 24));
+        GridBagConstraints gbc_cbbPatient = new GridBagConstraints();
+        gbc_cbbPatient.fill = GridBagConstraints.HORIZONTAL;
+        gbc_cbbPatient.gridx = 2;
+        gbc_cbbPatient.gridy = 0;
+        patient.add(cbbPatient, gbc_cbbPatient);
+        
+        JButton btnGeneratePatientReport = new JButton("Gerar Relatório");
+        btnGeneratePatientReport.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        		generatePatientReport();
+        	}
+        });
+        btnGeneratePatientReport.setFont(new Font("Dialog", Font.PLAIN, 24));
+        
+        patientReportTable = new JTable();
+        patientReportTable.setModel(new DefaultTableModel(
+        	new Object[][] {
+        	},
+        	new String[] {
+        		"type", "date", "infos"
+        	}
+        ));
+        
+        btnSavePatientReport = new JButton("Salvar Relatório");
+        btnSavePatientReport.setFont(new Font("Dialog", Font.PLAIN, 24));
+        btnSavePatientReport.setEnabled(false);
+        GroupLayout gl_patientReport = new GroupLayout(patientReport);
+        gl_patientReport.setHorizontalGroup(
+        	gl_patientReport.createParallelGroup(Alignment.LEADING)
+        		.addGroup(gl_patientReport.createSequentialGroup()
+        			.addContainerGap()
+        			.addGroup(gl_patientReport.createParallelGroup(Alignment.LEADING)
+        				.addComponent(patient, GroupLayout.DEFAULT_SIZE, 1246, Short.MAX_VALUE)
+        				.addComponent(patientReportTable, GroupLayout.PREFERRED_SIZE, 1246, GroupLayout.PREFERRED_SIZE)
+        				.addGroup(gl_patientReport.createSequentialGroup()
+        					.addComponent(btnGeneratePatientReport, GroupLayout.PREFERRED_SIZE, 289, GroupLayout.PREFERRED_SIZE)
+        					.addPreferredGap(ComponentPlacement.UNRELATED)
+        					.addComponent(btnSavePatientReport, GroupLayout.PREFERRED_SIZE, 289, GroupLayout.PREFERRED_SIZE)))
+        			.addContainerGap())
+        );
+        gl_patientReport.setVerticalGroup(
+        	gl_patientReport.createParallelGroup(Alignment.LEADING)
+        		.addGroup(gl_patientReport.createSequentialGroup()
+        			.addContainerGap()
+        			.addComponent(patient, GroupLayout.PREFERRED_SIZE, 38, GroupLayout.PREFERRED_SIZE)
+        			.addPreferredGap(ComponentPlacement.UNRELATED)
+        			.addGroup(gl_patientReport.createParallelGroup(Alignment.LEADING)
+        				.addComponent(btnGeneratePatientReport, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE)
+        				.addComponent(btnSavePatientReport, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE))
+        			.addGap(18)
+        			.addComponent(patientReportTable, GroupLayout.PREFERRED_SIZE, 500, GroupLayout.PREFERRED_SIZE)
+        			.addContainerGap(41, Short.MAX_VALUE))
+        );
+        patientReport.setLayout(gl_patientReport);
+        
+        JPanel medicalTestReport = new JPanel();
+        contentPanel.add(medicalTestReport, "medicalTestReport");
+        
+        JPanel medicalTest = new JPanel();
+        GridBagLayout gbl_medicalTest = new GridBagLayout();
+        gbl_medicalTest.columnWidths = new int[]{71, 20, 321, 0};
+        gbl_medicalTest.rowHeights = new int[]{38, 0};
+        gbl_medicalTest.columnWeights = new double[]{0.0, 0.0, 1.0, Double.MIN_VALUE};
+        gbl_medicalTest.rowWeights = new double[]{0.0, Double.MIN_VALUE};
+        medicalTest.setLayout(gbl_medicalTest);
+        
+        JLabel lblCode = new JLabel("Exame:");
+        lblCode.setFont(new Font("Dialog", Font.PLAIN, 24));
+        GridBagConstraints gbc_lblCode = new GridBagConstraints();
+        gbc_lblCode.anchor = GridBagConstraints.WEST;
+        gbc_lblCode.insets = new Insets(0, 0, 0, 5);
+        gbc_lblCode.gridx = 0;
+        gbc_lblCode.gridy = 0;
+        medicalTest.add(lblCode, gbc_lblCode);
+        
+        Component horizontalStrut_7 = Box.createHorizontalStrut(20);
+        GridBagConstraints gbc_horizontalStrut_7 = new GridBagConstraints();
+        gbc_horizontalStrut_7.fill = GridBagConstraints.HORIZONTAL;
+        gbc_horizontalStrut_7.insets = new Insets(0, 0, 0, 5);
+        gbc_horizontalStrut_7.gridx = 1;
+        gbc_horizontalStrut_7.gridy = 0;
+        medicalTest.add(horizontalStrut_7, gbc_horizontalStrut_7);
+        
+        cbbMedicalTest = new JComboBox<MedicalTest>();
+        cbbMedicalTest.setFont(new Font("Dialog", Font.PLAIN, 24));
+        GridBagConstraints gbc_cbbMedicalTest = new GridBagConstraints();
+        gbc_cbbMedicalTest.fill = GridBagConstraints.HORIZONTAL;
+        gbc_cbbMedicalTest.gridx = 2;
+        gbc_cbbMedicalTest.gridy = 0;
+        medicalTest.add(cbbMedicalTest, gbc_cbbMedicalTest);
+        
+        JButton btnGenerateMedicalTestReport = new JButton("Gerar Relatório");
+        btnGenerateMedicalTestReport.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        		generateMedicalTestReport();
+        	}
+        });
+        btnGenerateMedicalTestReport.setFont(new Font("Dialog", Font.PLAIN, 24));
+        
+        medicalTestReportTable = new JTable();
+        medicalTestReportTable.setModel(new DefaultTableModel(
+        	new Object[][] {
+        	},
+        	new String[] {
+        		"doctor", "patient", "date"
+        	}
+        ));
+        
+        btnSaveMedicalTestReport = new JButton("Salvar Relatório");
+        btnSaveMedicalTestReport.setEnabled(false);
+        btnSaveMedicalTestReport.setFont(new Font("Dialog", Font.PLAIN, 24));
+        GroupLayout gl_medicalTestReport = new GroupLayout(medicalTestReport);
+        gl_medicalTestReport.setHorizontalGroup(
+        	gl_medicalTestReport.createParallelGroup(Alignment.LEADING)
+        		.addGroup(gl_medicalTestReport.createSequentialGroup()
+        			.addContainerGap()
+        			.addGroup(gl_medicalTestReport.createParallelGroup(Alignment.LEADING)
+        				.addComponent(medicalTest, GroupLayout.DEFAULT_SIZE, 1246, Short.MAX_VALUE)
+        				.addComponent(medicalTestReportTable, GroupLayout.PREFERRED_SIZE, 1246, GroupLayout.PREFERRED_SIZE)
+        				.addGroup(gl_medicalTestReport.createSequentialGroup()
+        					.addComponent(btnGenerateMedicalTestReport, GroupLayout.PREFERRED_SIZE, 289, GroupLayout.PREFERRED_SIZE)
+        					.addPreferredGap(ComponentPlacement.UNRELATED)
+        					.addComponent(btnSaveMedicalTestReport, GroupLayout.PREFERRED_SIZE, 289, GroupLayout.PREFERRED_SIZE)))
+        			.addContainerGap())
+        );
+        gl_medicalTestReport.setVerticalGroup(
+        	gl_medicalTestReport.createParallelGroup(Alignment.LEADING)
+        		.addGroup(gl_medicalTestReport.createSequentialGroup()
+        			.addContainerGap()
+        			.addComponent(medicalTest, GroupLayout.PREFERRED_SIZE, 38, GroupLayout.PREFERRED_SIZE)
+        			.addGap(18)
+        			.addGroup(gl_medicalTestReport.createParallelGroup(Alignment.LEADING)
+        				.addComponent(btnGenerateMedicalTestReport, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE)
+        				.addComponent(btnSaveMedicalTestReport, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE))
+        			.addGap(18)
+        			.addComponent(medicalTestReportTable, GroupLayout.PREFERRED_SIZE, 500, GroupLayout.PREFERRED_SIZE)
+        			.addContainerGap(35, Short.MAX_VALUE))
+        );
+        medicalTestReport.setLayout(gl_medicalTestReport);
     }
     
     public static void main(String[] args) {

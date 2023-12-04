@@ -4,12 +4,12 @@ import java.util.Date;
 
 public class Appointment {
 	private int id;
-	private Date appointmentDate;
+	private String appointmentDate;
 	private String time;
     private Patient patient;
     private Doctor doctor;
 	
-    public Appointment(int id, Date appointmentDate, String time, Patient patient, Doctor doctor) {
+    public Appointment(int id, String appointmentDate, String time, Patient patient, Doctor doctor) {
 		super();
 		this.id = id;
 		this.appointmentDate = appointmentDate;
@@ -26,11 +26,11 @@ public class Appointment {
 		this.id = id;
 	}
 
-	public Date getAppointmentDate() {
+	public String getAppointmentDate() {
 		return appointmentDate;
 	}
 
-	public void setAppointmentDate(Date appointmentDate) {
+	public void setAppointmentDate(String appointmentDate) {
 		this.appointmentDate = appointmentDate;
 	}
 
