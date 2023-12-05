@@ -17,6 +17,10 @@ public class Address {
 		this.city = city;
 		this.uf = uf;
 	}
+	
+	public Address() {
+		
+	}
 
 	public int getId() {
 		return id;

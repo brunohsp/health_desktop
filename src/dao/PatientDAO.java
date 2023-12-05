@@ -23,18 +23,18 @@ public class PatientDAO {
 		try {
 			st = conn.prepareStatement("call inserirPaciente (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ");
 			
-			// st.setInt(1, paciente.getIdPaciente());
+			st.setInt(1, paciente.getId());
 			st.setString(2, paciente.getName());
-			//st.setDate(3, paciente.getDateOfBirth());
+			st.setString(3, paciente.getDateOfBirth());
 			st.setString(4, paciente.getGender());
-			// st.setInt(5, paciente.getCpf());
+			st.setString(5, paciente.getCpf());
 			st.setString(6, paciente.getPhoneNumber());
 			st.setString(7, paciente.getPhoto());
-			// st.setInt(8, paciente.getCep());
-			// st.setString(9, paciente.getRua());
-			// st.setString(10, paciente.getBairro());
-			// st.setString(11, paciente.getCidade());
-			// st.setString(12, paciente.getUf());
+			st.setInt(8, paciente.getAddress().getCep());
+			st.setString(9, paciente.getAddress().getLocation());
+			st.setString(10, paciente.getAddress().getNeighborhood());
+			st.setString(11, paciente.getAddress().getCity());
+			st.setString(12, paciente.getAddress().getUf());
 			
 			st.executeUpdate();
 			
@@ -56,18 +56,18 @@ public class PatientDAO {
 			
 			st = conn.prepareStatement("call alterarPaciente (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ");
 			
-			//st.setInt(1, paciente.getId());
+			st.setInt(1, paciente.getId());
 			st.setString(2, paciente.getName());
-			//st.setDate(3, paciente.getDateOfBirth());
+			st.setString(3, paciente.getDateOfBirth());
 			st.setString(4, paciente.getGender());
-			//st.getInt(5, paciente.getCpf);
+			st.setString(5, paciente.getCpf());
 			st.setString(6, paciente.getPhoneNumber());
 			st.setString(7, paciente.getPhoto());
-			//st.setInt(8, paciente.getCep());
-			st.setString(9, paciente.getAddress());
-			//st.setString(10, paciente.getBairro());
-			//st.setString(11, paciente.getCidade());
-			//st.setString(12, paciente.getUf());
+			st.setInt(8, paciente.getAddress().getCep());
+			st.setString(9,  paciente.getAddress().getLocation());
+			st.setString(10, paciente.getAddress().getNeighborhood());
+			st.setString(11, paciente.getAddress().getCity());
+			st.setString(12, paciente.getAddress().getUf());
 			
 			st.executeUpdate();
 			
@@ -116,18 +116,19 @@ public class PatientDAO {
 			List<Patient> listaPaciente = new ArrayList<>();
 			
 			while (rs.next()) {
-				Patient paciente = new Patient(); //criar construtor adequado
+				Patient paciente = new Patient(); 
 				
 				paciente.setName(rs.getString("Nome Paciente"));
-				paciente.setDateOfBirth(rs.getDate("Data nascimento"));
+				paciente.setDateOfBirth(rs.getString("Data nascimento"));
 				paciente.setGender(rs.getString("Sexo"));
-				//paciente.setCpf(rs.getInt("Cpf"));
+				paciente.setCpf(rs.getString("Cpf"));
 				paciente.setPhoneNumber(rs.getNString("Numero de telefone"));
 				paciente.setPhoto(rs.getString("Foto"));
 			
 				listaPaciente.add(paciente);
 			}
 			
+			 return listaPaciente;
 			 
 		} finally {
 			DataBase.finalizarStatement(st);

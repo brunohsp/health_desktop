@@ -1,54 +1,71 @@
 package entities;
 
 public class MedicalTest {
-    private String code;
+    private int id;	
     private String name;
     private double value;
     private String instructions;
+    private String code;
 
-    public MedicalTest(String testCode, String testName, double testValue, String testInstructions) {
-        this.code = testCode;
+    public MedicalTest(int id, String testName, double testValue, String testInstructions, String testCode) {
+        this.id = id;    	
         this.name = testName;
         this.value = testValue;
         this.instructions = testInstructions;
+        this.code = testCode;
+    }
+    
+    public MedicalTest() {
+        
     }
 
     // Getters and setters for the attributes
-    public String getCode() {
-        return code;
-    }
 
-    public void setCode(String code) {
-        this.code = code;
-    }
+	public int getId() {
+		return id;
+	}
 
-    public String getName() {
-        return name;
-    }
+	public void setId(int id) {
+		this.id = id;
+	}
 
-    public void setTestName(String name) {
-        this.name = name;
-    }
+	public String getName() {
+		return name;
+	}
 
-    public double getValue() {
-        return value;
-    }
+	public void setName(String name) {
+		this.name = name;
+	}
 
-    public void setTestValue(double value) {
-        this.value = value;
-    }
+	public double getValue() {
+		return value;
+	}
 
-    public String getInstructions() {
-        return instructions;
-    }
+	public void setValue(double value) {
+		this.value = value;
+	}
 
-    public void setTestInstructions(String instructions) {
-        this.instructions = instructions;
-    }
+	public String getInstructions() {
+		return instructions;
+	}
 
-    @Override
+	public void setInstructions(String instructions) {
+		this.instructions = instructions;
+	}
+
+	public String getCode() {
+		return code;
+	}
+
+	public void setCode(String code) {
+		this.code = code;
+	}
+
+	
+	@Override
     public String toString() {
         return name;
     }
+	
 }
 

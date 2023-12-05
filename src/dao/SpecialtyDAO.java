@@ -44,7 +44,7 @@ public class SpecialtyDAO {
 			
 			st = conn.prepareStatement("update Especialidade set nome_esp = ?, codigo_esp = ? where id_especialidade = ? ");
 			
-			//st.setInt(1, especialidade.getIdSpecialty);
+			st.setInt(1, especialidade.getId());
 			st.setString(2, especialidade.getSpecialtyName());
 			st.setInt(3, especialidade.getSpecialtyCode());
 			
@@ -101,6 +101,9 @@ public class SpecialtyDAO {
 				
 				listEspecialidade.add(especialidade);
 			}
+			
+			return listEspecialidade; 
+			
 		} finally {
 			DataBase.finalizarStatement(st);
 			DataBase.finalizarResultSet(rs);

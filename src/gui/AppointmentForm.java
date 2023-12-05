@@ -123,7 +123,7 @@ public class AppointmentForm extends JFrame {
 				return;
 			}
 			
-			Appointment appointment= new Appointment(-1, txtDate.getText(), txtTime.getText(), (Patient) cbbPatient.getSelectedItem(), (Doctor) cbbDoctor.getSelectedItem());
+			Appointment appointment= new Appointment(-1, txtDate.getText(), txtTime.getText(),(Patient) cbbPatient.getSelectedItem(), (Doctor) cbbDoctor.getSelectedItem());
 			
 			this.appointmentService.insert(appointment);
 			

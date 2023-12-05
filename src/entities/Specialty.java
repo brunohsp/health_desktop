@@ -1,12 +1,18 @@
 package entities;
 
 public class Specialty {
-    private int code;
+    private int id;
+	private int code;
     private String name;
 
-    public Specialty(int code, String name) {
-        this.code = code;
+    public Specialty(int id, int code, String name) {
+        this.id = id;
+    	this.code = code;
         this.name = name;
+    }
+    
+    public Specialty() {
+        
     }
 
     public int getSpecialtyCode() {
@@ -25,8 +31,18 @@ public class Specialty {
         this.name = name;
     }
 
+    public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+	
     @Override
     public String toString() {
         return name;
     }
+
+	
 }

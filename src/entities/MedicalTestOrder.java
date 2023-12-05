@@ -6,22 +6,28 @@ public class MedicalTestOrder {
 	private int id;
 	private String testDate;
 	private String time;
+	private double value;
 	private double valuePaid;
     private MedicalTest test;
     private Patient patient;
     private Doctor doctor;
 	
-    public MedicalTestOrder(int id, String testDate, String time, double valuePaid, MedicalTest test, Patient patient, Doctor doctor) {
+    public MedicalTestOrder(int id, String testDate, String time, double value, double valuePaid, MedicalTest test, Patient patient, Doctor doctor) {
 		super();
 		this.id = id;
 		this.testDate = testDate;
 		this.time = time;
+		this.value = value;
 		this.valuePaid = valuePaid;
 		this.test = test;
 		this.patient = patient;
 		this.doctor = doctor;
 	}
 
+    public MedicalTestOrder() {
+		
+	}
+    
 	public int getId() {
 		return id;
 	}
@@ -46,6 +52,14 @@ public class MedicalTestOrder {
 		this.time = time;
 	}
 
+	public double getValue() {
+		return value;
+	}
+
+	public void setValue(double value) {
+		this.value = value;
+	}
+	
 	public double getValuePaid() {
 		return valuePaid;
 	}
@@ -77,6 +91,8 @@ public class MedicalTestOrder {
 	public void setDoctor(Doctor doctor) {
 		this.doctor = doctor;
 	}
+
+	
 
     
 }

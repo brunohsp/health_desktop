@@ -25,11 +25,11 @@ public class MedicalTestOrderDAO {
 		try {
 			st = conn.prepareStatement("call inserirPedidoExame (?, ?, ?, ?, ?) ");
 						
-			st.setString(1, pedidoExame.getCpf());
-			st.setInt(2, pedidoExame.getCrm());
-			st.setString(3, pedidoExame.getCodigoExame());
-			st.setDouble(4, pedidoExame.getValorExame());
-			st.setDouble(5, pedidoExame.getTestValuePaid());
+			st.setString(1, pedidoExame.getPatient().getCpf());
+			st.setInt(2, pedidoExame.getDoctor().getCrmNumber());
+			st.setString(3, pedidoExame.getTest().getCode());
+			st.setDouble(4, pedidoExame.getValue());
+			st.setDouble(5, pedidoExame.getValuePaid());
 			
 			st.executeUpdate();
 			
@@ -54,14 +54,14 @@ public class MedicalTestOrderDAO {
 			
 			st = conn.prepareStatement("call atualizarPedidoExame (?, ?, ?, ?, ?, ?, ?, ?) ");
 			
-			//st.setInt(1, pedidoExame.getIdPedido());
-			//st.setDate(2, pedidoExame.getTestDate());
-			//st.setTime(3, pedidoExame.getHoraTeste());
-			//st.setDouble(4, pedidoExame.getValorExame);
-			//st.setDouble(5, pedidoExame.getTestValuePaid());
-			//st.setInt(6, pedidoExame.getIdExame());
-			//st.setInt(7, pedidoExame.getIdPaciente());
-			//st.setInt(8, pedidoExame.getIdMedico());			
+			st.setInt(1, pedidoExame.getId());
+			st.setString(2, pedidoExame.getTestDate());
+			st.setString(3, pedidoExame.getTime());
+			st.setDouble(4, pedidoExame.getValue());
+			st.setDouble(5, pedidoExame.getValuePaid());
+			st.setInt(6, pedidoExame.getTest().getId());
+			st.setInt(7, pedidoExame.getPatient().getId());
+			st.setInt(8, pedidoExame.getDoctor().getId());			
 			
 			st.executeUpdate();
 			
@@ -107,18 +107,19 @@ public List<MedicalTestOrder> buscarTodosPedidoExame() throws SQLException {
 			List<MedicalTestOrder> listaPedidoMedico = new ArrayList<>();
 			
 			while (rs.next()) {
-				MedicalTestOrder pedidoExame = new MedicalTestOrder(); //criar construtor adequado
+				MedicalTestOrder pedidoExame = new MedicalTestOrder(); 
 				
-				//pedidoExame.setName(rs.getString("Nome Paciente"));
-				//pedidoExame.setCpf(rs.getInt("Cpf"));
-				//pedidoExame.setPhoneNumber(rs.getString("Numero de telefone"));
-				//pedidoExame.setCrm(rs.getString("CRM medico "));
-				//pedidoExame.setDataExame(rs.getDate("Data Exame"));
-				//pedidoExame.setHoraExame(rs.getTime("Hora Exame"));
+				pedidoExame.getPatient().setName(rs.getString("Nome Paciente "));
+				pedidoExame.getPatient().setCpf(rs.getString("Cpf paciente"));
+				pedidoExame.getPatient().setPhoneNumber(rs.getString("Numero de telefone paciente"));
+				pedidoExame.getDoctor().setCrmNumber(rs.getInt("CRM medico "));
+				pedidoExame.setTestDate(rs.getString("Data Exame"));
+				pedidoExame.setTime(rs.getString("Hora Exame"));
 							
 				listaPedidoMedico.add(pedidoExame);
 			}
 			
+			return listaPedidoMedico;
 			 
 		} finally {
 			DataBase.finalizarStatement(st);

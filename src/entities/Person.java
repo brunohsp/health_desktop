@@ -22,6 +22,10 @@ public class Person {
 		this.phoneNumber = phoneNumber;
 		this.address = address;
 	}
+    
+    public Person() {
+		
+	}
 
 	public int getId() {
 		return id;

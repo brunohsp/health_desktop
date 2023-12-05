@@ -14,6 +14,10 @@ public class Patient extends Person{
 		this.photo = photo;
 		this.paymentMethod = paymentMethod;
 	}
+	
+	public Patient() {
+		
+	}
 
 	public String getPhoto() {
 		return photo;

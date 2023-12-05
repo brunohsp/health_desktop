@@ -14,6 +14,10 @@ public class Doctor extends Person{
 		this.crmNumber = crmNumber;
 		this.specialty = specialty;
 	}
+	
+	public Doctor() {
+		super();		
+	}
 
 	public int getId() {
 		return id;

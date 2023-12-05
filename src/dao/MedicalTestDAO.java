@@ -99,16 +99,15 @@ public List<MedicalTest> buscarTodosExame() throws SQLException {
 			while (rs.next()) {
 				MedicalTest exame = new MedicalTest(); //criar construtor adequado
 				
-				//medico.setName(rs.getString("Nome Paciente"));
-				//medico.setDateOfBirth(rs.getDate("Data nascimento"));
-				//medico.setGender(rs.getString("Sexo"));
-				//medico.setCpf(rs.getInt("Cpf"));
-				medico.setPhoneNumber(rs.getString("Numero de telefone"));
-				//medico.setPhoto(rs.getString("Foto"));
+				exame.setName(rs.getString("Nome Exame"));
+				exame.setValue(rs.getDouble("Valor Exame "));
+				exame.setInstructions(rs.getString("Instruções "));
+				exame.setCode(rs.getString("Código exame "));
 			
 				listaExame.add(exame);
 			}
 			
+			return listaExame;
 			 
 		} finally {
 			DataBase.finalizarStatement(st);

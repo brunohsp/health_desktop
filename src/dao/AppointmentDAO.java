@@ -29,9 +29,9 @@ public class AppointmentDAO {
 		try {
 			st = conn.prepareStatement("call inserirConsulta(cpfpaciente, crm, pagamento) ");
 			
-			//st.setString(1, consulta.getPatient()));
-			//st.setInt(2, consulta.getDoctor());
-			//st.setString(3, consulta.getPagamento());
+			st.setInt(1, consulta.getPatient().getId());
+			st.setInt(2, consulta.getDoctor().getId());
+			st.setString(3, consulta.getPayment());
 			
 			st.executeUpdate();
 		} finally {
@@ -41,7 +41,7 @@ public class AppointmentDAO {
 		
 	}
 	
-	public void atualizarConsulta(Appointment consulta) throws SQLExecption {
+	public void atualizarConsulta(Appointment consulta) throws SQLException {
 		
 		PreparedStatement st = null; 
 		
@@ -49,13 +49,14 @@ public class AppointmentDAO {
 			
 			st = conn.prepareStatement("update Consulta set data_con = ?, hora_con = ?, formaPagamento_con = ?, id_paciente_fk = ?, id_medico_fk = ? where id_consulta = ? ");
 			
-			//st.setDate(1, consulta.getAppointmentDate());
-			//st.setString(2, consulta.getHora());
-			//st.setString(3, consulta.getPagamento());
-			//st.setInt(4, consulta.getIDPatient());
-			//st.setInt(5, consulta.getIDDoctor());
+			st.setString(1, consulta.getAppointmentDate());
+			st.setString(2, consulta.getTime());
+			st.setString(3, consulta.getPayment());
+			st.setInt(4, consulta.getPatient().getId());
+			st.setInt(5, consulta.getDoctor().getId());
 			
 			st.executeUpdate();
+			
 		} finally {
 			DataBase.finalizarStatement(st);
 			DataBase.desconectar();
@@ -63,7 +64,7 @@ public class AppointmentDAO {
 	}
 	
 	
-	public int excluirConsulta(int cpf, Date dia)  throws SQLException{
+	public int excluirConsulta(int cpf, Date dia)  throws SQLException {
 		
 		PreparedStatement st = null; 
 		
@@ -84,7 +85,7 @@ public class AppointmentDAO {
 		}
 	}
 	
-	public List<Appointment> buscarTodosConsulta() throws SQLExecption {
+	public List<Appointment> buscarTodosConsulta() throws SQLException {
 		
 		PreparedStatement st = null; 
 		ResultSet rs = null; 
@@ -97,18 +98,19 @@ public class AppointmentDAO {
 			List<Appointment> listaConsulta = new ArrayList<>();
 			
 			while (rs.next()) {
-				Appointment consulta = new Appointment(); //criar construtor adequado
+				Appointment consulta = new Appointment(); 
 				
-				//consulta.setName(rs.getString("Nome Paciente "));
-				//consulta.setCpf(rs.getString("Cpf Paciente "));
-				//consulta.setTelefone(rs.getString("Telefone Paciente "));
-				//consulta.setCrm(rs.getString("Crm Medico "));
-				//consulta.setDataConsulta(rs.getDate("Data Consulta "));
-				//consulta.setHoraConsulta(rs.getTime("Hora Consulta "));
+				consulta.getPatient().setName(rs.getString("Nome Paciente "));
+				consulta.getPatient().setCpf(rs.getString("Cpf Paciente "));
+				consulta.getPatient().setPhoneNumber(rs.getString("Telefone Paciente "));
+				consulta.getDoctor().setCrmNumber(rs.getInt("CRM Médico "));
+				consulta.setAppointmentDate(rs.getString("Data Consulta "));
+				consulta.setTime(rs.getString("Hora Consulta "));
 			
 				listaConsulta.add(consulta);
 			}
 			
+			 return listaConsulta;
 			 
 		} finally {
 			DataBase.finalizarStatement(st);

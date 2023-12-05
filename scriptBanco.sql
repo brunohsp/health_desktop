@@ -1,4 +1,4 @@
-drop database clinicaMedica;
+-- drop database clinicaMedica;
 create database clinicaMedica;
 use clinicaMedica; 
 
@@ -16,7 +16,7 @@ uf_end varchar(5) not null
 create table Pessoa (
 id_pessoa int primary key auto_increment, 
 nome_pes varchar(200), 
-dataNascimento_pes date, 
+dataNascimento_pes varchar(20), 
 sexo_pes varchar(10), 
 cpf_pes varchar(30), 
 telefone_pes varchar(30), 
@@ -32,6 +32,7 @@ on delete restrict
 create table Paciente(
 id_paciente int primary key auto_increment,  
 foto_pac varchar(500), 
+metodoPagamento_pac varchar(500),
 
 id_pessoa_fk int not null, 
 foreign key (id_pessoa_fk)
@@ -49,7 +50,7 @@ codigo_esp int
 
 create table Medico (
 id_medico int primary key auto_increment,  
-crm_med varchar(40),
+crm_med int,
 
 
 id_pessoa_fk int not null, 
@@ -69,8 +70,8 @@ on delete restrict
 
 create table Consulta (
 id_consulta int primary key auto_increment,
-data_con date, 
-hora_con time, 
+data_con varchar(20), 
+hora_con varchar(20), 
 formaPagamento_con varchar(20),
 
 id_paciente_fk int not null, 
@@ -100,8 +101,8 @@ codigo_exa varchar(100)
 
 create table PedidoExame (
 id_pedidoExame int primary key auto_increment, 
-data_pedExa date, 
-hora_pedExa time, 
+data_pedExa varchar(20), 
+hora_pedExa varchar(20), 
 valor_pedExa double, 
 pagamentoRecebido double,
 
@@ -132,7 +133,7 @@ select * from especialidade;
 
 
 delimiter $$ 
-create procedure inserirPaciente (nome varchar(200), dataNascimento date, sexo varchar(10), cpf varchar(30), telefone varchar(30), foto varchar(500), 
+create procedure inserirPaciente (nome varchar(200), dataNascimento varchar(20), sexo varchar(10), cpf varchar(30), telefone varchar(30), foto varchar(500), pagamento varchar(500),
 									cep int, rua varchar(200), bairro varchar(100), cidade varchar(100), uf varchar(5))
 	begin 
 		declare idEnd int;
@@ -141,7 +142,7 @@ create procedure inserirPaciente (nome varchar(200), dataNascimento date, sexo v
 		insert into endereco values (null, cep, rua, bairro, cidade, uf);
         select id_endereco into idEnd from Endereco where id_endereco = last_insert_id();
 		
-		insert into pessoa values (null, nome, dataNascimento, sexo, cpf, telefone, idEnd);
+		insert into pessoa values (null, nome, dataNascimento, sexo, cpf, telefone, pagamento, idEnd);
         select id_pessoa into idPes from Pessoa where id_pessoa = last_insert_id();
 		
 		insert into paciente values (null, foto, idPes);
@@ -155,7 +156,7 @@ $$ delimiter ;
 */
 
 delimiter $$ 
-create procedure alterarPaciente (idPaciente int, nome varchar(200), dataNascimento date, sexo varchar(10), cpf varchar(30), telefone varchar(30), foto varchar(500), 
+create procedure alterarPaciente (idPaciente int, nome varchar(200), dataNascimento varchar(20), sexo varchar(10), cpf varchar(30), telefone varchar(30), foto varchar(500), pagamento varchar(500),
 									cep int, rua varchar(200), bairro varchar(100), cidade varchar(100), uf varchar(5))
 	begin 
 		declare idEnd int;
@@ -169,7 +170,7 @@ create procedure alterarPaciente (idPaciente int, nome varchar(200), dataNascime
         
 		update Endereco set cep_end = cep, rua_end = rua, bairro_end = bairro, cidade_end = cidade, uf_end = uf where id_endereco = idEnd; 
 		update Pessoa set nome_pes = nome, dataNascimento_pes = dataNascimento, sexo_pes = sexo, cpf_pes = cpf, telefone_pes = telefone where id_pessoa = idPes;
-        update Paciente set foto_pac = foto where id_paciente = idPaciente; 
+        update Paciente set foto_pac = foto, metodoPagamento_pac = pagamento where id_paciente = idPaciente; 
         
 	end; 
 $$ delimiter ;
@@ -212,8 +213,8 @@ select * from pessoa;
 delimiter $$ 
 create procedure buscarPacienteTodos()
 	begin 
-		select pessoa.nome_pes, pessoa.dataNascimento_pes, pessoa.sexo_pes, pessoa.cpf_pes, pessoa.telefone_pes, paciente.foto_pac 
-			from pessoa inner join paciente on (paciente.id_pessoa_fk = pessoa.id_pessoa) order by pessoa.nome_pes;       
+		select pessoa.nome_pes, pessoa.dataNascimento_pes, pessoa.sexo_pes, pessoa.cpf_pes, pessoa.telefone_pes, paciente.foto_pac, 
+					pessoa.metodoPagamento_pac from pessoa inner join paciente on (paciente.id_pessoa_fk = pessoa.id_pessoa) order by pessoa.nome_pes;       
 	end; 
 $$ delimiter ;
 
@@ -221,7 +222,7 @@ $$ delimiter ;
 -- call buscarPacienteTodos();
 
 delimiter $$ 
-create procedure inserirMedico (nome varchar(200), dataNascimento date, sexo varchar(10), cpf varchar(30), telefone varchar(30), crm varchar(30),
+create procedure inserirMedico (nome varchar(200), dataNascimento varchar(20), sexo varchar(10), cpf varchar(30), telefone varchar(30), crm int,
 								cep int, rua varchar(200), bairro varchar(100), cidade varchar(100), uf varchar(5), especialidade varchar(200))
     begin
 		declare idEsp int; 
@@ -249,7 +250,7 @@ call inserirMedico ("Carolina Almeida", "1988-09-16", "Feminino", 753369, "42987
 
 
 delimiter $$ 
-create procedure alterarMedico (idMedico int, nome varchar(200), dataNascimento date, sexo varchar(10), cpf varchar(30), telefone varchar(30), crm varchar(30),
+create procedure alterarMedico (idMedico int, nome varchar(200), dataNascimento varchar(20), sexo varchar(10), cpf varchar(30), telefone varchar(30), crm int,
 									cep int, rua varchar(200), bairro varchar(100), cidade varchar(100), uf varchar(5))
 	begin 
 		declare idEnd int;
@@ -323,7 +324,7 @@ select * from Especialidade;
 
 
 delimiter $$ 
-create procedure inserirConsulta(cpfPaciente varchar(30), crm int, pagamento varchar(20))
+create procedure inserirConsulta(dataConsulta varchar(20), horaConsulta varchar(20), cpfPaciente varchar(30), crm int, pagamento varchar(20))
 	begin 
         declare idPesPac int;
 		declare idPac int; 
@@ -333,13 +334,13 @@ create procedure inserirConsulta(cpfPaciente varchar(30), crm int, pagamento var
 		select id_paciente into idPac from Paciente where id_pessoa_fk = idPesPac; 
 		select id_medico into idMed from Medico where crm_med = crm;
        
-		insert into Consulta values (null, curdate(), curtime(), pagamento, idPac, idMed);
+		insert into Consulta values (null, dataConsulta, horaConsulta, pagamento, idPac, idMed);
     end; 
 $$ delimiter ; 
 
 
 delimiter $$ 
-create procedure alterarConsulta(cpfPaciente varchar(30), dia date)
+create procedure excluirConsulta(cpfPaciente varchar(30), dia varchar(20))
 	begin 
 		declare idPesPac int;
         declare idPac int; 
@@ -379,7 +380,7 @@ select * from pessoa;
 */
 
  delimiter $$ 
- create procedure  inserirPedidoExame (cpf varchar(30), crm int, exame varchar(100), valor double, pagamento double)
+ create procedure  inserirPedidoExame (dataExame varchar(20), horaExame varchar(20), cpf varchar(30), crm int, exame varchar(100), valor double, pagamento double)
 	begin 
 		declare idPesPac int;
 		declare idPac int; 
@@ -391,7 +392,7 @@ select * from pessoa;
         select id_exame into idExa from Exame where codigo_exa = exame;
         select id_medico into idMed from Medico where crm_med = crm;
         
-        insert into PedidoExame values (null, curdate(), curtime(), valor, pagamento, idExa, idPac, idMed);
+        insert into PedidoExame values (null, dataExame, horaExame, valor, pagamento, idExa, idPac, idMed);
     
     end;
  $$ delimiter ;

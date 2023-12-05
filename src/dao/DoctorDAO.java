@@ -24,19 +24,19 @@ public class DoctorDAO {
 		try {
 			st = conn.prepareStatement("call inserirMedico (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ");
 			
-			// st.setInt(1, medico.getIdPaciente());
-			//st.setString(2, medico.getName());
-			//st.setDate(3, medico.getDateOfBirth());
-			//st.setString(4, medico.getGender());
-			// st.setInt(5, medico.getCpf());
-			//st.setString(6, medico.getPhoneNumber());
-			//st.setString(7, medico.getCrm());
-			//st.setString(8,  getEspecialidade);
-			// st.setInt(8, medico.getCep());
-			// st.setString(9, medico.getRua());
-			// st.setString(10, medico.getBairro());
-			// st.setString(11, medico.getCidade());
-			// st.setString(12, medico.getUf());
+			st.setInt(1, medico.getId());
+			st.setString(2, medico.getName());
+			st.setString(3, medico.getDateOfBirth());
+			st.setString(4, medico.getGender());
+			st.setString(5, medico.getCpf());
+			st.setString(6, medico.getPhoneNumber());
+			st.setInt(7, medico.getCrmNumber());
+			st.setString(8, medico.getSpecialty().getSpecialtyName());
+			st.setInt(9, medico.getAddress().getCep());
+			st.setString(10, medico.getAddress().getLocation());
+			st.setString(11, medico.getAddress().getNeighborhood());
+			st.setString(12, medico.getAddress().getCity());
+			st.setString(13, medico.getAddress().getUf());
 			
 			st.executeUpdate();
 			
@@ -57,19 +57,18 @@ public class DoctorDAO {
 			
 			st = conn.prepareStatement("call alterarMedico (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ");
 			
-			//st.setInt(1, medico.getId());
-			//st.setString(2, medico.getName());
-			//st.setDate(3, medico.getDateOfBirth());
-			//st.setString(4, medico.getGender());
-			//st.getString(5, medico.getCpf);
-			//st.setString(6, medico.getPhoneNumber());
-			st.setString(7, medico.getCrmNumber());
-			//st.setString(8, medico.getPhoto());
-			//st.setInt(9, medico.getCep());
-			//st.setString(10, medico.getAddress());
-			//st.setString(11, medico.getBairro());
-			//st.setString(12, medico.getCidade());
-			//st.setString(13, medico.getUf());
+			st.setInt(1, medico.getId());
+			st.setString(2, medico.getName());
+			st.setString(3, medico.getDateOfBirth());
+			st.setString(4, medico.getGender());
+			st.setString(5, medico.getCpf());
+			st.setString(6, medico.getPhoneNumber());
+			st.setInt(7, medico.getCrmNumber());
+			st.setInt(8, medico.getAddress().getCep());
+			st.setString(9, medico.getAddress().getLocation());
+			st.setString(10, medico.getAddress().getNeighborhood());
+			st.setString(11, medico.getAddress().getCity());
+			st.setString(12, medico.getAddress().getUf());
 			
 			st.executeUpdate();
 			
@@ -117,16 +116,16 @@ public List<Doctor> buscarTodosMedico() throws SQLException {
 			while (rs.next()) {
 				Doctor medico = new Doctor(); //criar construtor adequado
 				
-				//medico.setName(rs.getString("Nome Paciente"));
-				//medico.setDateOfBirth(rs.getDate("Data nascimento"));
-				//medico.setGender(rs.getString("Sexo"));
-				//medico.setCpf(rs.getInt("Cpf"));
+				medico.setName(rs.getString("Nome Medico"));
+				medico.setDateOfBirth(rs.getString("Data nascimento"));
+				medico.setGender(rs.getString("Sexo"));
+				medico.setCpf(rs.getString("Cpf"));
 				medico.setPhoneNumber(rs.getString("Numero de telefone"));
-				//medico.setPhoto(rs.getString("Foto"));
 			
 				listaMedico.add(medico);
 			}
 			
+			return listaMedico;
 			 
 		} finally {
 			DataBase.finalizarStatement(st);
