@@ -6,7 +6,6 @@ public class MedicalTestOrder {
 	private int id;
 	private String testDate;
 	private String time;
-	private double value;
 	private double valuePaid;
     private MedicalTest test;
     private Patient patient;
@@ -17,7 +16,6 @@ public class MedicalTestOrder {
 		this.id = id;
 		this.testDate = testDate;
 		this.time = time;
-		this.value = value;
 		this.valuePaid = valuePaid;
 		this.test = test;
 		this.patient = patient;
@@ -50,14 +48,6 @@ public class MedicalTestOrder {
 
 	public void setTime(String time) {
 		this.time = time;
-	}
-
-	public double getValue() {
-		return value;
-	}
-
-	public void setValue(double value) {
-		this.value = value;
 	}
 	
 	public double getValuePaid() {

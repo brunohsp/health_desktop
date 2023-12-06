@@ -2,12 +2,10 @@ package entities;
 
 public class Specialty {
     private int id;
-	private int code;
     private String name;
 
-    public Specialty(int id, int code, String name) {
+    public Specialty(int id, String name) {
         this.id = id;
-    	this.code = code;
         this.name = name;
     }
     
@@ -15,13 +13,6 @@ public class Specialty {
         
     }
 
-    public int getSpecialtyCode() {
-        return code;
-    }
-
-    public void setSpecialtyCode(int code) {
-        this.code = code;
-    }
 
     public String getSpecialtyName() {
         return name;

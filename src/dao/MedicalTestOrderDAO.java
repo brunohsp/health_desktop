@@ -23,12 +23,10 @@ public class MedicalTestOrderDAO {
 		PreparedStatement st = null;
 		
 		try {
-			st = conn.prepareStatement("call inserirPedidoExame (?, ?, ?, ?, ?) ");
+			st = conn.prepareStatement("call inserirPedidoExame (?, ?, ?) ");
 						
 			st.setString(1, pedidoExame.getPatient().getCpf());
-			st.setInt(2, pedidoExame.getDoctor().getCrmNumber());
-			st.setString(3, pedidoExame.getTest().getCode());
-			st.setDouble(4, pedidoExame.getValue());
+			st.setInt(2, pedidoExame.getDoctor().getCrmNumber());			
 			st.setDouble(5, pedidoExame.getValuePaid());
 			
 			st.executeUpdate();
@@ -52,12 +50,11 @@ public class MedicalTestOrderDAO {
 			//atualizarPedidoExame (idPedido int, dataExa date, horaExa time, valor double, 
 			//		pagamento double, idExame int, idPaciente int, idMedico int)
 			
-			st = conn.prepareStatement("call atualizarPedidoExame (?, ?, ?, ?, ?, ?, ?, ?) ");
+			st = conn.prepareStatement("call atualizarPedidoExame (?, ?, ?, ?, ?, ?, ?) ");
 			
 			st.setInt(1, pedidoExame.getId());
 			st.setString(2, pedidoExame.getTestDate());
 			st.setString(3, pedidoExame.getTime());
-			st.setDouble(4, pedidoExame.getValue());
 			st.setDouble(5, pedidoExame.getValuePaid());
 			st.setInt(6, pedidoExame.getTest().getId());
 			st.setInt(7, pedidoExame.getPatient().getId());

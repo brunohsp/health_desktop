@@ -22,10 +22,9 @@ public class SpecialtyDAO {
 		PreparedStatement st = null; 
 		
 		try {
-			st = conn.prepareStatement("insert especialidade values (null, ?, ?) " );
+			st = conn.prepareStatement("insert especialidade values (null, ?) " );
 			
 			st.setString(2, especialidade.getSpecialtyName());
-			st.setInt(1, especialidade.getSpecialtyCode());
 			
 			st.executeUpdate();
 			
@@ -42,11 +41,10 @@ public class SpecialtyDAO {
 		
 		try {
 			
-			st = conn.prepareStatement("update Especialidade set nome_esp = ?, codigo_esp = ? where id_especialidade = ? ");
+			st = conn.prepareStatement("update Especialidade set nome_esp = ? where id_especialidade = ? ");
 			
 			st.setInt(1, especialidade.getId());
 			st.setString(2, especialidade.getSpecialtyName());
-			st.setInt(3, especialidade.getSpecialtyCode());
 			
 			st.executeUpdate();
 			
@@ -97,7 +95,6 @@ public class SpecialtyDAO {
 				
 				//especialidade.setIDSpecialty(rs.getInt("ID Especialidade" ));
 				especialidade.setSpecialtyName(rs.getString("Especialidade" ));
-				especialidade.setSpecialtyCode(rs.getInt("Código Especialidade" ));
 				
 				listEspecialidade.add(especialidade);
 			}

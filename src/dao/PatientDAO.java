@@ -21,15 +21,16 @@ public class PatientDAO {
 		PreparedStatement st = null;
 		
 		try {
-			st = conn.prepareStatement("call inserirPaciente (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ");
+			st = conn.prepareStatement("call inserirPaciente (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ");
 			
-			st.setInt(1, paciente.getId());
-			st.setString(2, paciente.getName());
-			st.setString(3, paciente.getDateOfBirth());
-			st.setString(4, paciente.getGender());
-			st.setString(5, paciente.getCpf());
-			st.setString(6, paciente.getPhoneNumber());
-			st.setString(7, paciente.getPhoto());
+			// st.setInt(1, paciente.getId());
+			st.setString(1, paciente.getName());
+			st.setString(2, paciente.getDateOfBirth());
+			st.setString(3, paciente.getGender());
+			st.setString(4, paciente.getCpf());
+			st.setString(5, paciente.getPhoneNumber());
+			st.setString(6, paciente.getPhoto());
+			st.setString(7, paciente.getPaymentMethod());
 			st.setInt(8, paciente.getAddress().getCep());
 			st.setString(9, paciente.getAddress().getLocation());
 			st.setString(10, paciente.getAddress().getNeighborhood());
@@ -54,7 +55,7 @@ public class PatientDAO {
 		
 		try {
 			
-			st = conn.prepareStatement("call alterarPaciente (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ");
+			st = conn.prepareStatement("call alterarPaciente (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ");
 			
 			st.setInt(1, paciente.getId());
 			st.setString(2, paciente.getName());
@@ -63,11 +64,12 @@ public class PatientDAO {
 			st.setString(5, paciente.getCpf());
 			st.setString(6, paciente.getPhoneNumber());
 			st.setString(7, paciente.getPhoto());
-			st.setInt(8, paciente.getAddress().getCep());
-			st.setString(9,  paciente.getAddress().getLocation());
-			st.setString(10, paciente.getAddress().getNeighborhood());
-			st.setString(11, paciente.getAddress().getCity());
-			st.setString(12, paciente.getAddress().getUf());
+			st.setString(8, paciente.getPaymentMethod());
+			st.setInt(9, paciente.getAddress().getCep());
+			st.setString(10,  paciente.getAddress().getLocation());
+			st.setString(11, paciente.getAddress().getNeighborhood());
+			st.setString(12, paciente.getAddress().getCity());
+			st.setString(13, paciente.getAddress().getUf());
 			
 			st.executeUpdate();
 			
@@ -124,6 +126,7 @@ public class PatientDAO {
 				paciente.setCpf(rs.getString("Cpf"));
 				paciente.setPhoneNumber(rs.getNString("Numero de telefone"));
 				paciente.setPhoto(rs.getString("Foto"));
+				paciente.setPaymentMethod(rs.getString("Metodo pagamento "));
 			
 				listaPaciente.add(paciente);
 			}

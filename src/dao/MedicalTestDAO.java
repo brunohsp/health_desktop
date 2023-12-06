@@ -23,12 +23,11 @@ public class MedicalTestDAO {
 		PreparedStatement st = null;
 		
 		try {
-			st = conn.prepareStatement("insert into Exame values (null, ?, ?, ?, ? ) ");
+			st = conn.prepareStatement("insert into Exame values (null, ?, ?, ? ) ");
 			
 			st.setString(1, exame.getName());
 			st.setDouble(2, exame.getValue());
 			st.setString(3, exame.getInstructions());
-			st.setString(4, exame.getCode());
 			
 			st.executeUpdate();
 			
@@ -46,12 +45,11 @@ public class MedicalTestDAO {
 		
 		try {
 			
-			st = conn.prepareStatement("update Exame set nome_exa = ?, valor_exa = ?, orientacao_exa = ?, codigo_exa = ? where id_exame = ? ");
+			st = conn.prepareStatement("update Exame set nome_exa = ?, valor_exa = ?, orientacao_exa = ? where id_exame = ? ");
 			
 			st.setString(1, exame.getName());
 			st.setDouble(2, exame.getValue());
 			st.setString(3, exame.getInstructions());
-			st.setString(4, exame.getCode());
 			
 			st.executeUpdate();
 			
@@ -97,12 +95,11 @@ public List<MedicalTest> buscarTodosExame() throws SQLException {
 			List<MedicalTest> listaExame = new ArrayList<>();
 			
 			while (rs.next()) {
-				MedicalTest exame = new MedicalTest(); //criar construtor adequado
+				MedicalTest exame = new MedicalTest(); 
 				
 				exame.setName(rs.getString("Nome Exame"));
 				exame.setValue(rs.getDouble("Valor Exame "));
 				exame.setInstructions(rs.getString("Instruções "));
-				exame.setCode(rs.getString("Código exame "));
 			
 				listaExame.add(exame);
 			}

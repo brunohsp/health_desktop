@@ -44,8 +44,7 @@ on delete restrict
 
 create table Especialidade (
 id_especialidade int primary key auto_increment,  
-nome_esp varchar(200), 
-codigo_esp int 
+nome_esp varchar(200)
 ); 
 
 create table Medico (
@@ -72,7 +71,6 @@ create table Consulta (
 id_consulta int primary key auto_increment,
 data_con varchar(20), 
 hora_con varchar(20), 
-formaPagamento_con varchar(20),
 
 id_paciente_fk int not null, 
 foreign key (id_paciente_fk)
@@ -92,8 +90,7 @@ create table Exame(
 id_exame int primary key auto_increment,
 nome_exa varchar(200), 
 valor_exa double, 
-orientacao_exa varchar(1000), 
-codigo_exa varchar(100)
+orientacao_exa varchar(1000)
 );
 -- update Exame set nome_exa = ?, valor_exa = ?, orientacao_exa = ?, codigo_exa = ? where id_exame = ?
 -- delete from Consulta where codigo_exa = ?;     
@@ -103,7 +100,6 @@ create table PedidoExame (
 id_pedidoExame int primary key auto_increment, 
 data_pedExa varchar(20), 
 hora_pedExa varchar(20), 
-valor_pedExa double, 
 pagamentoRecebido double,
 
 id_exame_fk int not null, 
@@ -273,7 +269,7 @@ $$ delimiter ;
 
 delimiter $$ 
 create procedure excluirMedico (cpf varchar(30))
--- excluisão pelo cpf 
+-- exclusão pelo cpf 
     begin 
 		declare idEnd int;
         declare idEndPes int;
@@ -324,7 +320,7 @@ select * from Especialidade;
 
 
 delimiter $$ 
-create procedure inserirConsulta(dataConsulta varchar(20), horaConsulta varchar(20), cpfPaciente varchar(30), crm int, pagamento varchar(20))
+create procedure inserirConsulta(dataConsulta varchar(20), horaConsulta varchar(20), cpfPaciente varchar(30), crm int)
 	begin 
         declare idPesPac int;
 		declare idPac int; 
@@ -334,7 +330,7 @@ create procedure inserirConsulta(dataConsulta varchar(20), horaConsulta varchar(
 		select id_paciente into idPac from Paciente where id_pessoa_fk = idPesPac; 
 		select id_medico into idMed from Medico where crm_med = crm;
        
-		insert into Consulta values (null, dataConsulta, horaConsulta, pagamento, idPac, idMed);
+		insert into Consulta values (null, dataConsulta, horaConsulta, idPac, idMed);
     end; 
 $$ delimiter ; 
 
@@ -380,7 +376,7 @@ select * from pessoa;
 */
 
  delimiter $$ 
- create procedure  inserirPedidoExame (dataExame varchar(20), horaExame varchar(20), cpf varchar(30), crm int, exame varchar(100), valor double, pagamento double)
+ create procedure  inserirPedidoExame (dataExame varchar(20), horaExame varchar(20), cpf varchar(30), crm int, exame varchar(100), pagamento double)
 	begin 
 		declare idPesPac int;
 		declare idPac int; 
@@ -392,7 +388,7 @@ select * from pessoa;
         select id_exame into idExa from Exame where codigo_exa = exame;
         select id_medico into idMed from Medico where crm_med = crm;
         
-        insert into PedidoExame values (null, dataExame, horaExame, valor, pagamento, idExa, idPac, idMed);
+        insert into PedidoExame values (null, dataExame, horaExame, pagamento, idExa, idPac, idMed);
     
     end;
  $$ delimiter ;
@@ -404,7 +400,7 @@ select * from pessoa;
  create procedure atualizarPedidoExame (idPedido int, dataExa date, horaExa time, valor double, pagamento double, idExame int, idPaciente int, idMedico int)
 	begin
     
-    update PedidoExame set data_pedExa = dataExa, hora_pedExa = horaExa, valor_pedExa = valor, pagamentoRecebido = pagamento, id_exame_fk = idExame, id_paciente_fk = idPaciente, id_medico_fk = idMedico;
+    update PedidoExame set data_pedExa = dataExa, hora_pedExa = horaExa, pagamentoRecebido = pagamento, id_exame_fk = idExame, id_paciente_fk = idPaciente, id_medico_fk = idMedico;
     end; 
  $$ delimiter ;
  
