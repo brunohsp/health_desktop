@@ -123,13 +123,13 @@ on update cascade
 on delete restrict 
 );
 
-
+/*
 insert especialidade values (null, "Cardiologia", 987);
 update Especialidade set nome_esp = "Cardiopatia" where id_especialidade = 1;
 select * from especialidade;
 */
 
-
+-- select * from paciente;
 delimiter $$ 
 create procedure inserirPaciente (nome varchar(200), dataNascimento varchar(20), sexo varchar(10), cpf varchar(30), telefone varchar(30), foto varchar(500), pagamento varchar(500),
 									cep int, rua varchar(200), bairro varchar(100), cidade varchar(100), uf varchar(5))
@@ -140,13 +140,17 @@ create procedure inserirPaciente (nome varchar(200), dataNascimento varchar(20),
 		insert into endereco values (null, cep, rua, bairro, cidade, uf);
         select id_endereco into idEnd from Endereco where id_endereco = last_insert_id();
 		
-		insert into pessoa values (null, nome, dataNascimento, sexo, cpf, telefone, pagamento, idEnd);
+		insert into pessoa values (null, nome, dataNascimento, sexo, cpf, telefone, idEnd);
         select id_pessoa into idPes from Pessoa where id_pessoa = last_insert_id();
 		
-		insert into paciente values (null, foto, idPes);
+		insert into paciente values (null, foto, pagamento, idPes);
 	end; 
 $$ delimiter ; 
--- call inserirPaciente ("Angelica das Jabuticabas", "2000-10-10", "Feminino", "213211", "879845", "liktjgfhgc.com", "963775", "João Antonio", "Jardim Carvalho", "Ponta Grossa", "PR");
+drop procedure inserirPaciente;
+select * from paciente;
+select * from pessoa;
+select * from exame;
+call inserirPaciente ("Angelica das Aboboras", "2000-10-10", "Feminino", "213211", "879845", "liktjgfhgc.com", "Cartao", "963775", "João Antonio", "Jardim Carvalho", "Ponta Grossa", "PR");
 /*
 ** drop procedure inserirPaciente;
 ** call inserirPaciente ("Jose das Couves", "1970-04-01", "Masculino", "789369", "453454354", "jgfjgfdjgfgj.com", "789666", "Monteiro Lobato", "Jardim Carvalho", "Ponta Grossa", "PR");
@@ -181,7 +185,7 @@ select * from Pessoa;
 
 delimiter $$ 
 create procedure excluirPaciente (cpf varchar(30))
--- excluisão pelo cpf 
+-- exclusão pelo cpf 
     begin 
 		declare idEnd int;
         declare idEndPes int;
@@ -297,6 +301,12 @@ $$ delimiter ;
 
 
 /*
+-- call inserirMedico ("Carolina Joao", "1988-12-16", "Feminino", 123434, "42987451589", 987, 78654321, "Rua Guarani", "Jardim America", "Ponta Grossa", "PR", "Cardiologia" );
+drop procedure inserirMedico;
+select * from especialidade;
+select * from pessoa;
+select * from medico;
+call inserirMedico ("Carolina Almeida", "1988-09-16", "Feminino", 753369, "42987451589", 987, 78654321, "Rua Guarani", "Jardim America", "Ponta Grossa", "PR", "cardiologia" );
 select * from especialidade;
 call inserirMedico ("Carolina Almeida", "1988-09-16", "Feminino", 753369, "42987451589", 987, 78654321, "Rua Guarani", "Jardim America", "Ponta Grossa", "PR", "Cardiologia" );
 */
@@ -348,11 +358,12 @@ $$ delimiter ;
 delimiter $$
 create procedure buscarMedicoTodos()
 	begin 
-		select pessoa.nome_pes, pessoa.dataNascimento_pes, pessoa.sexo_pes, pessoa.cpf_pes, pessoa.telefone_pes, medico.crm_med, medico.id_medico
+		select pessoa.nome_pes, pessoa.dataNascimento_pes, pessoa.sexo_pes, pessoa.cpf_pes, pessoa.telefone_pes, medico.crm_med 
 			from pessoa inner join medico on (medico.id_pessoa_fk = pessoa.id_pessoa) order by pessoa.nome_pes;        
 	end; 
 $$ delimiter ;
 
+call buscarMedicoTodos();
 /*
 drop procedure buscarMedicoTodos;
 call buscarMedicoTodos();
@@ -411,7 +422,7 @@ delimiter $$
 create procedure buscarTodosConsulta ()
 	begin 
     
-    select pessoa.nome_pes, pessoa.cpf_pes, pessoa.telefone_pes, medico.crm_med, consulta.data_con, consulta.hora_con, consulta.id_consulta
+    select pessoa.nome_pes, pessoa.cpf_pes, pessoa.telefone_pes, medico.crm_med, consulta.data_con, consulta.hora_con 
 			from pessoa inner join paciente on (paciente.id_pessoa_fk = pessoa.id_pessoa) inner join consulta on (consulta.id_paciente_fk = paciente.id_paciente) 
             inner join medico on (consulta.id_medico_fk = medico.id_medico) order by consulta.data_con;        
     
@@ -463,10 +474,10 @@ select * from pessoa;
  
 
 delimiter $$ 
-create procedure buscarTodosPedidoExame()
+create procedure buscarTodosPedidoExame ()
 	begin
     
-		 select pessoa.nome_pes, pessoa.cpf_pes, pessoa.telefone_pes, medico.crm_med, pedidoExame.data_pedExa, pedidoExame.hora_pedExa, pedidoExame.id_pedidoExame
+		 select pessoa.nome_pes, pessoa.cpf_pes, pessoa.telefone_pes, medico.crm_med, pedidoExame.data_pedExa, pedidoExame.hora_pedExa
 			from pessoa inner join paciente on (paciente.id_pessoa_fk = pessoa.id_pessoa) inner join PedidoExame on (PedidoExame.id_paciente_fk = paciente.id_paciente) 
             inner join medico on (PedidoExame.id_medico_fk = medico.id_medico) order by PedidoExame.data_con;      
             

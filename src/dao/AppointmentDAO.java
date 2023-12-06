@@ -95,6 +95,7 @@ public class AppointmentDAO {
 			List<Appointment> listaConsulta = new ArrayList<>();
 			
 			while (rs.next()) {
+				
 				Appointment consulta = new Appointment(); 
 				
 				consulta.setId(rs.getInt("consulta.id_consulta"));

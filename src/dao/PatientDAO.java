@@ -112,6 +112,7 @@ public class PatientDAO {
 			while (rs.next()) {
 				Patient paciente = new Patient(); 
 				
+				
 				paciente.setId(rs.getInt("pessoa.id_pessoa"));
 				paciente.setName(rs.getString("pessoa.nome_pes"));
 				paciente.setDateOfBirth(rs.getString("pessoa.dataNascimento_pes"));

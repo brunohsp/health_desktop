@@ -23,21 +23,21 @@ public class DoctorDAO {
 		CallableStatement st = null;
 		
 		try {
-			st = conn.prepareCall("call inserirMedico (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ");
+			st = conn.prepareCall("call inserirMedico ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ");
 			
-			st.setInt(1, medico.getId());
-			st.setString(2, medico.getName());
-			st.setString(3, medico.getDateOfBirth());
-			st.setString(4, medico.getGender());
-			st.setString(5, medico.getCpf());
-			st.setString(6, medico.getPhoneNumber());
-			st.setInt(7, medico.getCrmNumber());
-			st.setString(8, medico.getSpecialty().getSpecialtyName());
-			st.setInt(9, medico.getAddress().getCep());
-			st.setString(10, medico.getAddress().getLocation());
-			st.setString(11, medico.getAddress().getNeighborhood());
-			st.setString(12, medico.getAddress().getCity());
-			st.setString(13, medico.getAddress().getUf());
+			//st.setInt(1, medico.getId());
+			st.setString(1, medico.getName());
+			st.setString(2, medico.getDateOfBirth());
+			st.setString(3, medico.getGender());
+			st.setString(4, medico.getCpf());
+			st.setString(5, medico.getPhoneNumber());
+			st.setInt(6, medico.getCrmNumber());			
+			st.setInt(7, medico.getAddress().getCep());
+			st.setString(8, medico.getAddress().getLocation());
+			st.setString(9, medico.getAddress().getNeighborhood());
+			st.setString(10, medico.getAddress().getCity());
+			st.setString(11, medico.getAddress().getUf());
+			st.setString(12, medico.getSpecialty().getSpecialtyName());
 			
 			st.execute();
 			
