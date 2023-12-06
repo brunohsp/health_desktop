@@ -459,7 +459,7 @@ public class DoctorForm extends JFrame {
 		gbc_horizontalStrut_1_3.gridy = 0;
 		CEP.add(horizontalStrut_1_3, gbc_horizontalStrut_1_3);
 		
-		txtCep = new JFormattedTextField(NumberFormat.getNumberInstance());
+		txtCep = new JFormattedTextField();
 		txtCep.setFont(new Font("Dialog", Font.PLAIN, 24));
 		txtCep.setColumns(20);
 		GridBagConstraints gbc_txtCep = new GridBagConstraints();
