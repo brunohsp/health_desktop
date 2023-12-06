@@ -40,7 +40,6 @@ public class MedicalTestForm extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
-	private JTextField txtCode;
 	private JTextField txtName;
 	private JTextField txtValue;
 	private JTextArea txtInstructions;
@@ -67,14 +66,14 @@ public class MedicalTestForm extends JFrame {
 	
 	private void insertMedicalTest() {
 		try {
-			if(txtCode.getText().equals("") || txtName.getText().equals("") || txtValue.getText().equals("") || txtInstructions.getText().equals("")) {
+			if(txtName.getText().equals("") || txtValue.getText().equals("") || txtInstructions.getText().equals("")) {
 				JOptionPane.showMessageDialog(null, "Há campos vazios no formulário.", "Cadastro", JOptionPane.ERROR_MESSAGE);
 				return;
 			}
 			
 			medicalTestService = new MedicalTestService();
 			
-			MedicalTest mt = new MedicalTest(txtCode.getText(), txtName.getText(), Integer.parseInt(txtValue.getText()), txtInstructions.getText());
+			MedicalTest mt = new MedicalTest(-1, txtName.getText(), Integer.parseInt(txtValue.getText()), txtInstructions.getText());
 			
 			this.medicalTestService.insert(mt);
 			
@@ -89,46 +88,11 @@ public class MedicalTestForm extends JFrame {
 	private void initComponents() {
 		setTitle("Formulário - Exame");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 450, 594);
+		setBounds(100, 100, 450, 516);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
 		setContentPane(contentPane);
-		
-		JPanel code = new JPanel();
-		GridBagLayout gbl_code = new GridBagLayout();
-		gbl_code.columnWidths = new int[]{71, 20, 321, 0};
-		gbl_code.rowHeights = new int[]{38, 0};
-		gbl_code.columnWeights = new double[]{0.0, 0.0, 1.0, Double.MIN_VALUE};
-		gbl_code.rowWeights = new double[]{0.0, Double.MIN_VALUE};
-		code.setLayout(gbl_code);
-		
-		JLabel lblCode = new JLabel("Código:");
-		lblCode.setFont(new Font("Segoe UI Variable", Font.PLAIN, 24));
-		GridBagConstraints gbc_lblCode = new GridBagConstraints();
-		gbc_lblCode.anchor = GridBagConstraints.WEST;
-		gbc_lblCode.insets = new Insets(0, 0, 0, 5);
-		gbc_lblCode.gridx = 0;
-		gbc_lblCode.gridy = 0;
-		code.add(lblCode, gbc_lblCode);
-		
-		Component horizontalStrut = Box.createHorizontalStrut(20);
-		GridBagConstraints gbc_horizontalStrut = new GridBagConstraints();
-		gbc_horizontalStrut.fill = GridBagConstraints.HORIZONTAL;
-		gbc_horizontalStrut.insets = new Insets(0, 0, 0, 5);
-		gbc_horizontalStrut.gridx = 1;
-		gbc_horizontalStrut.gridy = 0;
-		code.add(horizontalStrut, gbc_horizontalStrut);
-		
-		txtCode = new JTextField();
-		txtCode.setFont(new Font("Segoe UI Variable", Font.PLAIN, 24));
-		txtCode.setColumns(15);
-		GridBagConstraints gbc_txtCode = new GridBagConstraints();
-		gbc_txtCode.fill = GridBagConstraints.HORIZONTAL;
-		gbc_txtCode.anchor = GridBagConstraints.NORTH;
-		gbc_txtCode.gridx = 2;
-		gbc_txtCode.gridy = 0;
-		code.add(txtCode, gbc_txtCode);
 		
 		JPanel name = new JPanel();
 		GridBagLayout gbl_name = new GridBagLayout();
@@ -242,25 +206,19 @@ public class MedicalTestForm extends JFrame {
 		instructions.add(horizontalStrut_1_1_1, gbc_horizontalStrut_1_1_1);
 		GroupLayout gl_contentPane = new GroupLayout(contentPane);
 		gl_contentPane.setHorizontalGroup(
-			gl_contentPane.createParallelGroup(Alignment.TRAILING)
+			gl_contentPane.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_contentPane.createSequentialGroup()
 					.addComponent(btnCancel, GroupLayout.PREFERRED_SIZE, 160, GroupLayout.PREFERRED_SIZE)
 					.addGap(18)
 					.addComponent(btnRegister, GroupLayout.PREFERRED_SIZE, 160, GroupLayout.PREFERRED_SIZE)
 					.addGap(47))
-				.addGroup(Alignment.LEADING, gl_contentPane.createSequentialGroup()
+				.addGroup(gl_contentPane.createSequentialGroup()
 					.addContainerGap()
-					.addComponent(code, GroupLayout.PREFERRED_SIZE, 416, Short.MAX_VALUE)
-					.addContainerGap())
-				.addGroup(Alignment.LEADING, gl_contentPane.createSequentialGroup()
-					.addContainerGap()
-					.addComponent(name, GroupLayout.PREFERRED_SIZE, 406, Short.MAX_VALUE)
-					.addContainerGap())
-				.addGroup(Alignment.LEADING, gl_contentPane.createSequentialGroup()
-					.addContainerGap()
-					.addComponent(value, GroupLayout.PREFERRED_SIZE, 416, GroupLayout.PREFERRED_SIZE)
-					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-				.addGroup(Alignment.LEADING, gl_contentPane.createSequentialGroup()
+					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+						.addComponent(name, GroupLayout.PREFERRED_SIZE, 426, Short.MAX_VALUE)
+						.addComponent(value, GroupLayout.PREFERRED_SIZE, 416, GroupLayout.PREFERRED_SIZE))
+					.addGap(2))
+				.addGroup(gl_contentPane.createSequentialGroup()
 					.addContainerGap()
 					.addComponent(instructions, GroupLayout.PREFERRED_SIZE, 416, GroupLayout.PREFERRED_SIZE)
 					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -269,14 +227,12 @@ public class MedicalTestForm extends JFrame {
 			gl_contentPane.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_contentPane.createSequentialGroup()
 					.addContainerGap()
-					.addComponent(code, GroupLayout.PREFERRED_SIZE, 38, GroupLayout.PREFERRED_SIZE)
-					.addPreferredGap(ComponentPlacement.UNRELATED)
 					.addComponent(name, GroupLayout.PREFERRED_SIZE, 38, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(ComponentPlacement.UNRELATED)
 					.addComponent(value, GroupLayout.PREFERRED_SIZE, 38, GroupLayout.PREFERRED_SIZE)
-					.addGap(18)
-					.addComponent(instructions, GroupLayout.DEFAULT_SIZE, 317, Short.MAX_VALUE)
-					.addGap(18)
+					.addPreferredGap(ComponentPlacement.UNRELATED)
+					.addComponent(instructions, GroupLayout.DEFAULT_SIZE, 238, Short.MAX_VALUE)
+					.addGap(74)
 					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
 						.addComponent(btnCancel, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE)
 						.addComponent(btnRegister, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE))

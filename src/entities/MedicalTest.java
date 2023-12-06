@@ -6,7 +6,7 @@ public class MedicalTest {
     private double value;
     private String instructions;
 
-    public MedicalTest(int id, String testName, double testValue, String testInstructions, String testCode) {
+    public MedicalTest(int id, String testName, double testValue, String testInstructions) {
         this.id = id;    	
         this.name = testName;
         this.value = testValue;

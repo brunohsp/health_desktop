@@ -11,7 +11,7 @@ public class MedicalTestOrder {
     private Patient patient;
     private Doctor doctor;
 	
-    public MedicalTestOrder(int id, String testDate, String time, double value, double valuePaid, MedicalTest test, Patient patient, Doctor doctor) {
+    public MedicalTestOrder(int id, String testDate, String time, double valuePaid, MedicalTest test, Patient patient, Doctor doctor) {
 		super();
 		this.id = id;
 		this.testDate = testDate;

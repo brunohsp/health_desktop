@@ -202,7 +202,7 @@ public class Menu extends JFrame {
     	for(MedicalTest mt : medicalTests) {
     		cbbMedicalTest.addItem(mt);
     		model.addRow(new Object[] {
-    			mt.getCode(),
+    			mt.getId(),
     			mt.getName(),
     			mt.getValue(),
     			mt.getInstructions()
@@ -250,7 +250,7 @@ public class Menu extends JFrame {
     	
     	for(Specialty specialty: specialties) {
     		model.addRow(new Object[] {
-    			specialty.getSpecialtyCode(),
+    			specialty.getId(),
     			specialty.getSpecialtyName(),
     		});
     	}
