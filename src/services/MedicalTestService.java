@@ -1,28 +1,43 @@
 package services;
 
 import java.io.IOException;
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import dao.DataBase;
+import dao.DoctorDAO;
+import dao.MedicalTestDAO;
+import entities.Doctor;
 import entities.MedicalTest;
 
 public class MedicalTestService {
-	public List<MedicalTest> listMedicalTests(String name, String code, float value) throws SQLException, IOException {
-		List<MedicalTest> medicalTests = new ArrayList<MedicalTest>();
+	
+	
+	public MedicalTestService () {
 		
-		medicalTests.add(new MedicalTest("safdsa", "pipipi", 10.0, "popopo"));
+	}
+	
+	public List<MedicalTest> listMedicalTests() throws SQLException, IOException {
 		
-		if (name != "") {}
-		if (value != -1.0) {}
-		if (code != "") {}
+		Connection conn = DataBase.conectar();
 		
-		//TODO: chamar dao
+		
+		List<MedicalTest> medicalTests = new MedicalTestDAO(conn).buscarTodosExame();
+		
+		MedicalTestService medicalTestService = new MedicalTestService();
+		
+		for (MedicalTest medicalTest : medicalTests) {
+			MedicalTest medicalTeste = MedicalTestService.buscarTodosExame();
+		}
 		
 		return medicalTests;
 	}
 	
-	public void insert(MedicalTest medicalTest) throws SQLException, IOException {
-		//TODO: chamar dao
+	public void cadastrar(MedicalTest medicalTest) throws SQLException, IOException {
+		
+		Connection conn = DataBase.conectar();
+		new MedicalTestDAO(conn).cadastrarExame(medicalTest);
 	}
 }

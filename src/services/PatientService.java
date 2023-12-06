@@ -1,32 +1,55 @@
 package services;
 
+
 import java.io.IOException;
+
+import java.sql.Connection;
+import java.sql.Date;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import entities.Address;
 import entities.Patient;
+import entities.Person;
+import dao.DataBase;
+import dao.PatientDAO;
 
 public class PatientService {
-	public List<Patient> listPatients(String name, String gender, String payMethod, String phone) throws SQLException, IOException {
-		List<Patient> patients = new ArrayList<Patient>();
-		patients.add(new Patient(1, "Jose", "01/01/01", "any", "0123012310", "9871979891", 
-				new Address(1, 78976, "anywhere", "jardim carvalho", "ponta grossa", "pr"), 2, "popopo", "c"));
+	
+	
+	public PatientService() {
 		
-		//TODO: chamar dao
+	}
+	
+	
+	public List<Patient> listarPaciente() throws SQLException, IOException {
+		
+		Connection conn = DataBase.conectar();
+		
+		List<Patient> patients = new PatientDAO(conn).buscarTodosPaciente();
+		
+		PatientService pacienteService = new PatientService();
+		
+		for (Patient patient : patients) {
+			Patient paciente =  PatientService.buscarTodosPaciente();
+			
+		}
+		
 		
 		return patients;
 	}
 	
-	public void insert(Patient patient) throws SQLException, IOException {
-		AddressService as = new AddressService();
-		as.insert(patient.getAddress());
+	
+	
+
+
+	public void cadastrar(Patient paciente) throws SQLException, IOException {
 		
-		PersonService ps = new PersonService();
-		ps.insert(patient);
+		Connection conn = DataBase.conectar();
 		
-		//TODO: chamar dao
+		new PatientDAO(conn).cadastrarPaciente(paciente);
+		
+		
 	}
 }

@@ -1,23 +1,41 @@
 package services;
 
 import java.io.IOException;
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+
+import dao.DataBase;
+import dao.DoctorDAO;
+import dao.SpecialtyDAO;
 import entities.Specialty;
 
 public class SpecialtyService {
-
-	public List<Specialty> listSpecialties(String code, String name) throws SQLException, IOException {
-		List<Specialty> specialties = new ArrayList<Specialty>();
-		specialties.add(new Specialty(1, "pipipi"));
+	
+	public SpecialtyService () {
 		
-		//TODO: chamar dao
+	}
+
+	public List<Specialty> listSpecialties() throws SQLException, IOException {
+		
+		Connection conn = DataBase.conectar();		
+		
+		List<Specialty> specialties = new SpecialtyDAO(conn).buscarTodosEspecialidade();
+		
+		SpecialtyService specialtyService = new SpecialtyService();
+		
+		for (Specialty specialty : specialties) {
+		
+			Specialty specialtys = SpecialtyService.buscarTodosEspecialidade();
+		}
 		
 		return specialties;
 	}
 	
-	public void insert(Specialty specialty) throws SQLException, IOException {
-		//TODO: chamar dao
+	public void cadastrar(Specialty specialty) throws SQLException, IOException {
+		
+		Connection conn = DataBase.conectar();
+		new SpecialtyDAO(conn).cadastrarEspecialidade(specialty);
 	}
 }

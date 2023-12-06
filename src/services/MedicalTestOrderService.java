@@ -1,10 +1,14 @@
 package services;
 
 import java.io.IOException;
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import dao.DataBase;
+import dao.DoctorDAO;
+import dao.MedicalTestOrderDAO;
 import entities.Address;
 import entities.Doctor;
 import entities.MedicalTest;
@@ -12,35 +16,35 @@ import entities.MedicalTestOrder;
 import entities.Patient;
 
 public class MedicalTestOrderService {
-	public List<MedicalTestOrder> listMedicalTestOrders(String pacient, String doctor, String medicalTest) throws SQLException, IOException {
-		List<MedicalTestOrder> medicalTestOrders = new ArrayList<MedicalTestOrder>();
+	
+	public MedicalTestOrderService () {
 		
-		medicalTestOrders.add(new MedicalTestOrder(0, "01/01/01", "00:00", 10.0, 
-				new MedicalTest("safdsa", "pipipi", 10.0, "popopo"), 
-				new Patient(1, "Jose", "01/01/01", "any", "0123012310", "9871979891", 
-				new Address(1, 78976, "anywhere", "jardim carvalho", "ponto grossa", "pr"), 2, "popopo", "c"), 
-				new Doctor(0, "rosberval", "01/01/01", "any", "8949849", "46494964", null, 0, 0, null)));
+	}
+	
+	
+	public List<MedicalTestOrder> listMedicalTestOrders() throws SQLException, IOException {
 		
-		//TODO: chamar dao
+		Connection conn = DataBase.conectar();
+		
+		
+		List<MedicalTestOrder> medicalTestOrders = new MedicalTestOrderDAO(conn).buscarTodosPedidoExame();
+		
+		MedicalTestOrderService medicalTestOrderService = new MedicalTestOrderService();
+		
+		for (MedicalTestOrder medicalTestOrder : medicalTestOrders) {
+			
+			MedicalTestOrderService medicalTestOrderServices = MedicalTestOrderService.buscarTodosPedidoExame();
+		}
+		
 		
 		return medicalTestOrders;
 	}
 	
 	public void insert(MedicalTestOrder medicalTestOrder) throws SQLException, IOException {
-		//TODO: chamar dao
+		
+		Connection conn = DataBase.conectar();
+		new MedicalTestOrderDAO(conn).cadastrarPedidoExame(medicalTestOrder);
 	}
 	
-	public List<MedicalTestOrder> listMedicalTestReport(MedicalTest medicalTest) throws SQLException, IOException {
-		List<MedicalTestOrder> medicalTestOrders = new ArrayList<MedicalTestOrder>();
-		
-		medicalTestOrders.add(new MedicalTestOrder(0, "01/01/01", "00:00", 10.0, 
-				new MedicalTest("safdsa", "pipipi", 10.0, "popopo"), 
-				new Patient(1, "Jose", "01/01/01", "any", "0123012310", "9871979891", 
-				new Address(1, 78976, "anywhere", "jardim carvalho", "ponto grossa", "pr"), 2, "popopo", "c"), 
-				new Doctor(0, "rosberval", "01/01/01", "any", "8949849", "46494964", null, 0, 0, null)));
-		
-		//TODO: chamar dao
-		
-		return medicalTestOrders;
-	}
+	
 }
