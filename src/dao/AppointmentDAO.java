@@ -27,11 +27,10 @@ public class AppointmentDAO {
 		PreparedStatement st = null; 
 		
 		try {
-			st = conn.prepareStatement("call inserirConsulta(cpfpaciente, crm, pagamento) ");
+			st = conn.prepareStatement("call inserirConsulta(cpfpaciente, crm) ");
 			
 			st.setInt(1, consulta.getPatient().getId());
 			st.setInt(2, consulta.getDoctor().getId());
-			st.setString(3, consulta.getPayment());
 			
 			st.executeUpdate();
 		} finally {
@@ -47,11 +46,10 @@ public class AppointmentDAO {
 		
 		try {
 			
-			st = conn.prepareStatement("update Consulta set data_con = ?, hora_con = ?, formaPagamento_con = ?, id_paciente_fk = ?, id_medico_fk = ? where id_consulta = ? ");
+			st = conn.prepareStatement("update Consulta set data_con = ?, hora_con = ?, id_paciente_fk = ?, id_medico_fk = ? where id_consulta = ? ");
 			
 			st.setString(1, consulta.getAppointmentDate());
 			st.setString(2, consulta.getTime());
-			st.setString(3, consulta.getPayment());
 			st.setInt(4, consulta.getPatient().getId());
 			st.setInt(5, consulta.getDoctor().getId());
 			

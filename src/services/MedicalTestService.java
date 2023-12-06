@@ -35,7 +35,7 @@ public class MedicalTestService {
 		return medicalTests;
 	}
 	
-	public void cadastrar(MedicalTest medicalTest) throws SQLException, IOException {
+	public void insert(MedicalTest medicalTest) throws SQLException, IOException {
 		
 		Connection conn = DataBase.conectar();
 		new MedicalTestDAO(conn).cadastrarExame(medicalTest);

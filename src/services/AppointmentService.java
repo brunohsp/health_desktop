@@ -37,7 +37,7 @@ public class AppointmentService {
 		return appointments;
 	}
 	
-	public void cadastrar(Appointment appointment) throws SQLException, IOException{
+	public void insert(Appointment appointment) throws SQLException, IOException{
 		
 		Connection conn = DataBase.conectar();
 		new AppointmentDAO(conn).cadastrarConsulta(appointment);

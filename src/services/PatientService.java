@@ -23,7 +23,7 @@ public class PatientService {
 	}
 	
 	
-	public List<Patient> listarPaciente() throws SQLException, IOException {
+	public List<Patient> listPatients() throws SQLException, IOException {
 		
 		Connection conn = DataBase.conectar();
 		
@@ -44,7 +44,7 @@ public class PatientService {
 	
 
 
-	public void cadastrar(Patient paciente) throws SQLException, IOException {
+	public void insert(Patient paciente) throws SQLException, IOException {
 		
 		Connection conn = DataBase.conectar();
 		

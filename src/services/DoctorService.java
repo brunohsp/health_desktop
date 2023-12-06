@@ -21,7 +21,7 @@ public class DoctorService {
 	}
 	
 	
-	public List<Doctor> listarDoctors() throws SQLException, IOException {
+	public List<Doctor> listDoctors() throws SQLException, IOException {
 		
 		
 		Connection conn = DataBase.conectar();
@@ -37,7 +37,7 @@ public class DoctorService {
 		return medico;
 	}
 	
-	public void cadastrar(Doctor doctor) throws SQLException, IOException {
+	public void insert(Doctor doctor) throws SQLException, IOException {
 		AddressService as = new AddressService();
 		as.insert(doctor.getAddress());
 		
