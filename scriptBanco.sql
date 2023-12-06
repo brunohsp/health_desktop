@@ -348,7 +348,7 @@ $$ delimiter ;
 delimiter $$
 create procedure buscarMedicoTodos()
 	begin 
-		select pessoa.nome_pes, pessoa.dataNascimento_pes, pessoa.sexo_pes, pessoa.cpf_pes, pessoa.telefone_pes, medico.crm_med 
+		select pessoa.nome_pes, pessoa.dataNascimento_pes, pessoa.sexo_pes, pessoa.cpf_pes, pessoa.telefone_pes, medico.crm_med, medico.id_medico
 			from pessoa inner join medico on (medico.id_pessoa_fk = pessoa.id_pessoa) order by pessoa.nome_pes;        
 	end; 
 $$ delimiter ;
@@ -411,7 +411,7 @@ delimiter $$
 create procedure buscarTodosConsulta ()
 	begin 
     
-    select pessoa.nome_pes, pessoa.cpf_pes, pessoa.telefone_pes, medico.crm_med, consulta.data_con, consulta.hora_con 
+    select pessoa.nome_pes, pessoa.cpf_pes, pessoa.telefone_pes, medico.crm_med, consulta.data_con, consulta.hora_con, consulta.id_consulta
 			from pessoa inner join paciente on (paciente.id_pessoa_fk = pessoa.id_pessoa) inner join consulta on (consulta.id_paciente_fk = paciente.id_paciente) 
             inner join medico on (consulta.id_medico_fk = medico.id_medico) order by consulta.data_con;        
     
@@ -463,10 +463,10 @@ select * from pessoa;
  
 
 delimiter $$ 
-create procedure buscarTodosPedidoExame ()
+create procedure buscarTodosPedidoExame()
 	begin
     
-		 select pessoa.nome_pes, pessoa.cpf_pes, pessoa.telefone_pes, medico.crm_med, pedidoExame.data_pedExa, pedidoExame.hora_pedExa
+		 select pessoa.nome_pes, pessoa.cpf_pes, pessoa.telefone_pes, medico.crm_med, pedidoExame.data_pedExa, pedidoExame.hora_pedExa, pedidoExame.id_pedidoExame
 			from pessoa inner join paciente on (paciente.id_pessoa_fk = pessoa.id_pessoa) inner join PedidoExame on (PedidoExame.id_paciente_fk = paciente.id_paciente) 
             inner join medico on (PedidoExame.id_medico_fk = medico.id_medico) order by PedidoExame.data_con;      
             

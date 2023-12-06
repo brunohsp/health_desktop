@@ -93,9 +93,10 @@ public class MedicalTestDAO {
 			while (rs.next()) {
 				MedicalTest exame = new MedicalTest(); 
 				
-				exame.setName(rs.getString("Nome Exame"));
-				exame.setValue(rs.getDouble("Valor Exame "));
-				exame.setInstructions(rs.getString("Instruções "));
+				exame.setId(rs.getInt("id_exame"));
+				exame.setName(rs.getString("nome_exa"));
+				exame.setValue(rs.getDouble("valor_exa"));
+				exame.setInstructions(rs.getString("orientacao_exa"));
 			
 				listaExame.add(exame);
 			}

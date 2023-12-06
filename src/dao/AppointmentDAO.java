@@ -97,12 +97,13 @@ public class AppointmentDAO {
 			while (rs.next()) {
 				Appointment consulta = new Appointment(); 
 				
-				consulta.getPatient().setName(rs.getString("Nome Paciente "));
-				consulta.getPatient().setCpf(rs.getString("Cpf Paciente "));
-				consulta.getPatient().setPhoneNumber(rs.getString("Telefone Paciente "));
-				consulta.getDoctor().setCrmNumber(rs.getInt("CRM Médico "));
-				consulta.setAppointmentDate(rs.getString("Data Consulta "));
-				consulta.setTime(rs.getString("Hora Consulta "));
+				consulta.setId(rs.getInt("consulta.id_consulta"));
+				consulta.getPatient().setName(rs.getString("pessoa.nome_pes"));
+				consulta.getPatient().setCpf(rs.getString("pessoa.cpf_pes"));
+				consulta.getPatient().setPhoneNumber(rs.getString("pessoa.telefone_pes"));
+				consulta.getDoctor().setCrmNumber(rs.getInt("medico.crm_med"));
+				consulta.setAppointmentDate(rs.getString("consulta.data_con"));
+				consulta.setTime(rs.getString("consulta.hora_con"));
 			
 				listaConsulta.add(consulta);
 			}

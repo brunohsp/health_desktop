@@ -85,7 +85,7 @@ public class MedicalTestOrderDAO {
 		ResultSet rs = null; 
 		
 		try {
-			st = conn.prepareCall("call buscarTodosPedidoExame () ");
+			st = conn.prepareCall("call buscarTodosPedidoExame() ");
 			
 			st.execute();
 		
@@ -96,12 +96,13 @@ public class MedicalTestOrderDAO {
 			while (rs.next()) {
 				MedicalTestOrder pedidoExame = new MedicalTestOrder(); 
 				
-				pedidoExame.getPatient().setName(rs.getString("Nome Paciente "));
-				pedidoExame.getPatient().setCpf(rs.getString("Cpf paciente"));
-				pedidoExame.getPatient().setPhoneNumber(rs.getString("Numero de telefone paciente"));
-				pedidoExame.getDoctor().setCrmNumber(rs.getInt("CRM medico "));
-				pedidoExame.setTestDate(rs.getString("Data Exame"));
-				pedidoExame.setTime(rs.getString("Hora Exame"));
+				pedidoExame.getPatient().setName(rs.getString("pessoa.nome_pes"));
+				pedidoExame.getPatient().setCpf(rs.getString("pessoa.cpf_pes"));
+				pedidoExame.getPatient().setPhoneNumber(rs.getString("pessoa.telefone_pes"));
+				pedidoExame.getDoctor().setCrmNumber(rs.getInt("medico.crm_med"));
+				pedidoExame.setTestDate(rs.getString("pedidoExame.data_pedExa"));
+				pedidoExame.setTime(rs.getString("pedidoExame.hora_pedExa"));
+				pedidoExame.setId(rs.getInt("pedidoExame.id_pedidoExame"));
 							
 				listaPedidoMedico.add(pedidoExame);
 			}

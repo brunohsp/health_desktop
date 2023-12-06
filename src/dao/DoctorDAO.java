@@ -100,7 +100,7 @@ public class DoctorDAO {
 		ResultSet rs = null; 
 		
 		try {
-			st = conn.prepareCall("call buscarPacienteTodos() ");
+			st = conn.prepareCall("call buscarMedicoTodos() ");
 			
 			st.execute();
 		
@@ -111,11 +111,13 @@ public class DoctorDAO {
 			while (rs.next()) {
 				Doctor medico = new Doctor();
 				
-				medico.setName(rs.getString("Nome Medico"));
-				medico.setDateOfBirth(rs.getString("Data nascimento"));
-				medico.setGender(rs.getString("Sexo"));
-				medico.setCpf(rs.getString("Cpf"));
-				medico.setPhoneNumber(rs.getString("Numero de telefone"));
+				medico.setId(rs.getInt("medico.id_medico"));
+				medico.setCrmNumber(rs.getInt("medico.crm_med"));
+				medico.setName(rs.getString("pessoa.nome_pes"));
+				medico.setDateOfBirth(rs.getString("pessoa.dataNascimento_pes"));
+				medico.setGender(rs.getString("pessoa.sexo_pes"));
+				medico.setCpf(rs.getString("pessoa.cpf_pes"));
+				medico.setPhoneNumber(rs.getString("pessoa.telefone_pes"));
 			
 				listaMedico.add(medico);
 			}

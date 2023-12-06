@@ -84,8 +84,8 @@ public class SpecialtyDAO {
 			while(rs.next() ) {
 				Specialty especialidade = new Specialty();
 				
-				
-				especialidade.setSpecialtyName(rs.getString("Especialidade" ));
+				especialidade.setId(rs.getInt("id_especialidade"));
+				especialidade.setSpecialtyName(rs.getString("nome_esp"));
 				
 				listEspecialidade.add(especialidade);
 			}

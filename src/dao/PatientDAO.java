@@ -112,13 +112,14 @@ public class PatientDAO {
 			while (rs.next()) {
 				Patient paciente = new Patient(); 
 				
-				paciente.setName(rs.getString("Nome Paciente"));
-				paciente.setDateOfBirth(rs.getString("Data nascimento"));
-				paciente.setGender(rs.getString("Sexo"));
-				paciente.setCpf(rs.getString("Cpf"));
-				paciente.setPhoneNumber(rs.getNString("Numero de telefone"));
-				paciente.setPhoto(rs.getString("Foto"));
-				paciente.setPaymentMethod(rs.getString("Metodo pagamento "));
+				paciente.setId(rs.getInt("pessoa.id_pessoa"));
+				paciente.setName(rs.getString("pessoa.nome_pes"));
+				paciente.setDateOfBirth(rs.getString("pessoa.dataNascimento_pes"));
+				paciente.setGender(rs.getString("pessoa.sexo_pes"));
+				paciente.setCpf(rs.getString("pessoa.cpf_pes"));
+				paciente.setPhoneNumber(rs.getNString("pessoa.telefone_pes"));
+				paciente.setPhoto(rs.getString("pessoa.foto_pac"));
+				paciente.setPaymentMethod(rs.getString("pessoa.metodoPagamento_pac"));
 			
 				listaPaciente.add(paciente);
 			}
