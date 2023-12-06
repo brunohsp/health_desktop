@@ -80,7 +80,7 @@ public class AppointmentForm extends JFrame {
 	private void getDoctors() {
 		try {
 			this.doctorService = new DoctorService();
-	    	List<Doctor> doctors = this.doctorService.listDoctors("", null, "");
+	    	List<Doctor> doctors = this.doctorService.listDoctors();
 	    	
 	    	for(Doctor doctor: doctors) {
 	    		cbbDoctor.addItem(doctor);
@@ -94,7 +94,7 @@ public class AppointmentForm extends JFrame {
 	private void getPatients() {
 		try {
 			this.patientService = new PatientService();
-	    	List<Patient> patients = this.patientService.listPatients("", "", "", "");
+	    	List<Patient> patients = this.patientService.listPatients();
 	    	
 	    	for(Patient patient: patients) {
 	    		cbbPatient.addItem(patient);

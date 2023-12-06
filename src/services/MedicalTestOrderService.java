@@ -41,5 +41,12 @@ public class MedicalTestOrderService {
 		new MedicalTestOrderDAO(conn).cadastrarPedidoExame(medicalTestOrder);
 	}
 	
+	public List<MedicalTestOrder> listMedicalTestReport(MedicalTest medicalTest) throws SQLException, IOException {
+		List<MedicalTestOrder> medicalTestOrders = new ArrayList<MedicalTestOrder>();
+
+		//TODO: chamar dao
+
+		return medicalTestOrders;
+	}
 	
 }

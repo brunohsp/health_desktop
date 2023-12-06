@@ -112,7 +112,7 @@ public class Menu extends JFrame {
     	
     	model.addRow(new Object[] { "Id", "Data", "Paciente", "Doutor" });
     	
-    	List<Appointment> appointments = this.appointmentService.listAppointments("", "", "");
+    	List<Appointment> appointments = this.appointmentService.listAppointments();
     	
     	for(Appointment appointment : appointments) {
     		String date = appointment.getAppointmentDate() + appointment.getTime();
@@ -138,7 +138,7 @@ public class Menu extends JFrame {
     	
     	model.addRow(new Object[] { "Id", "Nome", "CRM", "Especialidade", "Endereço", "Telefone"});
     	
-    	List<Doctor> doctors = this.doctorService.listDoctors("", null, "");
+    	List<Doctor> doctors = this.doctorService.listDoctors();
     	
     	for(Doctor doctor : doctors) {
     		cbbDoctor.addItem(doctor);
@@ -167,7 +167,7 @@ public class Menu extends JFrame {
     	
     	model.addRow(new Object[] { "Id", "Paciente", "Doutor", "Exame", "Data", "Valor Pago" });
     	
-    	List<MedicalTestOrder> medicalTestOrders = this.medicalTestOrderService.listMedicalTestOrders("", "", "");
+    	List<MedicalTestOrder> medicalTestOrders = this.medicalTestOrderService.listMedicalTestOrders();
     	
     	for(MedicalTestOrder mto : medicalTestOrders) {
     		String date = mto.getTestDate();
@@ -197,7 +197,7 @@ public class Menu extends JFrame {
     	
     	model.addRow(new Object[] { "Código", "Nome", "Valor", "Instruções" });
     	
-    	List<MedicalTest> medicalTests = this.medicalTestService.listMedicalTests("", "", 0);
+    	List<MedicalTest> medicalTests = this.medicalTestService.listMedicalTests();
     	
     	for(MedicalTest mt : medicalTests) {
     		cbbMedicalTest.addItem(mt);
@@ -220,7 +220,7 @@ public class Menu extends JFrame {
     	
     	model.addRow(new Object[] { "Id", "Nome", "CPF", "Gênero", "Telefone", "Data de nascimento", "Método de pagamento" });
     	
-    	List<Patient> patients = this.patientService.listPatients("", "", "", "");
+    	List<Patient> patients = this.patientService.listPatients();
     	
     	for(Patient patient : patients) {
     		cbbPatient.addItem(patient);
@@ -246,7 +246,7 @@ public class Menu extends JFrame {
     	
     	model.addRow(new Object[] { "Código", "Nome" });
     	
-    	List<Specialty> specialties= this.specialtyService.listSpecialties("", "");
+    	List<Specialty> specialties= this.specialtyService.listSpecialties();
     	
     	for(Specialty specialty: specialties) {
     		model.addRow(new Object[] {

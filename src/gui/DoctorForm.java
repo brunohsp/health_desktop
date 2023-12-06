@@ -91,7 +91,7 @@ public class DoctorForm extends JFrame {
 	private void getSpecialties() {
 		try {
 			this.specialtyService = new SpecialtyService();
-	    	List<Specialty> specialties = this.specialtyService.listSpecialties("", "");
+	    	List<Specialty> specialties = this.specialtyService.listSpecialties();
 	    	
 	    	for(Specialty specialty: specialties) {
 	    		cbbSpecialty.addItem(specialty);
