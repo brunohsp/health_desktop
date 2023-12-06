@@ -140,6 +140,43 @@ public class PatientDAO {
 		}
 	}
 	
+	public Patient buscarCpf(String cpf) throws SQLException {
+
+		PreparedStatement st = null;
+		ResultSet rs = null;
+
+		try {
+
+			st = conn.prepareStatement("call buscarPacienteCpf(?)");
+
+			st.setString(1, cpf);
+
+			rs = st.executeQuery();
+
+			if (rs.next()) {
+
+				Patient patient = new Patient();
+				
+				patient.setName(rs.getString("Nome Paciente"));
+				patient.setDateOfBirth(rs.getString("Data nascimento"));
+				patient.setGender(rs.getString("Sexo"));
+				patient.setCpf(rs.getString("Cpf"));
+				patient.setPhoto(rs.getString("Foto"));
+				patient.setPaymentMethod(rs.getString("Metodo pagamento "));
+				
+				return patient;
+			}
+
+			return null;
+
+		} finally {
+
+			DataBase.finalizarStatement(st);
+			DataBase.finalizarResultSet(rs);
+			DataBase.desconectar();
+		}
+	}
+	
 	
 	
 	

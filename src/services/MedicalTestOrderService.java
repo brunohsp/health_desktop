@@ -29,12 +29,7 @@ public class MedicalTestOrderService {
 		
 		List<MedicalTestOrder> medicalTestOrders = new MedicalTestOrderDAO(conn).buscarTodosPedidoExame();
 		
-		MedicalTestOrderService medicalTestOrderService = new MedicalTestOrderService();
-		
-		for (MedicalTestOrder medicalTestOrder : medicalTestOrders) {
-			
-			MedicalTestOrderService medicalTestOrderServices = MedicalTestOrderService.buscarTodosPedidoExame();
-		}
+		//MedicalTestOrderService medicalTestOrderService = new MedicalTestOrderService();
 		
 		
 		return medicalTestOrders;

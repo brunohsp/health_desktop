@@ -214,6 +214,62 @@ create procedure buscarPacienteTodos()
 	end; 
 $$ delimiter ;
 
+delimiter $$ 
+create procedure buscarPacienteCpf(cpf varchar(30))
+	begin 
+		
+		declare idPessoa int;     
+        declare idPac int;
+        
+        select id_pessoa into idPessoa from Pessoa where cpf_pes = cpf; 
+        select id_paciente into idPac from Paciente where id_pessoa_fk = idPessoa;
+        
+		select pessoa.nome_pes, pessoa.dataNascimento_pes, pessoa.sexo_pes, pessoa.cpf_pes, paciente.foto_pac, pessoa.metodoPagamento_pac 
+        from pessoa inner join paciente on (paciente.id_pessoa_fk = pessoa.id_pessoa) order by pessoa.nome_pes;    
+        
+	end; 
+$$ delimiter ;
+
+delimiter $$ 
+create procedure relatórioCliente(cpf varchar(30))
+	begin 
+		
+		declare idPessoa int;     
+        declare idPac int;
+        declare idMed int;
+        
+        
+        select id_pessoa into idPessoa from Pessoa where cpf_pes = cpf; 
+        select id_paciente into idPac from Paciente where id_pessoa_fk = idPessoa;
+        
+		select pessoa.nome_pes, pessoa.dataNascimento_pes, pessoa.sexo_pes, pessoa.cpf_pes, paciente.foto_pac, pessoa.metodoPagamento_pac, 
+				consulta.data_con, consulta.hora_con, (select medico.nome_med from medico where id_medico = consulta.id_medico_fk), 
+                PedidoExame.data_pedExa, PedidoExame.hora_pedExa, PedidoExame.pagamentoRecebido, (select medico.nome_med from medico where id_medico = pedidoExame.id_medico_fk),
+                (select exame.nome_exa from exame where id_exame = pedidoExame.id_exame_fk)
+        from pessoa inner join paciente on (paciente.id_pessoa_fk = pessoa.id_pessoa) 
+        inner join consulta on (consulta.id_paciente_fk = paciente.id_paciente)
+        inner join PedidoExame on (pedidoExame.id_paciente_fk = paciente.id_paciente)
+        order by consulta.data_con;    
+        
+	end; 
+$$ delimiter ;
+
+/*
+create table PedidoExame (
+id_pedidoExame int primary key auto_increment, 
+data_pedExa varchar(20), 
+hora_pedExa varchar(20), 
+pagamentoRecebido double,
+
+id_exame_fk int not null, 
+id_paciente_fk int not null,
+
+from pessoa inner join paciente on (paciente.id_pessoa_fk = pessoa.id_pessoa) inner join consulta on (consulta.id_paciente_fk = paciente.id_paciente) 
+            inner join medico on (consulta.id_medico_fk = medico.id_medico) order by consulta.data_con; 
+*/
+
+
+
 -- drop procedure buscarPacienteTodos;
 -- call buscarPacienteTodos();
 

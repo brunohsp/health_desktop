@@ -23,12 +23,9 @@ public class SpecialtyService {
 		
 		List<Specialty> specialties = new SpecialtyDAO(conn).buscarTodosEspecialidade();
 		
-		SpecialtyService specialtyService = new SpecialtyService();
+		//SpecialtyService specialtyService = new SpecialtyService();
 		
-		for (Specialty specialty : specialties) {
 		
-			Specialty specialtys = SpecialtyService.buscarTodosEspecialidade();
-		}
 		
 		return specialties;
 	}

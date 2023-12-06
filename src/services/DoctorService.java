@@ -30,9 +30,7 @@ public class DoctorService {
 		
 		DoctorService doctorService = new DoctorService();
 		
-		for (Doctor doctor : medico) {
-			Doctor doctors = DoctorService.buscarTodosMedico();
-		}
+		
 		
 		return medico;
 	}

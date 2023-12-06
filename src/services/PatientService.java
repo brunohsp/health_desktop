@@ -29,13 +29,6 @@ public class PatientService {
 		
 		List<Patient> patients = new PatientDAO(conn).buscarTodosPaciente();
 		
-		PatientService pacienteService = new PatientService();
-		
-		for (Patient patient : patients) {
-			Patient paciente =  PatientService.buscarTodosPaciente();
-			
-		}
-		
 		
 		return patients;
 	}

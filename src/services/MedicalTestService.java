@@ -28,9 +28,6 @@ public class MedicalTestService {
 		
 		MedicalTestService medicalTestService = new MedicalTestService();
 		
-		for (MedicalTest medicalTest : medicalTests) {
-			MedicalTest medicalTeste = MedicalTestService.buscarTodosExame();
-		}
 		
 		return medicalTests;
 	}
