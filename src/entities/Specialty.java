@@ -9,13 +9,22 @@ public class Specialty {
         this.name = name;
     }
     
+    public Specialty(String name) {
+    	System.out.println(name);
+    	this.id = 0;
+    	this.name = name;
+    	
+    }
+    
+    
+    
     public Specialty() {
         
     }
 
 
     public String getSpecialtyName() {
-        return name;
+        return this.name;
     }
 
     public void setSpecialtyName(String name) {

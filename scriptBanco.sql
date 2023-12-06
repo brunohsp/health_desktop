@@ -46,6 +46,8 @@ create table Especialidade (
 id_especialidade int primary key auto_increment,  
 nome_esp varchar(200)
 ); 
+insert especialidade values (null, "cardiologia");
+select * from especialidade;
 
 create table Medico (
 id_medico int primary key auto_increment,  
@@ -233,7 +235,6 @@ $$ delimiter ;
 delimiter $$ 
 create procedure relatórioCliente(cpf varchar(30))
 	begin 
-		
 		declare idPessoa int;     
         declare idPac int;
         declare idMed int;
@@ -243,7 +244,7 @@ create procedure relatórioCliente(cpf varchar(30))
         select id_paciente into idPac from Paciente where id_pessoa_fk = idPessoa;
         
 		select pessoa.nome_pes, pessoa.dataNascimento_pes, pessoa.sexo_pes, pessoa.cpf_pes, paciente.foto_pac, pessoa.metodoPagamento_pac, 
-				consulta.data_con, consulta.hora_con, (select medico.nome_med from medico where id_medico = consulta.id_medico_fk), 
+				consulta.data_con, consulta.hora_con, (select medico.nome_med from medico where id_medico = consulta.id_medico_fk) , 
                 PedidoExame.data_pedExa, PedidoExame.hora_pedExa, PedidoExame.pagamentoRecebido, (select medico.nome_med from medico where id_medico = pedidoExame.id_medico_fk),
                 (select exame.nome_exa from exame where id_exame = pedidoExame.id_exame_fk)
         from pessoa inner join paciente on (paciente.id_pessoa_fk = pessoa.id_pessoa) 

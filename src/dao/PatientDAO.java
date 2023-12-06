@@ -1,5 +1,6 @@
 package dao;
 
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -18,10 +19,13 @@ public class PatientDAO {
 	}
 	
 	public void cadastrarPaciente (Patient paciente) throws SQLException {
-		PreparedStatement st = null;
+		
+		
+		CallableStatement st = null;
 		
 		try {
-			st = conn.prepareStatement("call inserirPaciente (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ");
+			 
+			st = conn.prepareCall("call inserirPaciente (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ) ");
 			
 			// st.setInt(1, paciente.getId());
 			st.setString(1, paciente.getName());
@@ -51,11 +55,11 @@ public class PatientDAO {
 		// deve preencher todos os dados na tela e enviar todos os dados mesmos os que nao foram alterados 
 		//busca pelo id do paciente
 		
-		PreparedStatement st = null; 
+		CallableStatement st = null; 
 		
 		try {
 			
-			st = conn.prepareStatement("call alterarPaciente (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ");
+			st = conn.prepareCall("call alterarPaciente (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ");
 			
 			st.setInt(1, paciente.getId());
 			st.setString(2, paciente.getName());
@@ -85,11 +89,11 @@ public class PatientDAO {
 	public int excluirPaciente(int cpf) throws SQLException {
 		//busca pelo cpf do paciente
 		
-		PreparedStatement st = null;
+		CallableStatement st = null;
 		
 		try {
 			
-			st = conn.prepareStatement("call excluirPaciente (?) ");
+			st = conn.prepareCall("call excluirPaciente (?) ");
 			
 			st.setInt(1, cpf);
 			
@@ -107,11 +111,11 @@ public class PatientDAO {
 	
 	public List<Patient> buscarTodosPaciente() throws SQLException {
 		
-		PreparedStatement st = null; 
+		CallableStatement st = null; 
 		ResultSet rs = null; 
 		
 		try {
-			st = conn.prepareStatement("call buscarPacienteTodos() ");
+			st = conn.prepareCall("call buscarPacienteTodos() ");
 			
 			rs = st.executeQuery();
 			
@@ -142,12 +146,12 @@ public class PatientDAO {
 	
 	public Patient buscarCpf(String cpf) throws SQLException {
 
-		PreparedStatement st = null;
+		CallableStatement st = null;
 		ResultSet rs = null;
 
 		try {
 
-			st = conn.prepareStatement("call buscarPacienteCpf(?)");
+			st = conn.prepareCall("call buscarPacienteCpf(?)");
 
 			st.setString(1, cpf);
 

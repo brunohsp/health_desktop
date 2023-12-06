@@ -1,5 +1,6 @@
 package dao;
 
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -20,14 +21,14 @@ public class MedicalTestOrderDAO {
 	
 	public void cadastrarPedidoExame (MedicalTestOrder pedidoExame) throws SQLException {
 		
-		PreparedStatement st = null;
+		CallableStatement st = null;
 		
 		try {
-			st = conn.prepareStatement("call inserirPedidoExame (?, ?, ?) ");
+			st = conn.prepareCall("call inserirPedidoExame (?, ?, ?) ");
 						
 			st.setString(1, pedidoExame.getPatient().getCpf());
 			st.setInt(2, pedidoExame.getDoctor().getCrmNumber());			
-			st.setDouble(5, pedidoExame.getValuePaid());
+			st.setDouble(3, pedidoExame.getValuePaid());
 			
 			st.executeUpdate();
 			
@@ -43,22 +44,22 @@ public class MedicalTestOrderDAO {
 		// deve preencher todos os dados na tela e enviar todos os dados mesmos os que nao foram alterados 
 		
 		
-		PreparedStatement st = null; 
+		CallableStatement st = null; 
 		
 		try {
 			
 			//atualizarPedidoExame (idPedido int, dataExa date, horaExa time, valor double, 
 			//		pagamento double, idExame int, idPaciente int, idMedico int)
 			
-			st = conn.prepareStatement("call atualizarPedidoExame (?, ?, ?, ?, ?, ?, ?) ");
+			st = conn.prepareCall("call atualizarPedidoExame (?, ?, ?, ?, ?, ?, ?) ");
 			
 			st.setInt(1, pedidoExame.getId());
 			st.setString(2, pedidoExame.getTestDate());
 			st.setString(3, pedidoExame.getTime());
-			st.setDouble(5, pedidoExame.getValuePaid());
-			st.setInt(6, pedidoExame.getTest().getId());
-			st.setInt(7, pedidoExame.getPatient().getId());
-			st.setInt(8, pedidoExame.getDoctor().getId());			
+			st.setDouble(4, pedidoExame.getValuePaid());
+			st.setInt(5, pedidoExame.getTest().getId());
+			st.setInt(6, pedidoExame.getPatient().getId());
+			st.setInt(7, pedidoExame.getDoctor().getId());			
 			
 			st.executeUpdate();
 			
@@ -93,11 +94,11 @@ public class MedicalTestOrderDAO {
 	
 public List<MedicalTestOrder> buscarTodosPedidoExame() throws SQLException {
 		
-		PreparedStatement st = null; 
+		CallableStatement st = null; 
 		ResultSet rs = null; 
 		
 		try {
-			st = conn.prepareStatement("call buscarTodosPedidoExame () ");
+			st = conn.prepareCall("call buscarTodosPedidoExame () ");
 		
 			rs = st.executeQuery();
 			

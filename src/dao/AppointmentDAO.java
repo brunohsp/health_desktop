@@ -1,5 +1,6 @@
 package dao;
 
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -24,10 +25,10 @@ public class AppointmentDAO {
 	public void cadastrarConsulta(Appointment consulta) throws SQLException {
 		//cpf do paciente e do medico
 		
-		PreparedStatement st = null; 
+		CallableStatement st = null; 
 		
 		try {
-			st = conn.prepareStatement("call inserirConsulta(cpfpaciente, crm) ");
+			st = conn.prepareCall("call inserirConsulta(cpfpaciente, crm) ");
 			
 			st.setInt(1, consulta.getPatient().getId());
 			st.setInt(2, consulta.getDoctor().getId());
@@ -50,8 +51,8 @@ public class AppointmentDAO {
 			
 			st.setString(1, consulta.getAppointmentDate());
 			st.setString(2, consulta.getTime());
-			st.setInt(4, consulta.getPatient().getId());
-			st.setInt(5, consulta.getDoctor().getId());
+			st.setInt(3, consulta.getPatient().getId());
+			st.setInt(4, consulta.getDoctor().getId());
 			
 			st.executeUpdate();
 			
@@ -64,11 +65,11 @@ public class AppointmentDAO {
 	
 	public int excluirConsulta(int cpf, Date dia)  throws SQLException {
 		
-		PreparedStatement st = null; 
+		CallableStatement st = null; 
 		
 		try {
 			
-			st = conn.prepareStatement("call alterarConsulta(?, ? )" );
+			st = conn.prepareCall("call alterarConsulta(?, ? )" );
 			
 			st.setInt(1, cpf);
 			st.setDate(2, dia);
@@ -85,11 +86,11 @@ public class AppointmentDAO {
 	
 	public List<Appointment> buscarTodosConsulta() throws SQLException {
 		
-		PreparedStatement st = null; 
+		CallableStatement st = null; 
 		ResultSet rs = null; 
 		
 		try {
-			st = conn.prepareStatement("call buscarTodosConsulta() ");
+			st = conn.prepareCall("call buscarTodosConsulta() ");
 		
 			rs = st.executeQuery();
 			

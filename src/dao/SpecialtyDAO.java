@@ -22,9 +22,14 @@ public class SpecialtyDAO {
 		PreparedStatement st = null; 
 		
 		try {
+	
 			st = conn.prepareStatement("insert especialidade values (null, ?) " );
 			
-			st.setString(2, especialidade.getSpecialtyName());
+			//System.out.println(especialidade.getSpecialtyName());
+			//System.out.println(especialidade);
+			
+			st.setString(1, especialidade.getSpecialtyName());
+		
 			
 			st.executeUpdate();
 			
@@ -94,6 +99,7 @@ public class SpecialtyDAO {
 				Specialty especialidade = new Specialty();
 				
 				//especialidade.setIDSpecialty(rs.getInt("ID Especialidade" ));
+				
 				especialidade.setSpecialtyName(rs.getString("Especialidade" ));
 				
 				listEspecialidade.add(especialidade);

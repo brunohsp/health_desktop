@@ -25,7 +25,6 @@ import java.awt.event.ActionEvent;
 
 public class SpecialtyForm extends JFrame {
 	private static final long serialVersionUID = 1L;
-    private JTextField txtCode;
     private JTextField txtName;
     private Menu menu;
     private SpecialtyService specialtyService;
@@ -50,14 +49,18 @@ public class SpecialtyForm extends JFrame {
 	
 	private void insertSpecialty() {
 		try {
-			if(txtCode.getText().equals("") || txtName.getText().equals("")) {
+			if( txtName.getText().equals("")) {
 				JOptionPane.showMessageDialog(null, "Há campos vazios no formulário.", "Cadastro", JOptionPane.ERROR_MESSAGE);
 				return;
 			}
 			
+			//System.out.println(txtName.getText());
 			specialtyService = new SpecialtyService();
 			
-			Specialty specialty = new Specialty(Integer.parseInt(txtCode.getText()), txtName.getName());
+			Specialty specialty = new Specialty( txtName.getName());
+			
+			System.out.println(specialty);
+			
 			this.specialtyService.insert(specialty);
 			
 			closeWindow();
@@ -88,41 +91,6 @@ public class SpecialtyForm extends JFrame {
             btnRegister.setFont(new Font("Segoe UI Variable", Font.PLAIN, 24));
 
             getContentPane().add(panel);
-            
-            JPanel code = new JPanel();
-            GridBagLayout gbl_code = new GridBagLayout();
-            gbl_code.columnWidths = new int[]{71, 20, 321, 0};
-            gbl_code.rowHeights = new int[]{38, 0};
-            gbl_code.columnWeights = new double[]{0.0, 0.0, 1.0, Double.MIN_VALUE};
-            gbl_code.rowWeights = new double[]{0.0, Double.MIN_VALUE};
-            code.setLayout(gbl_code);
-            
-            JLabel lblCode = new JLabel("Código:");
-            lblCode.setFont(new Font("Segoe UI Variable", Font.PLAIN, 24));
-            GridBagConstraints gbc_lblCode = new GridBagConstraints();
-            gbc_lblCode.anchor = GridBagConstraints.WEST;
-            gbc_lblCode.insets = new Insets(0, 0, 0, 5);
-            gbc_lblCode.gridx = 0;
-            gbc_lblCode.gridy = 0;
-            code.add(lblCode, gbc_lblCode);
-            
-            Component horizontalStrut = Box.createHorizontalStrut(20);
-            GridBagConstraints gbc_horizontalStrut = new GridBagConstraints();
-            gbc_horizontalStrut.fill = GridBagConstraints.HORIZONTAL;
-            gbc_horizontalStrut.insets = new Insets(0, 0, 0, 5);
-            gbc_horizontalStrut.gridx = 1;
-            gbc_horizontalStrut.gridy = 0;
-            code.add(horizontalStrut, gbc_horizontalStrut);
-            
-            txtCode = new JFormattedTextField(NumberFormat.getNumberInstance());
-            txtCode.setFont(new Font("Segoe UI Variable", Font.PLAIN, 24));
-            txtCode.setColumns(15);
-            GridBagConstraints gbc_txtCode = new GridBagConstraints();
-            gbc_txtCode.fill = GridBagConstraints.HORIZONTAL;
-            gbc_txtCode.anchor = GridBagConstraints.NORTH;
-            gbc_txtCode.gridx = 2;
-            gbc_txtCode.gridy = 0;
-            code.add(txtCode, gbc_txtCode);
             
             JPanel name = new JPanel();
             GridBagLayout gbl_name = new GridBagLayout();
@@ -170,13 +138,11 @@ public class SpecialtyForm extends JFrame {
             gl_panel.setHorizontalGroup(
             	gl_panel.createParallelGroup(Alignment.LEADING)
             		.addGroup(gl_panel.createSequentialGroup()
-            			.addGroup(gl_panel.createParallelGroup(Alignment.TRAILING)
-            				.addGroup(Alignment.LEADING, gl_panel.createSequentialGroup()
+            			.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
+            				.addGroup(gl_panel.createSequentialGroup()
             					.addContainerGap()
-            					.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
-            						.addComponent(code, Alignment.TRAILING, GroupLayout.PREFERRED_SIZE, 369, GroupLayout.PREFERRED_SIZE)
-            						.addComponent(name, GroupLayout.PREFERRED_SIZE, 369, GroupLayout.PREFERRED_SIZE)))
-            				.addGroup(Alignment.LEADING, gl_panel.createSequentialGroup()
+            					.addComponent(name, GroupLayout.PREFERRED_SIZE, 369, GroupLayout.PREFERRED_SIZE))
+            				.addGroup(gl_panel.createSequentialGroup()
             					.addGap(27)
             					.addComponent(btnCancel, GroupLayout.PREFERRED_SIZE, 160, GroupLayout.PREFERRED_SIZE)
             					.addGap(18)
@@ -186,9 +152,7 @@ public class SpecialtyForm extends JFrame {
             gl_panel.setVerticalGroup(
             	gl_panel.createParallelGroup(Alignment.LEADING)
             		.addGroup(gl_panel.createSequentialGroup()
-            			.addContainerGap()
-            			.addComponent(code, GroupLayout.PREFERRED_SIZE, 38, GroupLayout.PREFERRED_SIZE)
-            			.addGap(18)
+            			.addGap(67)
             			.addComponent(name, GroupLayout.PREFERRED_SIZE, 38, GroupLayout.PREFERRED_SIZE)
             			.addPreferredGap(ComponentPlacement.RELATED, 29, Short.MAX_VALUE)
             			.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)

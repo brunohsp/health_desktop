@@ -1,5 +1,6 @@
 package dao;
 
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -19,10 +20,10 @@ public class DoctorDAO {
 	}
 	
 	public void cadastrarMedico (Doctor medico) throws SQLException {
-		PreparedStatement st = null;
+		CallableStatement st = null;
 		
 		try {
-			st = conn.prepareStatement("call inserirMedico (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ");
+			st = conn.prepareCall("call inserirMedico (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ");
 			
 			st.setInt(1, medico.getId());
 			st.setString(2, medico.getName());
@@ -51,11 +52,11 @@ public class DoctorDAO {
 		// deve preencher todos os dados na tela e enviar todos os dados mesmos os que nao foram alterados 
 		//busca pelo id do paciente
 		
-		PreparedStatement st = null; 
+		CallableStatement st = null; 
 		
 		try {
 			
-			st = conn.prepareStatement("call alterarMedico (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ");
+			st = conn.prepareCall("call alterarMedico (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ");
 			
 			st.setInt(1, medico.getId());
 			st.setString(2, medico.getName());
@@ -83,11 +84,11 @@ public class DoctorDAO {
 	public int excluirMedico(int cpf) throws SQLException {
 		//busca pelo cpf do medico
 		
-		PreparedStatement st = null;
+		CallableStatement st = null;
 		
 		try {
 			
-			st = conn.prepareStatement("call excluirMedico (?) ");
+			st = conn.prepareCall("call excluirMedico (?) ");
 			
 			st.setInt(1, cpf);
 			
@@ -103,11 +104,11 @@ public class DoctorDAO {
 	
 public List<Doctor> buscarTodosMedico() throws SQLException {
 		
-		PreparedStatement st = null; 
+		CallableStatement st = null; 
 		ResultSet rs = null; 
 		
 		try {
-			st = conn.prepareStatement("call buscarPacienteTodos() ");
+			st = conn.prepareCall("call buscarPacienteTodos() ");
 		
 			rs = st.executeQuery();
 			

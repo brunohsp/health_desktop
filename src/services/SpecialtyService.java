@@ -33,6 +33,10 @@ public class SpecialtyService {
 	public void insert(Specialty specialty) throws SQLException, IOException {
 		
 		Connection conn = DataBase.conectar();
+		
+		System.out.println(specialty);
+		
 		new SpecialtyDAO(conn).cadastrarEspecialidade(specialty);
+		
 	}
 }
