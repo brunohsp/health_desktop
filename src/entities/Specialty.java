@@ -3,23 +3,12 @@ package entities;
 public class Specialty {
     private int id;
     private String name;
-
-    public Specialty(int id, String name) {
-        this.id = id;
-        this.name = name;
-    }
+    
+    public Specialty() {}
     
     public Specialty(String name) {
     	System.out.println(name);
-    	this.id = 0;
     	this.name = name;
-    	
-    }
-    
-    
-    
-    public Specialty() {
-        
     }
 
 

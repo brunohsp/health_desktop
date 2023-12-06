@@ -345,16 +345,34 @@ public class DoctorForm extends JFrame {
 		genderOptions.setLayout(new GridLayout(0, 1, 0, 0));
 		
 		rdbtnMale = new JRadioButton("Masculino");
+		rdbtnMale.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				rdbtnFemale.setSelected(false);
+				rdbtnOther.setSelected(false);
+			}
+		});
 		rdbtnMale.setHorizontalAlignment(SwingConstants.LEFT);
 		rdbtnMale.setFont(new Font("Dialog", Font.PLAIN, 24));
 		genderOptions.add(rdbtnMale);
 		
 		rdbtnFemale = new JRadioButton("Feminino");
+		rdbtnFemale.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				rdbtnMale.setSelected(false);
+				rdbtnOther.setSelected(false);
+			}
+		});
 		rdbtnFemale.setHorizontalAlignment(SwingConstants.LEFT);
 		rdbtnFemale.setFont(new Font("Dialog", Font.PLAIN, 24));
 		genderOptions.add(rdbtnFemale);
 		
 		rdbtnOther = new JRadioButton("Outro");
+		rdbtnOther.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				rdbtnFemale.setSelected(false);
+				rdbtnMale.setSelected(false);
+			}
+		});
 		rdbtnOther.setHorizontalAlignment(SwingConstants.LEFT);
 		rdbtnOther.setFont(new Font("Dialog", Font.PLAIN, 24));
 		genderOptions.add(rdbtnOther);

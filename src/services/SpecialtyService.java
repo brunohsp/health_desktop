@@ -23,20 +23,12 @@ public class SpecialtyService {
 		
 		List<Specialty> specialties = new SpecialtyDAO(conn).buscarTodosEspecialidade();
 		
-		//SpecialtyService specialtyService = new SpecialtyService();
-		
-		
-		
 		return specialties;
 	}
 	
 	public void insert(Specialty specialty) throws SQLException, IOException {
 		
 		Connection conn = DataBase.conectar();
-		
-		System.out.println(specialty);
-		
 		new SpecialtyDAO(conn).cadastrarEspecialidade(specialty);
-		
 	}
 }

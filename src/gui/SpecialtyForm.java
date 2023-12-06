@@ -54,12 +54,10 @@ public class SpecialtyForm extends JFrame {
 				return;
 			}
 			
-			//System.out.println(txtName.getText());
+			System.out.println(txtName.getText());
 			specialtyService = new SpecialtyService();
 			
-			Specialty specialty = new Specialty( txtName.getName());
-			
-			System.out.println(specialty);
+			Specialty specialty = new Specialty(txtName.getText());
 			
 			this.specialtyService.insert(specialty);
 			

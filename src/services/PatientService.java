@@ -29,20 +29,13 @@ public class PatientService {
 		
 		List<Patient> patients = new PatientDAO(conn).buscarTodosPaciente();
 		
-		
 		return patients;
 	}
 	
-	
-	
-
-
 	public void insert(Patient paciente) throws SQLException, IOException {
 		
 		Connection conn = DataBase.conectar();
 		
 		new PatientDAO(conn).cadastrarPaciente(paciente);
-		
-		
 	}
 }

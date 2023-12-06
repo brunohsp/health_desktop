@@ -669,16 +669,34 @@ public class PatientForm extends JFrame {
 		genderOptions.setLayout(new GridLayout(0, 1, 0, 0));
 		
 		rdbtnMale = new JRadioButton("Masculino");
+		rdbtnMale.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				rdbtnFemale.setSelected(false);
+				rdbtnOther.setSelected(false);
+			}
+		});
 		genderOptions.add(rdbtnMale);
 		rdbtnMale.setHorizontalAlignment(SwingConstants.LEFT);
 		rdbtnMale.setFont(new Font("Segoe UI Variable", Font.PLAIN, 24));
 		
 		rdbtnFemale = new JRadioButton("Feminino");
+		rdbtnFemale.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				rdbtnMale.setSelected(false);
+				rdbtnOther.setSelected(false);
+			}
+		});
 		genderOptions.add(rdbtnFemale);
 		rdbtnFemale.setHorizontalAlignment(SwingConstants.LEFT);
 		rdbtnFemale.setFont(new Font("Segoe UI Variable", Font.PLAIN, 24));
 		
 		rdbtnOther = new JRadioButton("Outro");
+		rdbtnOther.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				rdbtnFemale.setSelected(false);
+				rdbtnMale.setSelected(false);
+			}
+		});
 		genderOptions.add(rdbtnOther);
 		rdbtnOther.setHorizontalAlignment(SwingConstants.LEFT);
 		rdbtnOther.setFont(new Font("Segoe UI Variable", Font.PLAIN, 24));

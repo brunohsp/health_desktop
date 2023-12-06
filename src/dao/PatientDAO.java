@@ -20,14 +20,12 @@ public class PatientDAO {
 	
 	public void cadastrarPaciente (Patient paciente) throws SQLException {
 		
-		
 		CallableStatement st = null;
 		
 		try {
 			 
 			st = conn.prepareCall("call inserirPaciente (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ) ");
 			
-			// st.setInt(1, paciente.getId());
 			st.setString(1, paciente.getName());
 			st.setString(2, paciente.getDateOfBirth());
 			st.setString(3, paciente.getGender());
@@ -41,7 +39,7 @@ public class PatientDAO {
 			st.setString(11, paciente.getAddress().getCity());
 			st.setString(12, paciente.getAddress().getUf());
 			
-			st.executeUpdate();
+			st.execute();
 			
 		} finally {
 			DataBase.finalizarStatement(st);
@@ -50,10 +48,7 @@ public class PatientDAO {
 		
 	}
 	
-	
 	public void atualizarPaciente(Patient paciente) throws SQLException {
-		// deve preencher todos os dados na tela e enviar todos os dados mesmos os que nao foram alterados 
-		//busca pelo id do paciente
 		
 		CallableStatement st = null; 
 		
@@ -75,7 +70,7 @@ public class PatientDAO {
 			st.setString(12, paciente.getAddress().getCity());
 			st.setString(13, paciente.getAddress().getUf());
 			
-			st.executeUpdate();
+			st.execute();
 			
 		} finally {
 			DataBase.finalizarStatement(st);
@@ -83,11 +78,7 @@ public class PatientDAO {
 		}
 	}
 	
-	
-	
-	
-	public int excluirPaciente(int cpf) throws SQLException {
-		//busca pelo cpf do paciente
+	public void excluirPaciente(int cpf) throws SQLException {
 		
 		CallableStatement st = null;
 		
@@ -97,17 +88,12 @@ public class PatientDAO {
 			
 			st.setInt(1, cpf);
 			
-			int linhasManipuladas = st.executeUpdate();
-			
-			return linhasManipuladas; 
-			
+			st.execute();
 		} finally {
 			DataBase.finalizarStatement(st);
 			DataBase.desconectar();
 		}
 	}
-	
-	
 	
 	public List<Patient> buscarTodosPaciente() throws SQLException {
 		
@@ -117,7 +103,9 @@ public class PatientDAO {
 		try {
 			st = conn.prepareCall("call buscarPacienteTodos() ");
 			
-			rs = st.executeQuery();
+			st.execute();
+			
+			rs = st.getResultSet();
 			
 			List<Patient> listaPaciente = new ArrayList<>();
 			
@@ -154,8 +142,10 @@ public class PatientDAO {
 			st = conn.prepareCall("call buscarPacienteCpf(?)");
 
 			st.setString(1, cpf);
+			
+			st.execute();
 
-			rs = st.executeQuery();
+			rs = st.getResultSet();
 
 			if (rs.next()) {
 
@@ -180,10 +170,5 @@ public class PatientDAO {
 			DataBase.desconectar();
 		}
 	}
-	
-	
-	
-	
-	
 	
 }

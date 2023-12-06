@@ -28,20 +28,10 @@ public class DoctorService {
 		
 		List<Doctor> medico = new DoctorDAO(conn).buscarTodosMedico();
 		
-		DoctorService doctorService = new DoctorService();
-		
-		
-		
 		return medico;
 	}
 	
 	public void insert(Doctor doctor) throws SQLException, IOException {
-		AddressService as = new AddressService();
-		as.insert(doctor.getAddress());
-		
-		PersonService ps = new PersonService();
-		ps.insert(doctor);
-		
 		Connection conn = DataBase.conectar();
 		new DoctorDAO(conn).cadastrarMedico(doctor);
 	}

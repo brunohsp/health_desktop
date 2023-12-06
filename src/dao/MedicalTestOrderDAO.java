@@ -30,7 +30,7 @@ public class MedicalTestOrderDAO {
 			st.setInt(2, pedidoExame.getDoctor().getCrmNumber());			
 			st.setDouble(3, pedidoExame.getValuePaid());
 			
-			st.executeUpdate();
+			st.execute();
 			
 		} finally {
 			DataBase.finalizarStatement(st);
@@ -39,17 +39,11 @@ public class MedicalTestOrderDAO {
 		
 	}
 	
-	
 	public void atualizarPedidoExame(MedicalTestOrder pedidoExame) throws SQLException {
-		// deve preencher todos os dados na tela e enviar todos os dados mesmos os que nao foram alterados 
-		
 		
 		CallableStatement st = null; 
 		
 		try {
-			
-			//atualizarPedidoExame (idPedido int, dataExa date, horaExa time, valor double, 
-			//		pagamento double, idExame int, idPaciente int, idMedico int)
 			
 			st = conn.prepareCall("call atualizarPedidoExame (?, ?, ?, ?, ?, ?, ?) ");
 			
@@ -61,7 +55,7 @@ public class MedicalTestOrderDAO {
 			st.setInt(6, pedidoExame.getPatient().getId());
 			st.setInt(7, pedidoExame.getDoctor().getId());			
 			
-			st.executeUpdate();
+			st.execute();
 			
 		} finally {
 			DataBase.finalizarStatement(st);
@@ -69,8 +63,7 @@ public class MedicalTestOrderDAO {
 		}
 	}
 	
-	public int excluirPedidoExame(int idPedido) throws SQLException {
-		//busca pelo cpf do medico
+	public void excluirPedidoExame(int idPedido) throws SQLException {
 		
 		PreparedStatement st = null;
 		
@@ -80,27 +73,23 @@ public class MedicalTestOrderDAO {
 			
 			st.setInt(1, idPedido);
 			
-			int linhasManipuladas = st.executeUpdate();
-			
-			return linhasManipuladas; 
-			
 		} finally {
 			DataBase.finalizarStatement(st);
 			DataBase.desconectar();
 		}
 	}
 	
-	
-	
-public List<MedicalTestOrder> buscarTodosPedidoExame() throws SQLException {
+	public List<MedicalTestOrder> buscarTodosPedidoExame() throws SQLException {
 		
 		CallableStatement st = null; 
 		ResultSet rs = null; 
 		
 		try {
 			st = conn.prepareCall("call buscarTodosPedidoExame () ");
+			
+			st.execute();
 		
-			rs = st.executeQuery();
+			rs = st.getResultSet();
 			
 			List<MedicalTestOrder> listaPedidoMedico = new ArrayList<>();
 			
@@ -125,6 +114,5 @@ public List<MedicalTestOrder> buscarTodosPedidoExame() throws SQLException {
 			DataBase.desconectar();
 		}
 	}
-	
 	
 }

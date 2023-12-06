@@ -17,7 +17,6 @@ public class PatientReportService {
 	public List<PatientReport> listPatientReports(Patient patient) throws SQLException, IOException {
 		List<PatientReport> patientReports = new ArrayList<PatientReport>();
 		
-		
 		//TODO: chamar dao
 		
 		return patientReports;

@@ -22,23 +22,14 @@ public class SpecialtyDAO {
 		PreparedStatement st = null; 
 		
 		try {
-	
 			st = conn.prepareStatement("insert especialidade values (null, ?) " );
-			
-			//System.out.println(especialidade.getSpecialtyName());
-			//System.out.println(especialidade);
-			
 			st.setString(1, especialidade.getSpecialtyName());
-		
-			
 			st.executeUpdate();
-			
 		} finally {
 			DataBase.finalizarStatement(st);
 			DataBase.desconectar();			
 		}
 	}
-	
 	
 	public void atualizarEspecialidade (Specialty especialidade) throws SQLException {
 		
@@ -59,9 +50,7 @@ public class SpecialtyDAO {
 		}
 	}
 	
-	public int excluirPaciente(String especialidade) throws SQLException {
-		//busca pelo nome da especialidade
-		
+	public void excluirPaciente(String especialidade) throws SQLException {
 		PreparedStatement st = null; 
 		
 		try {
@@ -70,9 +59,7 @@ public class SpecialtyDAO {
 			
 			st.setString(1, especialidade);
 			
-			int linhasManipuladas = st.executeUpdate();
-			
-			return linhasManipuladas;
+			st.execute();
 			
 		} finally {
 			DataBase.finalizarStatement(st);
@@ -80,7 +67,6 @@ public class SpecialtyDAO {
 		}
 		
 	}
-	
 	
 	public List<Specialty> buscarTodosEspecialidade() throws SQLException {
 		
@@ -98,7 +84,6 @@ public class SpecialtyDAO {
 			while(rs.next() ) {
 				Specialty especialidade = new Specialty();
 				
-				//especialidade.setIDSpecialty(rs.getInt("ID Especialidade" ));
 				
 				especialidade.setSpecialtyName(rs.getString("Especialidade" ));
 				
@@ -112,13 +97,6 @@ public class SpecialtyDAO {
 			DataBase.finalizarResultSet(rs);
 			DataBase.desconectar();
 		}
-		
-		
 	}
-	
-	
-	
-	
-	
 	
 }

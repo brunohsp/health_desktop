@@ -17,20 +17,10 @@ import entities.Patient;
 
 public class MedicalTestOrderService {
 	
-	public MedicalTestOrderService () {
-		
-	}
-	
-	
 	public List<MedicalTestOrder> listMedicalTestOrders() throws SQLException, IOException {
 		
 		Connection conn = DataBase.conectar();
-		
-		
 		List<MedicalTestOrder> medicalTestOrders = new MedicalTestOrderDAO(conn).buscarTodosPedidoExame();
-		
-		//MedicalTestOrderService medicalTestOrderService = new MedicalTestOrderService();
-		
 		
 		return medicalTestOrders;
 	}

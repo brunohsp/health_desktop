@@ -23,8 +23,6 @@ public class AppointmentDAO {
 	}
 	
 	public void cadastrarConsulta(Appointment consulta) throws SQLException {
-		//cpf do paciente e do medico
-		
 		CallableStatement st = null; 
 		
 		try {
@@ -33,7 +31,8 @@ public class AppointmentDAO {
 			st.setInt(1, consulta.getPatient().getId());
 			st.setInt(2, consulta.getDoctor().getId());
 			
-			st.executeUpdate();
+			st.execute();
+			
 		} finally {
 			DataBase.finalizarStatement(st);
 			DataBase.desconectar();
@@ -62,8 +61,7 @@ public class AppointmentDAO {
 		}
 	}
 	
-	
-	public int excluirConsulta(int cpf, Date dia)  throws SQLException {
+	public void excluirConsulta(int cpf, Date dia)  throws SQLException {
 		
 		CallableStatement st = null; 
 		
@@ -74,9 +72,7 @@ public class AppointmentDAO {
 			st.setInt(1, cpf);
 			st.setDate(2, dia);
 			
-			int linhasManipuladas = st.executeUpdate();
-			
-			return linhasManipuladas; 
+			st.execute();
 			
 		} finally {
 			DataBase.finalizarStatement(st);
@@ -91,8 +87,10 @@ public class AppointmentDAO {
 		
 		try {
 			st = conn.prepareCall("call buscarTodosConsulta() ");
+			
+			st.execute();
 		
-			rs = st.executeQuery();
+			rs = st.getResultSet();
 			
 			List<Appointment> listaConsulta = new ArrayList<>();
 			
@@ -117,10 +115,4 @@ public class AppointmentDAO {
 			DataBase.desconectar();
 		}
 	}
-	
-	
-	
-	
-	
-	
 }

@@ -39,7 +39,7 @@ public class DoctorDAO {
 			st.setString(12, medico.getAddress().getCity());
 			st.setString(13, medico.getAddress().getUf());
 			
-			st.executeUpdate();
+			st.execute();
 			
 		} finally {
 			DataBase.finalizarStatement(st);
@@ -49,9 +49,6 @@ public class DoctorDAO {
 	}
 	
 	public void atualizarMedico(Doctor medico) throws SQLException {
-		// deve preencher todos os dados na tela e enviar todos os dados mesmos os que nao foram alterados 
-		//busca pelo id do paciente
-		
 		CallableStatement st = null; 
 		
 		try {
@@ -71,7 +68,7 @@ public class DoctorDAO {
 			st.setString(11, medico.getAddress().getCity());
 			st.setString(12, medico.getAddress().getUf());
 			
-			st.executeUpdate();
+			st.execute();
 			
 		} finally {
 			DataBase.finalizarStatement(st);
@@ -79,10 +76,7 @@ public class DoctorDAO {
 		}
 	}
 	
-	
-
-	public int excluirMedico(int cpf) throws SQLException {
-		//busca pelo cpf do medico
+	public void excluirMedico(int cpf) throws SQLException {
 		
 		CallableStatement st = null;
 		
@@ -92,9 +86,7 @@ public class DoctorDAO {
 			
 			st.setInt(1, cpf);
 			
-			int linhasManipuladas = st.executeUpdate();
-			
-			return linhasManipuladas; 
+			st.execute();
 			
 		} finally {
 			DataBase.finalizarStatement(st);
@@ -102,20 +94,22 @@ public class DoctorDAO {
 		}
 	}
 	
-public List<Doctor> buscarTodosMedico() throws SQLException {
+	public List<Doctor> buscarTodosMedico() throws SQLException {
 		
 		CallableStatement st = null; 
 		ResultSet rs = null; 
 		
 		try {
 			st = conn.prepareCall("call buscarPacienteTodos() ");
+			
+			st.execute();
 		
-			rs = st.executeQuery();
+			rs = st.getResultSet();
 			
 			List<Doctor> listaMedico = new ArrayList<>();
 			
 			while (rs.next()) {
-				Doctor medico = new Doctor(); //criar construtor adequado
+				Doctor medico = new Doctor();
 				
 				medico.setName(rs.getString("Nome Medico"));
 				medico.setDateOfBirth(rs.getString("Data nascimento"));
@@ -134,5 +128,4 @@ public List<Doctor> buscarTodosMedico() throws SQLException {
 			DataBase.desconectar();
 		}
 	}
-	
 }

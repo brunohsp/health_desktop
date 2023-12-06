@@ -25,14 +25,7 @@ public class AppointmentService {
 		
 		Connection conn = DataBase.conectar();
 		
-		
 		List<Appointment> appointments = new AppointmentDAO(conn).buscarTodosConsulta();
-		
-		AppointmentService appointmentService = new AppointmentService();
-		
-		for (Appointment appointment : appointments) {
-			// Appointment consulta = AppointmentService.buscarTodosConsulta();
-		}
 		
 		return appointments;
 	}
@@ -46,11 +39,9 @@ public class AppointmentService {
 	
 	public List<Appointment> getDoctorReport(Doctor doctor) throws SQLException, IOException{
 		List<Appointment> appointments = new ArrayList<Appointment>();
-
 		
 		Connection conn = DataBase.conectar();
 		
-
 		return appointments;
 	}
 	

@@ -39,7 +39,6 @@ public class MedicalTestDAO {
 	}
 	
 	public void atualizarExame(MedicalTest exame) throws SQLException {
-		// deve preencher todos os dados na tela e enviar todos os dados mesmos os que nao foram alterados 
 		
 		PreparedStatement st = null; 
 		
@@ -58,10 +57,8 @@ public class MedicalTestDAO {
 			DataBase.desconectar();
 		}
 	}
-
 	
 	public int excluirMedico(String codigoExame) throws SQLException {
-		//busca pelo codigo do exame
 		
 		PreparedStatement st = null;
 		
@@ -81,8 +78,7 @@ public class MedicalTestDAO {
 		}
 	}
 	
-	
-public List<MedicalTest> buscarTodosExame() throws SQLException {
+	public List<MedicalTest> buscarTodosExame() throws SQLException {
 		
 		PreparedStatement st = null; 
 		ResultSet rs = null; 

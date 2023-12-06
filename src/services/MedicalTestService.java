@@ -23,11 +23,7 @@ public class MedicalTestService {
 		
 		Connection conn = DataBase.conectar();
 		
-		
 		List<MedicalTest> medicalTests = new MedicalTestDAO(conn).buscarTodosExame();
-		
-		MedicalTestService medicalTestService = new MedicalTestService();
-		
 		
 		return medicalTests;
 	}
